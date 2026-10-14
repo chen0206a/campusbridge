@@ -87,6 +87,10 @@ Clean Windows installation passed **203 backend tests and 27 frontend tests**, t
 
 Optional real providers use server-side `CAMPUSBRIDGE_ENDPOINT`, `CAMPUSBRIDGE_MODEL`, `CAMPUSBRIDGE_API_KEY` and `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`. The frontend receives no model credential. New evaluations freeze a new packet for the current checkout and enforce an explicit cost budget.
 
+## Offline retrieval baseline (Stage A)
+
+[RAG evaluation](docs/RAG_STAGE_A.md) adds 72 fixed synthetic development queries and an isolated 16-document corpus. Current BM25 chunk Recall@1/3/5 is 60.71%/76.79%/76.79%; MRR is 0.7143. Raw results, source bindings and configuration hashes are retained with zero model calls. Production retrieval is unchanged; 228 backend tests pass in this local branch.
+
 ## License and scope
 
 [MIT](LICENSE) for original source, Prompts, synthetic knowledge/data and assets. [Provenance](docs/PROVENANCE.md) · [Dependency notices](THIRD_PARTY_NOTICES.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md).
