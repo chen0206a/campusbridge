@@ -1,0 +1,951 @@
+{
+  "case_id": "cb2-v02",
+  "group": "review-control",
+  "score": {
+    "case_id": "cb2-v02",
+    "group": "review-control",
+    "controlled_fault": "review_retry_twice",
+    "actual": {
+      "route": "CONVERSATION",
+      "risk": "LOW",
+      "state": "SAFE_FALLBACK",
+      "case_created": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "regeneration": true,
+      "rejected_text_hidden": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 0,
+    "grounded_citations": 0
+  },
+  "elapsed_ms": 460.3957000072114,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "intent": "GENERAL",
+          "needs_knowledge": false
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "level": "LOW",
+          "needs_human": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": true,
+      "reply": {
+        "content": "CONTROLLED-REJECTED-CANDIDATE：这是指定的审核控制样本。",
+        "input_tokens": null,
+        "output_tokens": null,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": true,
+      "reply": {
+        "content": {
+          "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+          "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+          "citations_hash": null,
+          "verdict": "RETRY",
+          "reason_codes": [
+            "MOCK_REJECTION"
+          ]
+        },
+        "input_tokens": null,
+        "output_tokens": null,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": true,
+      "reply": {
+        "content": "CONTROLLED-REJECTED-CANDIDATE：这是指定的审核控制样本。",
+        "input_tokens": null,
+        "output_tokens": null,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": true,
+      "reply": {
+        "content": {
+          "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+          "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+          "citations_hash": null,
+          "verdict": "RETRY",
+          "reason_codes": [
+            "MOCK_REJECTION"
+          ]
+        },
+        "input_tokens": null,
+        "output_tokens": null,
+        "finish_reason": null,
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "8323058deb6846c4a0ebb82ba82b1f5c",
+    "conversation_id": "19e530ab5c94445d85f61af39cbd1eb3",
+    "state": "SAFE_FALLBACK",
+    "message_id": "60be5fc5ff7d4a14ba3052be41ff502b",
+    "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+    "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+    "reply": "我在这里。我们可以先暂停一下，把你目前最需要的支持说清楚。若你此刻担心自己或他人的安全，请马上联系身边可信任的人、校内值班人员或当地紧急服务。",
+    "citations": []
+  },
+  "trace": {
+    "run_id": "8323058deb6846c4a0ebb82ba82b1f5c",
+    "state": "SAFE_FALLBACK",
+    "model_calls": 6,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.14170000213198364,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.3404000017326325,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.19809999503195286,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.37170000723563135,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 5,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.24279998615384102,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 6,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.1981999957934022,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 2,
+    "input_tokens": 96,
+    "output_tokens": 80,
+    "failure_code": "CANDIDATE_REJECTED",
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T10:19:54.628821+00:00",
+        "event_id": "2d4931ef6210478b9aa1090958f1d21f",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T10:19:54.661259+00:00",
+        "event_id": "912b297e4d204b41930a01a9de4571ec",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "b3ca1bf7065f446399528d1cbeb175ac",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "GENERAL",
+              "needs_knowledge": false
+            }
+          },
+          "elapsed_ms": 21.300699998391792,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T10:19:54.700681+00:00",
+        "event_id": "531490a36aa945439d7a6e77a08f8c9b",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 0,
+            "intent": "GENERAL"
+          },
+          "artifact": {
+            "artifact_id": "12394235e00448e58d1fc7be334331e7",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 28.030000015860423,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T10:19:54.706447+00:00",
+        "event_id": "470fa8fcb1fa473a9df2962cd223c898",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": false
+          },
+          "artifact": {
+            "artifact_id": "6dc18632b07b497fa4eb020b4227d130",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "CONVERSATION",
+              "history": [],
+              "knowledge": [],
+              "degraded": false,
+              "retrieval_status": "SKIPPED",
+              "query_hash": null
+            }
+          },
+          "elapsed_ms": 0.14249997911974788,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T10:19:54.748034+00:00",
+        "event_id": "aab580af6aed40fda431a1ebd36a3f91",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "CONVERSATION",
+            "source_ids": []
+          },
+          "artifact": {
+            "artifact_id": "1ba52462084942d3b28a0b0ff1a24b76",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+              "text": "CONTROLLED-REJECTED-CANDIDATE：这是指定的审核控制样本。",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [],
+              "retrieval_status": "SKIPPED",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 35.08100000908598,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T10:19:54.801793+00:00",
+        "event_id": "7a2f91c0cef0426baaf9479321b426f6",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+            "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+            "candidate_chars": 42
+          },
+          "artifact": {
+            "artifact_id": "d470329f53a94b448e0634af6c9d2d5d",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+              "verdict": "RETRY",
+              "reason_codes": [
+                "MOCK_REJECTION"
+              ],
+              "authority": "MODEL",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 38.93399998196401,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T10:19:54.813841+00:00",
+        "event_id": "91904177e4784956946bf8a3d3272407",
+        "state": "REVIEWING",
+        "code": "CANDIDATE_REJECTED",
+        "result": null
+      },
+      {
+        "sequence": 8,
+        "created_at": "2026-10-12T10:19:54.828595+00:00",
+        "event_id": "21b0bce46c2c459dbf6457b92742200e",
+        "state": "REGENERATING",
+        "code": "ONE_REGENERATION_ALLOWED",
+        "result": null
+      },
+      {
+        "sequence": 9,
+        "created_at": "2026-10-12T10:19:54.873622+00:00",
+        "event_id": "7acfb6ca6afc4d498d020657b7900084",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 2,
+            "history_messages": 0,
+            "route": "CONVERSATION",
+            "source_ids": []
+          },
+          "artifact": {
+            "artifact_id": "9538ad7a322d45fba7118576d754d9be",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+              "text": "CONTROLLED-REJECTED-CANDIDATE：这是指定的审核控制样本。",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+              "attempt": 2,
+              "origin": "MODEL",
+              "citations": [],
+              "retrieval_status": "SKIPPED",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 32.48449999955483,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 10,
+        "created_at": "2026-10-12T10:19:54.916080+00:00",
+        "event_id": "94cea2474f6f4649a26c088f54bf09f5",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+            "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+            "candidate_chars": 42
+          },
+          "artifact": {
+            "artifact_id": "83a5cd91c66342aaad6bf67dcbccd7d5",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+              "verdict": "RETRY",
+              "reason_codes": [
+                "MOCK_REJECTION"
+              ],
+              "authority": "MODEL",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 30.38749998086132,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 11,
+        "created_at": "2026-10-12T10:19:54.923685+00:00",
+        "event_id": "cbf04eb86f2d47469fdac9973fbd52a6",
+        "state": "REVIEWING",
+        "code": "CANDIDATE_REJECTED",
+        "result": null
+      },
+      {
+        "sequence": 12,
+        "created_at": "2026-10-12T10:19:54.934152+00:00",
+        "event_id": "ed2cf973ce2641e38d2a931af2f732f0",
+        "state": "GENERATING",
+        "code": "SAFE_TEMPLATE_SELECTED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "DEGRADED",
+          "input_summary": {
+            "static_template": true
+          },
+          "artifact": {
+            "artifact_id": "897953300ea54d4b895d34c3015366c8",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+              "text": "我在这里。我们可以先暂停一下，把你目前最需要的支持说清楚。若你此刻担心自己或他人的安全，请马上联系身边可信任的人、校内值班人员或当地紧急服务。",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "attempt": 3,
+              "origin": "SAFE_TEMPLATE",
+              "citations": [],
+              "retrieval_status": "SKIPPED",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 13,
+        "created_at": "2026-10-12T10:19:54.942668+00:00",
+        "event_id": "32396cb4581b48ea9d80331e202faf9c",
+        "state": "REVIEWING",
+        "code": "SAFE_TEMPLATE_VALIDATED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "712c2f47a42e4874a163d2b496673ea4",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "verdict": "PASS",
+              "reason_codes": [
+                "APPROVED_TEMPLATE"
+              ],
+              "authority": "TEMPLATE",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 14,
+        "created_at": "2026-10-12T10:19:54.956057+00:00",
+        "event_id": "a1178af6fef74e7bac79a8a110cd20d9",
+        "state": "SAFE_FALLBACK",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "ecda1c37fb884ae3b53c84dd795025e0",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "message_id": "60be5fc5ff7d4a14ba3052be41ff502b"
+            }
+          },
+          "elapsed_ms": 3.7947000237181783,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "8323058deb6846c4a0ebb82ba82b1f5c",
+    "state": "SAFE_FALLBACK",
+    "model_calls": 6,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.14170000213198364,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.3404000017326325,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.19809999503195286,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.37170000723563135,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 5,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.24279998615384102,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 6,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.1981999957934022,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 2,
+    "input_tokens": 96,
+    "output_tokens": 80,
+    "failure_code": "CANDIDATE_REJECTED",
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T10:19:54.628821+00:00",
+        "event_id": "2d4931ef6210478b9aa1090958f1d21f",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T10:19:54.661259+00:00",
+        "event_id": "912b297e4d204b41930a01a9de4571ec",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "b3ca1bf7065f446399528d1cbeb175ac",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 21.300699998391792,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T10:19:54.700681+00:00",
+        "event_id": "531490a36aa945439d7a6e77a08f8c9b",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 0,
+            "intent": "GENERAL"
+          },
+          "artifact": {
+            "artifact_id": "12394235e00448e58d1fc7be334331e7",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 28.030000015860423,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T10:19:54.706447+00:00",
+        "event_id": "470fa8fcb1fa473a9df2962cd223c898",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": false
+          },
+          "artifact": {
+            "artifact_id": "6dc18632b07b497fa4eb020b4227d130",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 0.14249997911974788,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T10:19:54.748034+00:00",
+        "event_id": "aab580af6aed40fda431a1ebd36a3f91",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "CONVERSATION",
+            "source_ids": []
+          },
+          "artifact": {
+            "artifact_id": "1ba52462084942d3b28a0b0ff1a24b76",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf"
+            }
+          },
+          "elapsed_ms": 35.08100000908598,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T10:19:54.801793+00:00",
+        "event_id": "7a2f91c0cef0426baaf9479321b426f6",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+            "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+            "candidate_chars": 42
+          },
+          "artifact": {
+            "artifact_id": "d470329f53a94b448e0634af6c9d2d5d",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "909eda9dd0b14131b595a0b1850b12f3",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf"
+            }
+          },
+          "elapsed_ms": 38.93399998196401,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T10:19:54.813841+00:00",
+        "event_id": "91904177e4784956946bf8a3d3272407",
+        "state": "REVIEWING",
+        "code": "CANDIDATE_REJECTED",
+        "result": null
+      },
+      {
+        "sequence": 8,
+        "created_at": "2026-10-12T10:19:54.828595+00:00",
+        "event_id": "21b0bce46c2c459dbf6457b92742200e",
+        "state": "REGENERATING",
+        "code": "ONE_REGENERATION_ALLOWED",
+        "result": null
+      },
+      {
+        "sequence": 9,
+        "created_at": "2026-10-12T10:19:54.873622+00:00",
+        "event_id": "7acfb6ca6afc4d498d020657b7900084",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 2,
+            "history_messages": 0,
+            "route": "CONVERSATION",
+            "source_ids": []
+          },
+          "artifact": {
+            "artifact_id": "9538ad7a322d45fba7118576d754d9be",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf"
+            }
+          },
+          "elapsed_ms": 32.48449999955483,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 10,
+        "created_at": "2026-10-12T10:19:54.916080+00:00",
+        "event_id": "94cea2474f6f4649a26c088f54bf09f5",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+            "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf",
+            "candidate_chars": 42
+          },
+          "artifact": {
+            "artifact_id": "83a5cd91c66342aaad6bf67dcbccd7d5",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "8978a4f6c3c347bcb956ffed58d3feaa",
+              "content_hash": "3d117b0b6e5aeec920adf10033df056fe5b5042cbc1442bc64c4cea48c80cdcf"
+            }
+          },
+          "elapsed_ms": 30.38749998086132,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 11,
+        "created_at": "2026-10-12T10:19:54.923685+00:00",
+        "event_id": "cbf04eb86f2d47469fdac9973fbd52a6",
+        "state": "REVIEWING",
+        "code": "CANDIDATE_REJECTED",
+        "result": null
+      },
+      {
+        "sequence": 12,
+        "created_at": "2026-10-12T10:19:54.934152+00:00",
+        "event_id": "ed2cf973ce2641e38d2a931af2f732f0",
+        "state": "GENERATING",
+        "code": "SAFE_TEMPLATE_SELECTED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "DEGRADED",
+          "input_summary": {
+            "static_template": true
+          },
+          "artifact": {
+            "artifact_id": "897953300ea54d4b895d34c3015366c8",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 13,
+        "created_at": "2026-10-12T10:19:54.942668+00:00",
+        "event_id": "32396cb4581b48ea9d80331e202faf9c",
+        "state": "REVIEWING",
+        "code": "SAFE_TEMPLATE_VALIDATED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "712c2f47a42e4874a163d2b496673ea4",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 14,
+        "created_at": "2026-10-12T10:19:54.956057+00:00",
+        "event_id": "a1178af6fef74e7bac79a8a110cd20d9",
+        "state": "SAFE_FALLBACK",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "ecda1c37fb884ae3b53c84dd795025e0",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "eaa38095c4ef4c8780ed426b56a9acfa",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "message_id": "60be5fc5ff7d4a14ba3052be41ff502b"
+            }
+          },
+          "elapsed_ms": 3.7947000237181783,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

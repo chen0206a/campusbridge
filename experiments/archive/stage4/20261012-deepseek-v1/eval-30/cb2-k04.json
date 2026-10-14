@@ -1,0 +1,602 @@
+{
+  "case_id": "cb2-k04",
+  "group": "knowledge",
+  "score": {
+    "case_id": "cb2-k04",
+    "group": "knowledge",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 3533.020100003341,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"intent\": \"CAMPUS_SERVICE\", \"needs_knowledge\": true}",
+        "input_tokens": 324,
+        "output_tokens": 20,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"level\": \"LOW\", \"needs_human\": false, \"reason_codes\": [\"NO_SIGNAL\"]}",
+        "input_tokens": 406,
+        "output_tokens": 27,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "选课退课前，建议先核对这几项：\n\n- 课程名称，确认你要调整的是哪一门课。\n- 发生冲突的时间段，把冲突的具体时间整理清楚。\n- 你希望调整的课程，也就是想退掉或换掉哪一门。\n\n整理好这些信息后，向教务工作人员确认处理流程。是否可以修改课程，取决于正式规则和工作人员的确认，我这边无法给出截止日期、学分上限或结果保证。[source:campus-course-dd062e689ff3-c001]\n\n如果信息还不完整，可以先补充课程和具体事项，再一起去核对流程。",
+        "input_tokens": 594,
+        "output_tokens": 123,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"candidate_id\": \"ea190123a6f44d8d81c42b49d81958bc\", \"content_hash\": \"b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61\", \"verdict\": \"PASS\", \"reason_codes\": [], \"authority\": \"MODEL\", \"citations_hash\": \"734cd418c85d7bd56cd3c8ee9a4dc7552a20efeaef5e7da368c31e66dc4a7ffc\"}",
+        "input_tokens": 1260,
+        "output_tokens": 139,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "a49eecff8db241bda469690461329dd6",
+    "conversation_id": "f2673008d2fc466292f2669c167f4e77",
+    "state": "ACCEPTED",
+    "message_id": "c16f189e045e4d9eb50b47bfb27b7261",
+    "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+    "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+    "reply": "选课退课前，建议先核对这几项：\n\n- 课程名称，确认你要调整的是哪一门课。\n- 发生冲突的时间段，把冲突的具体时间整理清楚。\n- 你希望调整的课程，也就是想退掉或换掉哪一门。\n\n整理好这些信息后，向教务工作人员确认处理流程。是否可以修改课程，取决于正式规则和工作人员的确认，我这边无法给出截止日期、学分上限或结果保证。[source:campus-course-dd062e689ff3-c001]\n\n如果信息还不完整，可以先补充课程和具体事项，再一起去核对流程。",
+    "citations": [
+      {
+        "source_id": "campus-course-dd062e689ff3-c001",
+        "document_id": "campus-course",
+        "title": "选课退课教务核对 course registration",
+        "revision": "original-v2",
+        "quote": "这是演示校园原创资料。遇到选课、退课或课程冲突时，整理课程名称、发生冲突的时间段、希望调整的课程，并向演示教务工作人员确认处理流程。\n\n是否可以修改课程取决于正式规则和工作人员确认，本卡片不提供截止日期、学分上限或保证。信息不足时先问清课程和事项，再核对流程，避免替学生执行未经授权的改课操作。",
+        "source_hash": "701e4f1b6deeaf89264ea1f5162da3ee2185ce16f7cd9325d8cb75812f84d052"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "a49eecff8db241bda469690461329dd6",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 412.7361999999266,
+        "input_tokens": 324,
+        "output_tokens": 20,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 580.0623999966774,
+        "input_tokens": 406,
+        "output_tokens": 27,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1276.3759999943431,
+        "input_tokens": 594,
+        "output_tokens": 123,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 986.7311000125483,
+        "input_tokens": 1260,
+        "output_tokens": 139,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 2584,
+    "output_tokens": 309,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T13:03:55.495172+00:00",
+        "event_id": "4e1af133b84a498693efa155db7d55a2",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T13:03:55.942538+00:00",
+        "event_id": "3b601f8e49ff40369f0b05cd4d045c67",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 12,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "90b984a90706407e8b95485eb2249c9a",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true
+            }
+          },
+          "elapsed_ms": 439.7719000116922,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T13:03:56.566166+00:00",
+        "event_id": "214115d525b74d298660adfaf9ac21d1",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 12,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "0e50fdd7c7944001b95efa2c23c68f15",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 611.0544999828562,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T13:03:56.586591+00:00",
+        "event_id": "c7ac99347e8a4f86943da78c220fba9c",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "b56d4b8eaa7940eab36b1b9950d78c7c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [],
+              "knowledge": [
+                {
+                  "source_id": "campus-course-dd062e689ff3-c001",
+                  "title": "选课退课教务核对 course registration",
+                  "text": "这是演示校园原创资料。遇到选课、退课或课程冲突时，整理课程名称、发生冲突的时间段、希望调整的课程，并向演示教务工作人员确认处理流程。\n\n是否可以修改课程取决于正式规则和工作人员确认，本卡片不提供截止日期、学分上限或保证。信息不足时先问清课程和事项，再核对流程，避免替学生执行未经授权的改课操作。",
+                  "revision": "original-v2",
+                  "document_id": "campus-course",
+                  "source_hash": "701e4f1b6deeaf89264ea1f5162da3ee2185ce16f7cd9325d8cb75812f84d052",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 147,
+                  "score": 5.8320783329908465
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "aa78d46ff2dc3a07e3a8ded2db05dd85cbb39bba2889082a70e8df6d1bbe5faf"
+            }
+          },
+          "elapsed_ms": 8.55909998062998,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T13:03:57.915332+00:00",
+        "event_id": "d36cc13a75444d00aa71857f337a3cfc",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-course-dd062e689ff3-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "817b5de269ef4019b2ff5caf611321e6",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+              "text": "选课退课前，建议先核对这几项：\n\n- 课程名称，确认你要调整的是哪一门课。\n- 发生冲突的时间段，把冲突的具体时间整理清楚。\n- 你希望调整的课程，也就是想退掉或换掉哪一门。\n\n整理好这些信息后，向教务工作人员确认处理流程。是否可以修改课程，取决于正式规则和工作人员的确认，我这边无法给出截止日期、学分上限或结果保证。[source:campus-course-dd062e689ff3-c001]\n\n如果信息还不完整，可以先补充课程和具体事项，再一起去核对流程。",
+              "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-course-dd062e689ff3-c001",
+                  "document_id": "campus-course",
+                  "title": "选课退课教务核对 course registration",
+                  "revision": "original-v2",
+                  "quote": "这是演示校园原创资料。遇到选课、退课或课程冲突时，整理课程名称、发生冲突的时间段、希望调整的课程，并向演示教务工作人员确认处理流程。\n\n是否可以修改课程取决于正式规则和工作人员确认，本卡片不提供截止日期、学分上限或保证。信息不足时先问清课程和事项，再核对流程，避免替学生执行未经授权的改课操作。",
+                  "source_hash": "701e4f1b6deeaf89264ea1f5162da3ee2185ce16f7cd9325d8cb75812f84d052"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "734cd418c85d7bd56cd3c8ee9a4dc7552a20efeaef5e7da368c31e66dc4a7ffc"
+            }
+          },
+          "elapsed_ms": 1312.7208999940194,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T13:03:58.941282+00:00",
+        "event_id": "8ffa941ccc574a84879f675b9541ff59",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+            "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+            "candidate_chars": 232
+          },
+          "artifact": {
+            "artifact_id": "e0586ad3ca9440f28de2e0e054e9e526",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+              "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "734cd418c85d7bd56cd3c8ee9a4dc7552a20efeaef5e7da368c31e66dc4a7ffc"
+            }
+          },
+          "elapsed_ms": 1013.8296999793965,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T13:03:58.946511+00:00",
+        "event_id": "ca4946bad71e4f068bbb056b5e7a3838",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+            "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61"
+          },
+          "artifact": {
+            "artifact_id": "7377fc4c5c5f42349b79642af3cd96f5",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+              "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+              "message_id": "c16f189e045e4d9eb50b47bfb27b7261"
+            }
+          },
+          "elapsed_ms": 1.250200002687052,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "a49eecff8db241bda469690461329dd6",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 412.7361999999266,
+        "input_tokens": 324,
+        "output_tokens": 20,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 580.0623999966774,
+        "input_tokens": 406,
+        "output_tokens": 27,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1276.3759999943431,
+        "input_tokens": 594,
+        "output_tokens": 123,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 986.7311000125483,
+        "input_tokens": 1260,
+        "output_tokens": 139,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 2584,
+    "output_tokens": 309,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T13:03:55.495172+00:00",
+        "event_id": "4e1af133b84a498693efa155db7d55a2",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T13:03:55.942538+00:00",
+        "event_id": "3b601f8e49ff40369f0b05cd4d045c67",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 12,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "90b984a90706407e8b95485eb2249c9a",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 439.7719000116922,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T13:03:56.566166+00:00",
+        "event_id": "214115d525b74d298660adfaf9ac21d1",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 12,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "0e50fdd7c7944001b95efa2c23c68f15",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 611.0544999828562,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T13:03:56.586591+00:00",
+        "event_id": "c7ac99347e8a4f86943da78c220fba9c",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "b56d4b8eaa7940eab36b1b9950d78c7c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 8.55909998062998,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T13:03:57.915332+00:00",
+        "event_id": "d36cc13a75444d00aa71857f337a3cfc",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-course-dd062e689ff3-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "817b5de269ef4019b2ff5caf611321e6",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+              "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61"
+            }
+          },
+          "elapsed_ms": 1312.7208999940194,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T13:03:58.941282+00:00",
+        "event_id": "8ffa941ccc574a84879f675b9541ff59",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+            "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+            "candidate_chars": 232
+          },
+          "artifact": {
+            "artifact_id": "e0586ad3ca9440f28de2e0e054e9e526",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+              "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61"
+            }
+          },
+          "elapsed_ms": 1013.8296999793965,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T13:03:58.946511+00:00",
+        "event_id": "ca4946bad71e4f068bbb056b5e7a3838",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+            "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61"
+          },
+          "artifact": {
+            "artifact_id": "7377fc4c5c5f42349b79642af3cd96f5",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "ea190123a6f44d8d81c42b49d81958bc",
+              "content_hash": "b4fbee5bb0c75fb71607a5565a56ea6a5193efd55e42d9847cb79b595acc6d61",
+              "message_id": "c16f189e045e4d9eb50b47bfb27b7261"
+            }
+          },
+          "elapsed_ms": 1.250200002687052,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

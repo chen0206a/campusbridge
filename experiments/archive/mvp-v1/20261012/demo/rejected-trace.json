@@ -1,0 +1,338 @@
+{
+  "run_id": "645ff53f5950488bb6916ac634e16ad1",
+  "state": "SAFE_FALLBACK",
+  "model_calls": 6,
+  "input_tokens": 96,
+  "output_tokens": 80,
+  "failure_code": "CANDIDATE_REJECTED",
+  "events": [
+    {
+      "sequence": 1,
+      "created_at": "2026-10-12T06:01:33.225495+00:00",
+      "event_id": "febd305965134c20a1e64374f6347c99",
+      "state": "ANALYZING",
+      "code": "TURN_STARTED",
+      "result": null
+    },
+    {
+      "sequence": 2,
+      "created_at": "2026-10-12T06:01:33.251212+00:00",
+      "event_id": "20d208a56d094c939ec2da17c6b2c797",
+      "state": "ANALYZING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "IntentAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "message_chars": 13,
+          "history_messages": 0
+        },
+        "artifact": {
+          "artifact_id": "f60bd05195ab45b8b3628b640fd005b4",
+          "producer": "IntentAgent",
+          "payload": {
+            "kind": "intent",
+            "intent": "GENERAL",
+            "needs_knowledge": false
+          }
+        },
+        "elapsed_ms": 16.80569999734871,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 3,
+      "created_at": "2026-10-12T06:01:33.278556+00:00",
+      "event_id": "062f576de28b4dda82523903e283331b",
+      "state": "ANALYZING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "RiskAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "message_chars": 13,
+          "history_messages": 0,
+          "intent": "GENERAL"
+        },
+        "artifact": {
+          "artifact_id": "c50eeb38b24c41a7996514d4f700d59a",
+          "producer": "RiskAgent",
+          "payload": {
+            "kind": "risk",
+            "level": "LOW",
+            "needs_human": false,
+            "reason_codes": [
+              "NO_SIGNAL"
+            ]
+          }
+        },
+        "elapsed_ms": 16.66360002127476,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 4,
+      "created_at": "2026-10-12T06:01:33.290710+00:00",
+      "event_id": "d9a36cbaa19445b5994871eff5f0c928",
+      "state": "CONTEXT_READY",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ContextAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "history_messages": 0,
+          "knowledge_requested": false
+        },
+        "artifact": {
+          "artifact_id": "4c6a50ce8aa648c9809a3b565f6862b0",
+          "producer": "ContextAgent",
+          "payload": {
+            "kind": "context",
+            "route": "CONVERSATION",
+            "history": [],
+            "knowledge": [],
+            "degraded": false
+          }
+        },
+        "elapsed_ms": 0.1866999955382198,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 5,
+      "created_at": "2026-10-12T06:01:33.316313+00:00",
+      "event_id": "f51e20c7388548528635602aa00ab5a1",
+      "state": "GENERATING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ResponseAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "attempt": 1,
+          "history_messages": 0,
+          "route": "CONVERSATION",
+          "source_ids": []
+        },
+        "artifact": {
+          "artifact_id": "d5a8ca02aa374c72a7e0ce4b8fa76999",
+          "producer": "ResponseAgent",
+          "payload": {
+            "kind": "candidate",
+            "candidate_id": "7373131d20404e2299d71b0aed42aa25",
+            "text": "这是拒审演示的候选文本，最终交付应当替换成安全模板。",
+            "content_hash": "a5134d2c2fcfe32e26f624362298d2d732e96102ca0c568a2b7cef237c67fbf6",
+            "attempt": 1,
+            "origin": "MODEL"
+          }
+        },
+        "elapsed_ms": 11.904600018169731,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 6,
+      "created_at": "2026-10-12T06:01:33.333766+00:00",
+      "event_id": "3bd327ee5f7a4806874ccb2b97395159",
+      "state": "REVIEWING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "OutputReviewer",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "7373131d20404e2299d71b0aed42aa25",
+          "content_hash": "a5134d2c2fcfe32e26f624362298d2d732e96102ca0c568a2b7cef237c67fbf6",
+          "candidate_chars": 26
+        },
+        "artifact": {
+          "artifact_id": "89ebf1e913514e99bddb30f0ea8344ad",
+          "producer": "OutputReviewer",
+          "payload": {
+            "kind": "review",
+            "candidate_id": "7373131d20404e2299d71b0aed42aa25",
+            "content_hash": "a5134d2c2fcfe32e26f624362298d2d732e96102ca0c568a2b7cef237c67fbf6",
+            "verdict": "RETRY",
+            "reason_codes": [
+              "MOCK_REJECTION"
+            ],
+            "authority": "MODEL"
+          }
+        },
+        "elapsed_ms": 10.225200006971136,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 7,
+      "created_at": "2026-10-12T06:01:33.341898+00:00",
+      "event_id": "e5fb9db7f27547af8bdcbc65a7add5ed",
+      "state": "REVIEWING",
+      "code": "CANDIDATE_REJECTED",
+      "result": null
+    },
+    {
+      "sequence": 8,
+      "created_at": "2026-10-12T06:01:33.349386+00:00",
+      "event_id": "d0cdcb48ab504e6b95964e23a915848a",
+      "state": "REGENERATING",
+      "code": "ONE_REGENERATION_ALLOWED",
+      "result": null
+    },
+    {
+      "sequence": 9,
+      "created_at": "2026-10-12T06:01:33.367688+00:00",
+      "event_id": "db1049340c5f4192b138bcbbd1f48949",
+      "state": "GENERATING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ResponseAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "attempt": 2,
+          "history_messages": 0,
+          "route": "CONVERSATION",
+          "source_ids": []
+        },
+        "artifact": {
+          "artifact_id": "5b2223d9871c4c4799a4035c2da7e7a1",
+          "producer": "ResponseAgent",
+          "payload": {
+            "kind": "candidate",
+            "candidate_id": "2434230953fd40f1862c30d357c28500",
+            "text": "这是拒审演示的候选文本，最终交付应当替换成安全模板。",
+            "content_hash": "a5134d2c2fcfe32e26f624362298d2d732e96102ca0c568a2b7cef237c67fbf6",
+            "attempt": 2,
+            "origin": "MODEL"
+          }
+        },
+        "elapsed_ms": 9.355299989692867,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 10,
+      "created_at": "2026-10-12T06:01:33.386974+00:00",
+      "event_id": "11b3b1a7b12a4a3782b3df7230ad9edb",
+      "state": "REVIEWING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "OutputReviewer",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "2434230953fd40f1862c30d357c28500",
+          "content_hash": "a5134d2c2fcfe32e26f624362298d2d732e96102ca0c568a2b7cef237c67fbf6",
+          "candidate_chars": 26
+        },
+        "artifact": {
+          "artifact_id": "6069c34ef523459ea16f18873b9a5b62",
+          "producer": "OutputReviewer",
+          "payload": {
+            "kind": "review",
+            "candidate_id": "2434230953fd40f1862c30d357c28500",
+            "content_hash": "a5134d2c2fcfe32e26f624362298d2d732e96102ca0c568a2b7cef237c67fbf6",
+            "verdict": "RETRY",
+            "reason_codes": [
+              "MOCK_REJECTION"
+            ],
+            "authority": "MODEL"
+          }
+        },
+        "elapsed_ms": 10.131699993507937,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 11,
+      "created_at": "2026-10-12T06:01:33.392958+00:00",
+      "event_id": "7ec5f6b159a041a2986e29f1f6c5cb69",
+      "state": "REVIEWING",
+      "code": "CANDIDATE_REJECTED",
+      "result": null
+    },
+    {
+      "sequence": 12,
+      "created_at": "2026-10-12T06:01:33.403848+00:00",
+      "event_id": "21e52ab499b047c8b9a98a268e4aea7a",
+      "state": "GENERATING",
+      "code": "SAFE_TEMPLATE_SELECTED",
+      "result": {
+        "agent": "ResponseAgent",
+        "status": "DEGRADED",
+        "input_summary": {
+          "static_template": true
+        },
+        "artifact": {
+          "artifact_id": "64e55fb613b54805a3aebf2757e423a6",
+          "producer": "ResponseAgent",
+          "payload": {
+            "kind": "candidate",
+            "candidate_id": "bab0103e377e4302a2f5385e450eb4c9",
+            "text": "我在这里。我们可以先暂停一下，把你目前最需要的支持说清楚。若你此刻担心自己或他人的安全，请马上联系身边可信任的人、校内值班人员或当地紧急服务。",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+            "attempt": 3,
+            "origin": "SAFE_TEMPLATE"
+          }
+        },
+        "elapsed_ms": 0.0,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 13,
+      "created_at": "2026-10-12T06:01:33.411760+00:00",
+      "event_id": "2afffaaba0784e3289f906ba4f7d561e",
+      "state": "REVIEWING",
+      "code": "SAFE_TEMPLATE_VALIDATED",
+      "result": {
+        "agent": "OutputReviewer",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "bab0103e377e4302a2f5385e450eb4c9",
+          "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+        },
+        "artifact": {
+          "artifact_id": "14aab02ecf774d1591b8d44935bac143",
+          "producer": "OutputReviewer",
+          "payload": {
+            "kind": "review",
+            "candidate_id": "bab0103e377e4302a2f5385e450eb4c9",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+            "verdict": "PASS",
+            "reason_codes": [
+              "APPROVED_TEMPLATE"
+            ],
+            "authority": "TEMPLATE"
+          }
+        },
+        "elapsed_ms": 0.0,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 14,
+      "created_at": "2026-10-12T06:01:33.422693+00:00",
+      "event_id": "0982246b93e1417cb31b3c47a4692091",
+      "state": "SAFE_FALLBACK",
+      "code": "REPLY_COMMITTED",
+      "result": {
+        "agent": "Delivery",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "bab0103e377e4302a2f5385e450eb4c9",
+          "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+        },
+        "artifact": {
+          "artifact_id": "f301b6f0f4ba4c5cb121ea606f63a676",
+          "producer": "Delivery",
+          "payload": {
+            "kind": "delivery",
+            "candidate_id": "bab0103e377e4302a2f5385e450eb4c9",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+            "message_id": "cc0f9e61aa5d436a9c497b7b3fc88689"
+          }
+        },
+        "elapsed_ms": 0.0,
+        "failure_code": null
+      }
+    }
+  ]
+}

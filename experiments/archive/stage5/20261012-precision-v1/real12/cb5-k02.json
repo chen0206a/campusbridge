@@ -1,0 +1,633 @@
+{
+  "case_id": "cb5-k02",
+  "group": "knowledge",
+  "score": {
+    "case_id": "cb5-k02",
+    "group": "knowledge",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false,
+      "needs_human_support": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "needs_human_support": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 4625.671399990097,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"intent\": \"CAMPUS_SERVICE\", \"needs_knowledge\": true, \"needs_human_support\": false}",
+        "input_tokens": 416,
+        "output_tokens": 30,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"level\": \"LOW\", \"needs_human_support\": false, \"reason_codes\": [\"NO_SIGNAL\"]}",
+        "input_tokens": 529,
+        "output_tokens": 29,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "根据现有资料，经济资助部分没有给出确定金额。资料原文说明：“资料没有写出具体金额、截止日期或资格门槛。”[source:campus-aid-42c9d5054d6f-c001]\n\n因此，目前无法从这份资料中确认具体资助金额。资料建议先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。[source:campus-aid-42c9d5054d6f-c001]\n\n我不会替你发起申请。你可以先列出自己想了解的问题和需要核实的材料，再通过工作人员获取正式要求；同时注意不要将未经确认的个人财务信息发给陌生联系人。[source:campus-aid-42c9d5054d6f-c001]",
+        "input_tokens": 1196,
+        "output_tokens": 159,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"candidate_id\": \"c292780cedba4c118a4192c1b9de678a\", \"content_hash\": \"f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2\", \"verdict\": \"PASS\", \"reason_codes\": [], \"authority\": \"MODEL\", \"citations_hash\": \"b52ba3f52e43547d2c9e267f71b6d8a1940cd2326246bf33cc14935cadb10a92\"}",
+        "input_tokens": 1717,
+        "output_tokens": 138,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "6f54549e441548dea3f2a24f51df91f7",
+    "conversation_id": "bdf48039e9e34a3bb4cf26487a8ff7bd",
+    "state": "ACCEPTED",
+    "message_id": "975a2be870fd49398e27af56a7217aea",
+    "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+    "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+    "reply": "根据现有资料，经济资助部分没有给出确定金额。资料原文说明：“资料没有写出具体金额、截止日期或资格门槛。”[source:campus-aid-42c9d5054d6f-c001]\n\n因此，目前无法从这份资料中确认具体资助金额。资料建议先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。[source:campus-aid-42c9d5054d6f-c001]\n\n我不会替你发起申请。你可以先列出自己想了解的问题和需要核实的材料，再通过工作人员获取正式要求；同时注意不要将未经确认的个人财务信息发给陌生联系人。[source:campus-aid-42c9d5054d6f-c001]",
+    "citations": [
+      {
+        "source_id": "campus-aid-42c9d5054d6f-c001",
+        "document_id": "campus-aid",
+        "title": "奖助学金经济资助 financial aid",
+        "revision": "original-v2",
+        "quote": "本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。",
+        "source_hash": "f3087935aa6811a1dcaa8e990de14de38fee18a61272996fd783b1e6acf27022"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "6f54549e441548dea3f2a24f51df91f7",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 810.424499999499,
+        "input_tokens": 416,
+        "output_tokens": 30,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 893.6768999847118,
+        "input_tokens": 529,
+        "output_tokens": 29,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1499.2627000028733,
+        "input_tokens": 1196,
+        "output_tokens": 159,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1194.0273999935016,
+        "input_tokens": 1717,
+        "output_tokens": 138,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 3858,
+    "output_tokens": 356,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-13T03:10:57.875032+00:00",
+        "event_id": "afffe71119db49a793c5546c69835875",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-13T03:10:58.718550+00:00",
+        "event_id": "7d7b753942474daa9ea61451217c4a65",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "f251fe7c4b544d41be58e13ee10e783f",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true,
+              "needs_human_support": false
+            }
+          },
+          "elapsed_ms": 834.491599991452,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-13T03:10:59.642419+00:00",
+        "event_id": "83d8f5eafc14413bb70f48874207b927",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "cb19b44088204d6d88ac87e296240976",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human_support": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 917.1441000071354,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-13T03:10:59.656419+00:00",
+        "event_id": "b6e5372ce63243c0be3000abf0e56738",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "b1752481080f47ad820563e6c6dd8f0c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [],
+              "knowledge": [
+                {
+                  "source_id": "campus-aid-42c9d5054d6f-c001",
+                  "title": "奖助学金经济资助 financial aid",
+                  "text": "本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。",
+                  "revision": "original-v2",
+                  "document_id": "campus-aid",
+                  "source_hash": "f3087935aa6811a1dcaa8e990de14de38fee18a61272996fd783b1e6acf27022",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 147,
+                  "score": 8.649678435498554
+                },
+                {
+                  "source_id": "campus-library-1629765e92e0-c001",
+                  "title": "图书馆预约借阅 library",
+                  "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                  "revision": "original-v2",
+                  "document_id": "campus-library",
+                  "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 173,
+                  "score": 3.410719549368338
+                },
+                {
+                  "source_id": "campus-access-965a8ddf3d5d-c001",
+                  "title": "无障碍学习支持 accessibility",
+                  "text": "本指南是虚构校园无障碍支持示例。需要学习环境或沟通方式调整时，可向演示学生支持工作人员说明具体困难、希望获得的调整和适合联系的方式，工作人员再确认下一步安排。\n\n不要要求学生向系统上传完整医疗档案。具体资格与调整方案需要校内人员确认，本资料不判断疾病或保证申请必然通过。",
+                  "revision": "original-v2",
+                  "document_id": "campus-access",
+                  "source_hash": "fb33da626094346bde15b36c24d2bd122e12d2223747a509a6090dc1440ae509",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 135,
+                  "score": 1.4352047909866819
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "b8a4369c7f1afac7bbe72b1ab274c83f54f3083f4a01997c0d709c3c11c23433"
+            }
+          },
+          "elapsed_ms": 3.7315000081434846,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-13T03:11:01.188110+00:00",
+        "event_id": "c9f19e71da824073a238b8995b87d118",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-aid-42c9d5054d6f-c001",
+              "campus-library-1629765e92e0-c001",
+              "campus-access-965a8ddf3d5d-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "addfe80d11234d12967e0cf84402bdad",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+              "text": "根据现有资料，经济资助部分没有给出确定金额。资料原文说明：“资料没有写出具体金额、截止日期或资格门槛。”[source:campus-aid-42c9d5054d6f-c001]\n\n因此，目前无法从这份资料中确认具体资助金额。资料建议先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。[source:campus-aid-42c9d5054d6f-c001]\n\n我不会替你发起申请。你可以先列出自己想了解的问题和需要核实的材料，再通过工作人员获取正式要求；同时注意不要将未经确认的个人财务信息发给陌生联系人。[source:campus-aid-42c9d5054d6f-c001]",
+              "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-aid-42c9d5054d6f-c001",
+                  "document_id": "campus-aid",
+                  "title": "奖助学金经济资助 financial aid",
+                  "revision": "original-v2",
+                  "quote": "本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。",
+                  "source_hash": "f3087935aa6811a1dcaa8e990de14de38fee18a61272996fd783b1e6acf27022"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "b52ba3f52e43547d2c9e267f71b6d8a1940cd2326246bf33cc14935cadb10a92"
+            }
+          },
+          "elapsed_ms": 1522.468699986348,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-13T03:11:02.416749+00:00",
+        "event_id": "2e23a968777545ce83c705c1009e5bfa",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+            "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+            "candidate_chars": 308
+          },
+          "artifact": {
+            "artifact_id": "92d062dbef714eaf87a6a06e115d2b77",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+              "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "b52ba3f52e43547d2c9e267f71b6d8a1940cd2326246bf33cc14935cadb10a92"
+            }
+          },
+          "elapsed_ms": 1219.6027000027243,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-13T03:11:02.427317+00:00",
+        "event_id": "86ed9fa735704c1ab294fca4bb5c41e5",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+            "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2"
+          },
+          "artifact": {
+            "artifact_id": "94074d51f19745878f5ae9f4140c2ddf",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+              "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+              "message_id": "975a2be870fd49398e27af56a7217aea"
+            }
+          },
+          "elapsed_ms": 1.949500001501292,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "6f54549e441548dea3f2a24f51df91f7",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 810.424499999499,
+        "input_tokens": 416,
+        "output_tokens": 30,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 893.6768999847118,
+        "input_tokens": 529,
+        "output_tokens": 29,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1499.2627000028733,
+        "input_tokens": 1196,
+        "output_tokens": 159,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1194.0273999935016,
+        "input_tokens": 1717,
+        "output_tokens": 138,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 3858,
+    "output_tokens": 356,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-13T03:10:57.875032+00:00",
+        "event_id": "afffe71119db49a793c5546c69835875",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-13T03:10:58.718550+00:00",
+        "event_id": "7d7b753942474daa9ea61451217c4a65",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "f251fe7c4b544d41be58e13ee10e783f",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 834.491599991452,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-13T03:10:59.642419+00:00",
+        "event_id": "83d8f5eafc14413bb70f48874207b927",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "cb19b44088204d6d88ac87e296240976",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 917.1441000071354,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-13T03:10:59.656419+00:00",
+        "event_id": "b6e5372ce63243c0be3000abf0e56738",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "b1752481080f47ad820563e6c6dd8f0c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 3.7315000081434846,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-13T03:11:01.188110+00:00",
+        "event_id": "c9f19e71da824073a238b8995b87d118",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-aid-42c9d5054d6f-c001",
+              "campus-library-1629765e92e0-c001",
+              "campus-access-965a8ddf3d5d-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "addfe80d11234d12967e0cf84402bdad",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+              "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2"
+            }
+          },
+          "elapsed_ms": 1522.468699986348,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-13T03:11:02.416749+00:00",
+        "event_id": "2e23a968777545ce83c705c1009e5bfa",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+            "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+            "candidate_chars": 308
+          },
+          "artifact": {
+            "artifact_id": "92d062dbef714eaf87a6a06e115d2b77",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+              "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2"
+            }
+          },
+          "elapsed_ms": 1219.6027000027243,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-13T03:11:02.427317+00:00",
+        "event_id": "86ed9fa735704c1ab294fca4bb5c41e5",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+            "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2"
+          },
+          "artifact": {
+            "artifact_id": "94074d51f19745878f5ae9f4140c2ddf",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "c292780cedba4c118a4192c1b9de678a",
+              "content_hash": "f6e93cf7c931d9bdf61d628f0226ed5db013cf653f5c27c3e393eee1dbfd66e2",
+              "message_id": "975a2be870fd49398e27af56a7217aea"
+            }
+          },
+          "elapsed_ms": 1.949500001501292,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,567 @@
+{
+  "case_id": "cb2-p05",
+  "group": "provider-control",
+  "score": {
+    "case_id": "cb2-p05",
+    "group": "provider-control",
+    "controlled_fault": "response_truncated",
+    "actual": {
+      "route": "CONVERSATION",
+      "risk": "LOW",
+      "state": "SAFE_FALLBACK",
+      "case_created": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "failure_recorded": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 0,
+    "grounded_citations": 0
+  },
+  "elapsed_ms": 316.98839997989126,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "intent": "GENERAL",
+          "needs_knowledge": false,
+          "needs_human_support": false
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "level": "LOW",
+          "needs_human_support": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": true,
+      "error_code": "PROVIDER_TRUNCATED"
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "5522b959048a4cbaa22de8f3bcdfbe62",
+    "conversation_id": "b9d18846beca4867bf2a051ef5b13ff2",
+    "state": "SAFE_FALLBACK",
+    "message_id": "18c47cb911cb4af292d5c9e46d55f4cb",
+    "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+    "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+    "reply": "我在这里。我们可以先暂停一下，把你目前最需要的支持说清楚。若你此刻担心自己或他人的安全，请马上联系身边可信任的人、校内值班人员或当地紧急服务。",
+    "citations": []
+  },
+  "trace": {
+    "run_id": "5522b959048a4cbaa22de8f3bcdfbe62",
+    "state": "SAFE_FALLBACK",
+    "model_calls": 3,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.37850000080652535,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.249299977440387,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "FAILED",
+        "elapsed_ms": 0.19859999883919954,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": "PROVIDER_TRUNCATED",
+        "output_valid": null,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 2,
+    "input_tokens": 96,
+    "output_tokens": 80,
+    "failure_code": "PROVIDER_TRUNCATED",
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T14:50:00.855784+00:00",
+        "event_id": "01b5bcdd7e4e4d57b33293bfa6877f74",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T14:50:00.897440+00:00",
+        "event_id": "c8449f512a564767ba2b56c0491ad485",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "2e25e175dd224277b8b8a2b07cda81c2",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "GENERAL",
+              "needs_knowledge": false,
+              "needs_human_support": false
+            }
+          },
+          "elapsed_ms": 30.79799999250099,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T14:50:00.937093+00:00",
+        "event_id": "70897b9f5f794833992af21e34a64aa0",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0,
+            "intent": "GENERAL"
+          },
+          "artifact": {
+            "artifact_id": "f2f3cf3c663548a7ba43efbeb792a581",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human_support": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 28.127099998528138,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T14:50:00.953584+00:00",
+        "event_id": "0ac00f2721b24e358a67126a7dbc1340",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": false
+          },
+          "artifact": {
+            "artifact_id": "a136a4018252477694188c84d5c915a0",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "CONVERSATION",
+              "history": [],
+              "knowledge": [],
+              "degraded": false,
+              "retrieval_status": "SKIPPED",
+              "query_hash": null
+            }
+          },
+          "elapsed_ms": 0.3415999817661941,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T14:50:00.986049+00:00",
+        "event_id": "c37d502f4c6b49019a0039461a3b7695",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "FAILED",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "CONVERSATION",
+            "source_ids": []
+          },
+          "artifact": null,
+          "elapsed_ms": 22.05940001294948,
+          "failure_code": "PROVIDER_TRUNCATED"
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T14:50:00.997575+00:00",
+        "event_id": "57eac99f774847578d12c94dc5d3f25a",
+        "state": "GENERATING",
+        "code": "SAFE_TEMPLATE_SELECTED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "DEGRADED",
+          "input_summary": {
+            "static_template": true
+          },
+          "artifact": {
+            "artifact_id": "96ab48c8ac0d4e089ef4b698f4d5d743",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+              "text": "我在这里。我们可以先暂停一下，把你目前最需要的支持说清楚。若你此刻担心自己或他人的安全，请马上联系身边可信任的人、校内值班人员或当地紧急服务。",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "attempt": 3,
+              "origin": "SAFE_TEMPLATE",
+              "citations": [],
+              "retrieval_status": "SKIPPED",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T14:50:01.008581+00:00",
+        "event_id": "26088b6c8b504af1aaec1062e879c554",
+        "state": "REVIEWING",
+        "code": "SAFE_TEMPLATE_VALIDATED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "8ef1e3bdaf16480b93e91b70f4d61882",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "verdict": "PASS",
+              "reason_codes": [
+                "APPROVED_TEMPLATE"
+              ],
+              "authority": "TEMPLATE",
+              "citations_hash": null
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 8,
+        "created_at": "2026-10-12T14:50:01.024336+00:00",
+        "event_id": "e309c9e094c340f28746ef5098043611",
+        "state": "SAFE_FALLBACK",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "3a6b9cd3ee9546ec89387b0f51cf519b",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "message_id": "18c47cb911cb4af292d5c9e46d55f4cb"
+            }
+          },
+          "elapsed_ms": 7.035200018435717,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "5522b959048a4cbaa22de8f3bcdfbe62",
+    "state": "SAFE_FALLBACK",
+    "model_calls": 3,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.37850000080652535,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.249299977440387,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "FAILED",
+        "elapsed_ms": 0.19859999883919954,
+        "input_tokens": null,
+        "output_tokens": null,
+        "error_code": "PROVIDER_TRUNCATED",
+        "output_valid": null,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 2,
+    "input_tokens": 96,
+    "output_tokens": 80,
+    "failure_code": "PROVIDER_TRUNCATED",
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T14:50:00.855784+00:00",
+        "event_id": "01b5bcdd7e4e4d57b33293bfa6877f74",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T14:50:00.897440+00:00",
+        "event_id": "c8449f512a564767ba2b56c0491ad485",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "2e25e175dd224277b8b8a2b07cda81c2",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 30.79799999250099,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T14:50:00.937093+00:00",
+        "event_id": "70897b9f5f794833992af21e34a64aa0",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0,
+            "intent": "GENERAL"
+          },
+          "artifact": {
+            "artifact_id": "f2f3cf3c663548a7ba43efbeb792a581",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 28.127099998528138,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T14:50:00.953584+00:00",
+        "event_id": "0ac00f2721b24e358a67126a7dbc1340",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": false
+          },
+          "artifact": {
+            "artifact_id": "a136a4018252477694188c84d5c915a0",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 0.3415999817661941,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T14:50:00.986049+00:00",
+        "event_id": "c37d502f4c6b49019a0039461a3b7695",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "FAILED",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "CONVERSATION",
+            "source_ids": []
+          },
+          "artifact": null,
+          "elapsed_ms": 22.05940001294948,
+          "failure_code": "PROVIDER_TRUNCATED"
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T14:50:00.997575+00:00",
+        "event_id": "57eac99f774847578d12c94dc5d3f25a",
+        "state": "GENERATING",
+        "code": "SAFE_TEMPLATE_SELECTED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "DEGRADED",
+          "input_summary": {
+            "static_template": true
+          },
+          "artifact": {
+            "artifact_id": "96ab48c8ac0d4e089ef4b698f4d5d743",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T14:50:01.008581+00:00",
+        "event_id": "26088b6c8b504af1aaec1062e879c554",
+        "state": "REVIEWING",
+        "code": "SAFE_TEMPLATE_VALIDATED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "8ef1e3bdaf16480b93e91b70f4d61882",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+            }
+          },
+          "elapsed_ms": 0.0,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 8,
+        "created_at": "2026-10-12T14:50:01.024336+00:00",
+        "event_id": "e309c9e094c340f28746ef5098043611",
+        "state": "SAFE_FALLBACK",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+            "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc"
+          },
+          "artifact": {
+            "artifact_id": "3a6b9cd3ee9546ec89387b0f51cf519b",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "368ceadf46cd4aba8fc4e925e02b70e6",
+              "content_hash": "16e2aa1b3b1cdc0de79dda405f0dfe6f69d626c6bff6051e05a38abc02c892fc",
+              "message_id": "18c47cb911cb4af292d5c9e46d55f4cb"
+            }
+          },
+          "elapsed_ms": 7.035200018435717,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

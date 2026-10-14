@@ -1,0 +1,631 @@
+{
+  "case_id": "cb2-k03",
+  "group": "knowledge",
+  "score": {
+    "case_id": "cb2-k03",
+    "group": "knowledge",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 323.87190000736155,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "intent": "CAMPUS_SERVICE",
+          "needs_knowledge": true
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "level": "LOW",
+          "needs_human": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "根据演示校园资料，本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。[source:campus-housing-91a1ba04598c-c001]你希望先了解哪个步骤？",
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "candidate_id": "d7cb062805744f278722df34984c3980",
+          "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+          "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5",
+          "verdict": "PASS",
+          "reason_codes": []
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "4cfaef2d366f4e268b39d9573f7d8774",
+    "conversation_id": "58a750f3394d45d99ee4c44e5b4d5a4e",
+    "state": "ACCEPTED",
+    "message_id": "3e34eabf70a0472695ae3b66f1af2b18",
+    "candidate_id": "d7cb062805744f278722df34984c3980",
+    "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+    "reply": "根据演示校园资料，本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。[source:campus-housing-91a1ba04598c-c001]你希望先了解哪个步骤？",
+    "citations": [
+      {
+        "source_id": "campus-housing-91a1ba04598c-c001",
+        "document_id": "campus-housing",
+        "title": "宿舍设施报修 housing repair",
+        "revision": "original-v2",
+        "quote": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+        "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "4cfaef2d366f4e268b39d9573f7d8774",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.31030000536702573,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.3339999821037054,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.8307000098284334,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.31869998201727867,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 192,
+    "output_tokens": 160,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T13:06:18.549142+00:00",
+        "event_id": "2c413b48e15a4766bdd4f9bd1acbdc44",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T13:06:18.590309+00:00",
+        "event_id": "0e9cec48a71b4bc689ac02f42e90138e",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "947f57cb31f44440b9e46063e70febca",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true
+            }
+          },
+          "elapsed_ms": 32.2052999981679,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T13:06:18.632613+00:00",
+        "event_id": "6db65232ff77473fa601645d9bda3fea",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "3607f256ec474f51a0ffb658a6324ce7",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 31.61429997999221,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T13:06:18.659882+00:00",
+        "event_id": "b1626e43d67b496fae2784217cd68bfd",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "cdba767255e84490b875569888c81ac2",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [],
+              "knowledge": [
+                {
+                  "source_id": "campus-housing-91a1ba04598c-c001",
+                  "title": "宿舍设施报修 housing repair",
+                  "text": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+                  "revision": "original-v2",
+                  "document_id": "campus-housing",
+                  "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 141,
+                  "score": 6.467480599376026
+                },
+                {
+                  "source_id": "campus-lost-1f33b60f06aa-c001",
+                  "title": "失物招领物品核验 lost property",
+                  "text": "这是原创演示失物招领流程。物品丢失后，记录最后看见物品的位置、时间段和可辨识特征，再向演示校园服务工作人员询问失物登记与核验方式。\n\n核验前不要在公开信息中披露完整证件号、密码或支付信息。领取物品需要工作人员确认，资料不保证物品已被找到，也没有规定储存期限或罚金。",
+                  "revision": "original-v2",
+                  "document_id": "campus-lost",
+                  "source_hash": "bc2b6839580b8f6b05465422bb7feee660bf8319430f4e639fada175bb8ebea8",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 132,
+                  "score": 1.6724771205530036
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "b1a35d4817a970afa17b0056e808c62e065565372cdd3209f737c85090294a08"
+            }
+          },
+          "elapsed_ms": 13.698099995963275,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T13:06:18.704982+00:00",
+        "event_id": "549d4de7fcc342e5be8feeff46b640f4",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-housing-91a1ba04598c-c001",
+              "campus-lost-1f33b60f06aa-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "1af89dc5b77f4a9f8747c675d84ad3e2",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "d7cb062805744f278722df34984c3980",
+              "text": "根据演示校园资料，本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。[source:campus-housing-91a1ba04598c-c001]你希望先了解哪个步骤？",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-housing-91a1ba04598c-c001",
+                  "document_id": "campus-housing",
+                  "title": "宿舍设施报修 housing repair",
+                  "revision": "original-v2",
+                  "quote": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+                  "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5"
+            }
+          },
+          "elapsed_ms": 34.024299995508045,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T13:06:18.743619+00:00",
+        "event_id": "90d5af2175754412bc7b782ec20ebaa2",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "d7cb062805744f278722df34984c3980",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+            "candidate_chars": 202
+          },
+          "artifact": {
+            "artifact_id": "2a31537b5cc149d0bd555e000f90309a",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "d7cb062805744f278722df34984c3980",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5"
+            }
+          },
+          "elapsed_ms": 28.178200009278953,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T13:06:18.756911+00:00",
+        "event_id": "bcdc4ae0b8bf472d89bee609cdc24d6c",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "d7cb062805744f278722df34984c3980",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+          },
+          "artifact": {
+            "artifact_id": "8bb08d0b4bcb438d9e0e94be320c5e48",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "d7cb062805744f278722df34984c3980",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "message_id": "3e34eabf70a0472695ae3b66f1af2b18"
+            }
+          },
+          "elapsed_ms": 3.570200002286583,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "4cfaef2d366f4e268b39d9573f7d8774",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.31030000536702573,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.3339999821037054,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.8307000098284334,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v2",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.31869998201727867,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 192,
+    "output_tokens": 160,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T13:06:18.549142+00:00",
+        "event_id": "2c413b48e15a4766bdd4f9bd1acbdc44",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T13:06:18.590309+00:00",
+        "event_id": "0e9cec48a71b4bc689ac02f42e90138e",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "947f57cb31f44440b9e46063e70febca",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 32.2052999981679,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T13:06:18.632613+00:00",
+        "event_id": "6db65232ff77473fa601645d9bda3fea",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "3607f256ec474f51a0ffb658a6324ce7",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 31.61429997999221,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T13:06:18.659882+00:00",
+        "event_id": "b1626e43d67b496fae2784217cd68bfd",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "cdba767255e84490b875569888c81ac2",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 13.698099995963275,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T13:06:18.704982+00:00",
+        "event_id": "549d4de7fcc342e5be8feeff46b640f4",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-housing-91a1ba04598c-c001",
+              "campus-lost-1f33b60f06aa-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "1af89dc5b77f4a9f8747c675d84ad3e2",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "d7cb062805744f278722df34984c3980",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+            }
+          },
+          "elapsed_ms": 34.024299995508045,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T13:06:18.743619+00:00",
+        "event_id": "90d5af2175754412bc7b782ec20ebaa2",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "d7cb062805744f278722df34984c3980",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+            "candidate_chars": 202
+          },
+          "artifact": {
+            "artifact_id": "2a31537b5cc149d0bd555e000f90309a",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "d7cb062805744f278722df34984c3980",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+            }
+          },
+          "elapsed_ms": 28.178200009278953,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T13:06:18.756911+00:00",
+        "event_id": "bcdc4ae0b8bf472d89bee609cdc24d6c",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "d7cb062805744f278722df34984c3980",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+          },
+          "artifact": {
+            "artifact_id": "8bb08d0b4bcb438d9e0e94be320c5e48",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "d7cb062805744f278722df34984c3980",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "message_id": "3e34eabf70a0472695ae3b66f1af2b18"
+            }
+          },
+          "elapsed_ms": 3.570200002286583,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "stage": 6,
+  "frozen_before_real_calls": true,
+  "model_alias": "deepseek-v4-flash",
+  "served_model_at_check": "DeepSeek-V4.1-Flash",
+  "endpoint": "https://api.deepseek.com",
+  "authentication_check": {"http_status": 200, "is_available": true, "key_persisted": false},
+  "thinking": "disabled",
+  "temperature": 0,
+  "max_output_tokens": 1024,
+  "json_mode": true,
+  "model_timeout_seconds": 20,
+  "turn_timeout_seconds": 90,
+  "max_model_calls_per_turn": 6,
+  "automatic_http_retries": false,
+  "input_reservation_limit": 32768,
+  "pricing_check_date": "2026-10-13",
+  "pricing_source": "https://api-docs.deepseek.com/quick_start/pricing/",
+  "estimated_cost_policy": "Peak noncached input 0.30 USD/M and output 1.20 USD/M; actual bills may be lower with cache or off-peak rates.",
+  "runs": [
+    {"dataset": "smoke4", "mode": "sequential", "max_cost_usd": 0.5},
+    {"dataset": "smoke4", "mode": "dynamic", "max_cost_usd": 0.5},
+    {"dataset": "fixed30", "mode": "sequential", "max_cost_usd": 3.0},
+    {"dataset": "fixed30", "mode": "dynamic", "max_cost_usd": 3.0},
+    {"dataset": "boundary12", "mode": "sequential", "max_cost_usd": 1.0},
+    {"dataset": "boundary12", "mode": "dynamic", "max_cost_usd": 1.0}
+  ],
+  "aggregate_cost_ceiling_usd": 9.0,
+  "comparison_policy": "Same role Prompts, generation, cases, labels, scorer checks, provider and shared conditional RiskInput policy. Dynamic mode additionally selects/skips context tasks and applies deterministic evidence/marker arbitration. Compare the whole orchestration bundle, not a pure concurrency ablation.",
+  "history_policy": "Stage 1-5 files retained; original MODERATE risk labels on cb2-r03/r04 stay in the raw denominator. No output-guided Prompt or gold edits.",
+  "mock_fixture": {"per_model_call_delay_ms": 80, "interpretation": "Synthetic I/O delay only; real latency is reported separately."}
+}

@@ -1,0 +1,175 @@
+{
+  "intent": {
+    "$defs": {
+      "IntentKind": {
+        "enum": [
+          "GENERAL",
+          "SUPPORT",
+          "CAMPUS_SERVICE",
+          "URGENT"
+        ],
+        "title": "IntentKind",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "intent",
+        "default": "intent",
+        "title": "Kind",
+        "type": "string"
+      },
+      "intent": {
+        "$ref": "#/$defs/IntentKind"
+      },
+      "needs_knowledge": {
+        "title": "Needs Knowledge",
+        "type": "boolean"
+      },
+      "needs_human_support": {
+        "default": false,
+        "title": "Needs Human Support",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "intent",
+      "needs_knowledge"
+    ],
+    "title": "IntentOutput",
+    "type": "object"
+  },
+  "risk": {
+    "$defs": {
+      "RiskLevel": {
+        "enum": [
+          "LOW",
+          "MODERATE",
+          "HIGH",
+          "UNKNOWN"
+        ],
+        "title": "RiskLevel",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "risk",
+        "default": "risk",
+        "title": "Kind",
+        "type": "string"
+      },
+      "level": {
+        "$ref": "#/$defs/RiskLevel"
+      },
+      "needs_human_support": {
+        "title": "Needs Human Support",
+        "type": "boolean"
+      },
+      "reason_codes": {
+        "items": {
+          "enum": [
+            "EXPLICIT_DANGER",
+            "MODEL_CONCERN",
+            "ASSESSMENT_UNAVAILABLE",
+            "NO_SIGNAL",
+            "HUMAN_REQUEST"
+          ],
+          "type": "string"
+        },
+        "title": "Reason Codes",
+        "type": "array"
+      }
+    },
+    "required": [
+      "level",
+      "needs_human_support",
+      "reason_codes"
+    ],
+    "title": "RiskOutput",
+    "type": "object"
+  },
+  "review": {
+    "$defs": {
+      "Verdict": {
+        "enum": [
+          "PASS",
+          "RETRY",
+          "REJECT"
+        ],
+        "title": "Verdict",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "review",
+        "default": "review",
+        "title": "Kind",
+        "type": "string"
+      },
+      "candidate_id": {
+        "title": "Candidate Id",
+        "type": "string"
+      },
+      "content_hash": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Content Hash",
+        "type": "string"
+      },
+      "verdict": {
+        "$ref": "#/$defs/Verdict"
+      },
+      "reason_codes": {
+        "default": [],
+        "items": {
+          "enum": [
+            "UNSAFE_INSTRUCTION",
+            "DIAGNOSIS",
+            "PRIVACY_DISCLOSURE",
+            "INTERNAL_LABEL",
+            "SAFETY_GUIDANCE_MISSING",
+            "MOCK_REJECTION",
+            "APPROVED_TEMPLATE",
+            "UNSUPPORTED_CLAIM"
+          ],
+          "type": "string"
+        },
+        "title": "Reason Codes",
+        "type": "array"
+      },
+      "authority": {
+        "default": "MODEL",
+        "enum": [
+          "MODEL",
+          "RULE",
+          "TEMPLATE"
+        ],
+        "title": "Authority",
+        "type": "string"
+      },
+      "citations_hash": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Citations Hash"
+      }
+    },
+    "required": [
+      "candidate_id",
+      "content_hash",
+      "verdict"
+    ],
+    "title": "ReviewOutput",
+    "type": "object"
+  }
+}

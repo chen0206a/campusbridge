@@ -1,0 +1,649 @@
+{
+  "case_id": "cb5-k02",
+  "group": "knowledge",
+  "score": {
+    "case_id": "cb5-k02",
+    "group": "knowledge",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false,
+      "needs_human_support": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "needs_human_support": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 119.64930000249296,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "intent": "CAMPUS_SERVICE",
+          "needs_knowledge": true,
+          "needs_human_support": false
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "level": "LOW",
+          "needs_human_support": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "根据演示校园资料，本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。[source:campus-aid-42c9d5054d6f-c001]你希望先了解哪个步骤？",
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+          "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+          "citations_hash": "b52ba3f52e43547d2c9e267f71b6d8a1940cd2326246bf33cc14935cadb10a92",
+          "verdict": "PASS",
+          "reason_codes": []
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "ed0f40ff0d24446f828160ba7b2b0c0b",
+    "conversation_id": "64711402b50d4c999e173a2d73bcf391",
+    "state": "ACCEPTED",
+    "message_id": "34f00465c2a440c4ac0517bfc81a4a86",
+    "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+    "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+    "reply": "根据演示校园资料，本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。[source:campus-aid-42c9d5054d6f-c001]你希望先了解哪个步骤？",
+    "citations": [
+      {
+        "source_id": "campus-aid-42c9d5054d6f-c001",
+        "document_id": "campus-aid",
+        "title": "奖助学金经济资助 financial aid",
+        "revision": "original-v2",
+        "quote": "本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。",
+        "source_hash": "f3087935aa6811a1dcaa8e990de14de38fee18a61272996fd783b1e6acf27022"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "ed0f40ff0d24446f828160ba7b2b0c0b",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13630001922138035,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13000000035390258,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13120000949129462,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.15120001626200974,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 192,
+    "output_tokens": 160,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T14:50:05.299959+00:00",
+        "event_id": "166905cef15349c4b66130217d97b260",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T14:50:05.314286+00:00",
+        "event_id": "c01ccd33b4d84ae7bc409e8b79e942ce",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "2b1cac41d2ff44308a0ca3d79a8604dc",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true,
+              "needs_human_support": false
+            }
+          },
+          "elapsed_ms": 11.03650001459755,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T14:50:05.328322+00:00",
+        "event_id": "f4631d32a7fe41dab3c8dbc6c3c4614c",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "622068be9c6c47c6a112071b38a9db74",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human_support": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 10.187200008658692,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T14:50:05.336280+00:00",
+        "event_id": "e08bcd3f686642eeb1f3267c2dd4c8bc",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "3557b22335fb472ea028c9b759c972c9",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [],
+              "knowledge": [
+                {
+                  "source_id": "campus-aid-42c9d5054d6f-c001",
+                  "title": "奖助学金经济资助 financial aid",
+                  "text": "本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。",
+                  "revision": "original-v2",
+                  "document_id": "campus-aid",
+                  "source_hash": "f3087935aa6811a1dcaa8e990de14de38fee18a61272996fd783b1e6acf27022",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 147,
+                  "score": 8.649678435498554
+                },
+                {
+                  "source_id": "campus-library-1629765e92e0-c001",
+                  "title": "图书馆预约借阅 library",
+                  "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                  "revision": "original-v2",
+                  "document_id": "campus-library",
+                  "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 173,
+                  "score": 3.410719549368338
+                },
+                {
+                  "source_id": "campus-access-965a8ddf3d5d-c001",
+                  "title": "无障碍学习支持 accessibility",
+                  "text": "本指南是虚构校园无障碍支持示例。需要学习环境或沟通方式调整时，可向演示学生支持工作人员说明具体困难、希望获得的调整和适合联系的方式，工作人员再确认下一步安排。\n\n不要要求学生向系统上传完整医疗档案。具体资格与调整方案需要校内人员确认，本资料不判断疾病或保证申请必然通过。",
+                  "revision": "original-v2",
+                  "document_id": "campus-access",
+                  "source_hash": "fb33da626094346bde15b36c24d2bd122e12d2223747a509a6090dc1440ae509",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 135,
+                  "score": 1.4352047909866819
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "b8a4369c7f1afac7bbe72b1ab274c83f54f3083f4a01997c0d709c3c11c23433"
+            }
+          },
+          "elapsed_ms": 3.6617000005207956,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T14:50:05.350999+00:00",
+        "event_id": "5ca85b58453f4751914ae10450719fa8",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-aid-42c9d5054d6f-c001",
+              "campus-library-1629765e92e0-c001",
+              "campus-access-965a8ddf3d5d-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "90d5b5032aad404191ec580e638639ad",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+              "text": "根据演示校园资料，本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。[source:campus-aid-42c9d5054d6f-c001]你希望先了解哪个步骤？",
+              "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-aid-42c9d5054d6f-c001",
+                  "document_id": "campus-aid",
+                  "title": "奖助学金经济资助 financial aid",
+                  "revision": "original-v2",
+                  "quote": "本资料是虚构校园支持示例。申请奖助学金或经济资助时，先向演示学生事务工作人员确认适用项目，再按项目要求准备学习或生活困难说明和必要材料。\n\n资料没有写出具体金额、截止日期或资格门槛。学生可以先列出自己的问题和需要核实的材料，通过工作人员获得正式要求；不要将未经确认的个人财务信息发给陌生联系人。",
+                  "source_hash": "f3087935aa6811a1dcaa8e990de14de38fee18a61272996fd783b1e6acf27022"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "b52ba3f52e43547d2c9e267f71b6d8a1940cd2326246bf33cc14935cadb10a92"
+            }
+          },
+          "elapsed_ms": 10.905500006629154,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T14:50:05.366587+00:00",
+        "event_id": "7b252d3fe6824c8bad2f64920f981d3b",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+            "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+            "candidate_chars": 204
+          },
+          "artifact": {
+            "artifact_id": "61bac12efbcf401aa8df5b6196b7b9c6",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+              "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "b52ba3f52e43547d2c9e267f71b6d8a1940cd2326246bf33cc14935cadb10a92"
+            }
+          },
+          "elapsed_ms": 11.736199987353757,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T14:50:05.371910+00:00",
+        "event_id": "3c6d91957f9a42f3891d721464fff63d",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+            "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2"
+          },
+          "artifact": {
+            "artifact_id": "c42714e93760472d959aeffc367dff61",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+              "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+              "message_id": "34f00465c2a440c4ac0517bfc81a4a86"
+            }
+          },
+          "elapsed_ms": 1.7290999821852893,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "ed0f40ff0d24446f828160ba7b2b0c0b",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13630001922138035,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13000000035390258,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13120000949129462,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.15120001626200974,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 192,
+    "output_tokens": 160,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T14:50:05.299959+00:00",
+        "event_id": "166905cef15349c4b66130217d97b260",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T14:50:05.314286+00:00",
+        "event_id": "c01ccd33b4d84ae7bc409e8b79e942ce",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "2b1cac41d2ff44308a0ca3d79a8604dc",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 11.03650001459755,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T14:50:05.328322+00:00",
+        "event_id": "f4631d32a7fe41dab3c8dbc6c3c4614c",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 32,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "622068be9c6c47c6a112071b38a9db74",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 10.187200008658692,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T14:50:05.336280+00:00",
+        "event_id": "e08bcd3f686642eeb1f3267c2dd4c8bc",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "3557b22335fb472ea028c9b759c972c9",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 3.6617000005207956,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T14:50:05.350999+00:00",
+        "event_id": "5ca85b58453f4751914ae10450719fa8",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-aid-42c9d5054d6f-c001",
+              "campus-library-1629765e92e0-c001",
+              "campus-access-965a8ddf3d5d-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "90d5b5032aad404191ec580e638639ad",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+              "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2"
+            }
+          },
+          "elapsed_ms": 10.905500006629154,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T14:50:05.366587+00:00",
+        "event_id": "7b252d3fe6824c8bad2f64920f981d3b",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+            "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+            "candidate_chars": 204
+          },
+          "artifact": {
+            "artifact_id": "61bac12efbcf401aa8df5b6196b7b9c6",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+              "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2"
+            }
+          },
+          "elapsed_ms": 11.736199987353757,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T14:50:05.371910+00:00",
+        "event_id": "3c6d91957f9a42f3891d721464fff63d",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+            "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2"
+          },
+          "artifact": {
+            "artifact_id": "c42714e93760472d959aeffc367dff61",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "47d6f257a8b7498da57d2ad57b0f0d75",
+              "content_hash": "bb1cde1f9e6ddd7541ce3cfae6a709ce0f0459075fb3926b9135d92a99e8c7b2",
+              "message_id": "34f00465c2a440c4ac0517bfc81a4a86"
+            }
+          },
+          "elapsed_ms": 1.7290999821852893,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

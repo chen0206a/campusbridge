@@ -1,0 +1,338 @@
+{
+  "source_artifact": "experiments/archive/stage6/20261013-dynamic-v1/real-dynamic-smoke4/cb6-s03.json",
+  "source_sha256": "e3b58cfdaf6ecc58d7fc5ef877f8b3391b68b33c7dea88636daece719ead5e51",
+  "case_id": "cb6-s03",
+  "plan": {
+    "plan_id": "c7a5e8e18dd3464b9411b4314c7b91e2",
+    "version": "campusbridge-task-plan-v1",
+    "orchestration": "dynamic",
+    "independent_analysis": true,
+    "tasks": [
+      {
+        "task_id": "early-attention",
+        "kind": "attention",
+        "agent": null,
+        "status": "SKIPPED",
+        "enabled": false,
+        "reason": "NO_EXPLICIT_DANGER",
+        "safety_checkpoint": true,
+        "started_ms": null,
+        "finished_ms": 57.8518999973312,
+        "failure_code": null
+      },
+      {
+        "task_id": "intent",
+        "kind": "agent",
+        "agent": "IntentAgent",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "CLASSIFY_CURRENT_REQUEST",
+        "safety_checkpoint": false,
+        "started_ms": 89.53989995643497,
+        "finished_ms": 709.7731999820098,
+        "failure_code": null
+      },
+      {
+        "task_id": "risk",
+        "kind": "agent",
+        "agent": "RiskAgent",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "INDEPENDENT_ASSESSMENT",
+        "safety_checkpoint": false,
+        "started_ms": 110.14579999027774,
+        "finished_ms": 812.916699971538,
+        "failure_code": null
+      },
+      {
+        "task_id": "risk-checkpoint",
+        "kind": "attention",
+        "agent": null,
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "INDEPENDENT_RISK_REQUIRES_ATTENTION",
+        "safety_checkpoint": true,
+        "started_ms": 856.9190999842249,
+        "finished_ms": 885.2675999514759,
+        "failure_code": null
+      },
+      {
+        "task_id": "arbitrate",
+        "kind": "arbitration",
+        "agent": null,
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+        "safety_checkpoint": true,
+        "started_ms": 919.8050999548286,
+        "finished_ms": 971.4252999983728,
+        "failure_code": null
+      },
+      {
+        "task_id": "attention",
+        "kind": "attention",
+        "agent": null,
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "HUMAN_SUPPORT_REQUIRED",
+        "safety_checkpoint": true,
+        "started_ms": 1019.0727999433875,
+        "finished_ms": 1045.5109999747947,
+        "failure_code": null
+      },
+      {
+        "task_id": "context",
+        "kind": "agent",
+        "agent": "ContextAgent",
+        "status": "SKIPPED",
+        "enabled": false,
+        "reason": "HUMAN_PRIORITY",
+        "safety_checkpoint": false,
+        "started_ms": null,
+        "finished_ms": 1063.7914999970235,
+        "failure_code": null
+      },
+      {
+        "task_id": "evidence",
+        "kind": "arbitration",
+        "agent": null,
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "VERIFY_CONTEXT_EVIDENCE",
+        "safety_checkpoint": true,
+        "started_ms": 1100.905499944929,
+        "finished_ms": 1150.8666999870911,
+        "failure_code": null
+      },
+      {
+        "task_id": "response-1",
+        "kind": "agent",
+        "agent": "ResponseAgent",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "GENERATE_REVIEWABLE_CANDIDATE",
+        "safety_checkpoint": false,
+        "started_ms": 1180.580899992492,
+        "finished_ms": 2504.7537999926135,
+        "failure_code": null
+      },
+      {
+        "task_id": "review-1",
+        "kind": "agent",
+        "agent": "OutputReviewer",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "REVIEW_ACTUAL_CANDIDATE",
+        "safety_checkpoint": false,
+        "started_ms": 2532.389899948612,
+        "finished_ms": 3389.501699944958,
+        "failure_code": null
+      },
+      {
+        "task_id": "delivery-1",
+        "kind": "delivery",
+        "agent": "Delivery",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "ONLY_MATCHED_PASS_APPROVAL",
+        "safety_checkpoint": true,
+        "started_ms": 3409.5885999849997,
+        "finished_ms": 3467.5108999945223,
+        "failure_code": null
+      }
+    ],
+    "dependencies": [
+      {
+        "task_id": "risk-checkpoint",
+        "depends_on": "risk",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED",
+          "FAILED"
+        ]
+      },
+      {
+        "task_id": "arbitrate",
+        "depends_on": "risk-checkpoint",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED"
+        ]
+      },
+      {
+        "task_id": "arbitrate",
+        "depends_on": "intent",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED",
+          "FAILED"
+        ]
+      },
+      {
+        "task_id": "arbitrate",
+        "depends_on": "risk",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED",
+          "FAILED"
+        ]
+      },
+      {
+        "task_id": "attention",
+        "depends_on": "arbitrate",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED"
+        ]
+      },
+      {
+        "task_id": "context",
+        "depends_on": "attention",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED"
+        ]
+      },
+      {
+        "task_id": "evidence",
+        "depends_on": "context",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED"
+        ]
+      },
+      {
+        "task_id": "response-1",
+        "depends_on": "evidence",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED"
+        ]
+      },
+      {
+        "task_id": "review-1",
+        "depends_on": "response-1",
+        "allowed_statuses": [
+          "SUCCEEDED"
+        ]
+      },
+      {
+        "task_id": "delivery-1",
+        "depends_on": "review-1",
+        "allowed_statuses": [
+          "SUCCEEDED"
+        ]
+      }
+    ],
+    "max_task_executions": 16,
+    "max_model_calls": 6,
+    "max_token_reservation": 131072
+  },
+  "arbitration": [
+    {
+      "stage": "analysis",
+      "final_route": "HUMAN_SUPPORT",
+      "risk": {
+        "kind": "risk",
+        "level": "LOW",
+        "needs_human_support": true,
+        "reason_codes": [
+          "HUMAN_REQUEST"
+        ]
+      },
+      "strategy": "HUMAN_REQUEST",
+      "conflicts": [
+        "LOW_SEVERITY_WITH_HUMAN_SUPPORT_REQUEST"
+      ],
+      "reasons": [
+        "SUPPORT_NEED_IS_INDEPENDENT_OF_SEVERITY",
+        "HUMAN_SUPPORT_REQUIRED"
+      ],
+      "adopted_evidence": [
+        {
+          "origin": "agent",
+          "source_id": "IntentAgent",
+          "content_hash": "21b5189865f064bf0b18cb6d7704a4dd15af22e0023a6c4fe52edb565bd0521c",
+          "reason": "TYPED_AGENT_RESULT"
+        },
+        {
+          "origin": "agent",
+          "source_id": "RiskAgent",
+          "content_hash": "75c13b7b5ce3c3dffb843856a85983280ebb6cfcac0441fa9fe18b6bbee619da",
+          "reason": "TYPED_AGENT_RESULT"
+        },
+        {
+          "origin": "rule",
+          "source_id": "server-support-policy-v1",
+          "content_hash": "03ee04226608502a6d489b722d947285c32d5b21de8bc1321cb9554aadc5c98f",
+          "reason": "CURRENT_REQUEST_POLICY"
+        }
+      ],
+      "rejected_source_ids": [],
+      "context": null,
+      "response_message": "我想找辅导员谈谈如何安排接下来的支持。"
+    },
+    {
+      "stage": "evidence",
+      "final_route": "HUMAN_SUPPORT",
+      "risk": {
+        "kind": "risk",
+        "level": "LOW",
+        "needs_human_support": true,
+        "reason_codes": [
+          "HUMAN_REQUEST"
+        ]
+      },
+      "strategy": "HUMAN_REQUEST",
+      "conflicts": [
+        "LOW_SEVERITY_WITH_HUMAN_SUPPORT_REQUEST"
+      ],
+      "reasons": [
+        "SUPPORT_NEED_IS_INDEPENDENT_OF_SEVERITY",
+        "HUMAN_SUPPORT_REQUIRED"
+      ],
+      "adopted_evidence": [
+        {
+          "origin": "agent",
+          "source_id": "IntentAgent",
+          "content_hash": "21b5189865f064bf0b18cb6d7704a4dd15af22e0023a6c4fe52edb565bd0521c",
+          "reason": "TYPED_AGENT_RESULT"
+        },
+        {
+          "origin": "agent",
+          "source_id": "RiskAgent",
+          "content_hash": "75c13b7b5ce3c3dffb843856a85983280ebb6cfcac0441fa9fe18b6bbee619da",
+          "reason": "TYPED_AGENT_RESULT"
+        },
+        {
+          "origin": "rule",
+          "source_id": "server-support-policy-v1",
+          "content_hash": "03ee04226608502a6d489b722d947285c32d5b21de8bc1321cb9554aadc5c98f",
+          "reason": "CURRENT_REQUEST_POLICY"
+        }
+      ],
+      "rejected_source_ids": [],
+      "context": {
+        "kind": "context",
+        "route": "HUMAN_SUPPORT",
+        "history": [],
+        "knowledge": [],
+        "degraded": false,
+        "retrieval_status": "SKIPPED",
+        "query_hash": null
+      },
+      "response_message": "我想找辅导员谈谈如何安排接下来的支持。"
+    }
+  ],
+  "delivery_state": "ACCEPTED"
+}

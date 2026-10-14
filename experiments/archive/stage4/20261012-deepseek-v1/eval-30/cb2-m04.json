@@ -1,0 +1,955 @@
+{
+  "case_id": "cb2-m04",
+  "group": "multiturn",
+  "score": {
+    "case_id": "cb2-m04",
+    "group": "multiturn",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "history": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 7190.175499999896,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"intent\": \"CAMPUS_SERVICE\", \"needs_knowledge\": true}",
+        "input_tokens": 473,
+        "output_tokens": 20,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"level\": \"LOW\", \"needs_human\": false, \"reason_codes\": [\"NO_SIGNAL\"]}",
+        "input_tokens": 556,
+        "output_tokens": 27,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "预约失败后，建议你核对这几项信息，再向演示图书馆服务台确认：\n\n1. 你预约的日期和时间段是否填写准确；\n2. 你选择的安静区域是否与需求一致；\n3. 预约结果是否已由工作人员确认——预约是否成功以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定预约失败的具体原因、处理时限或联系电话，所以这些需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你愿意告诉我你预约的日期、时段和区域，我可以帮你整理成一句方便向服务台询问的话。",
+        "input_tokens": 762,
+        "output_tokens": 143,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"candidate_id\": \"f409ed974281411b8fc555c105dd02fe\", \"content_hash\": \"339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71\", \"verdict\": \"PASS\", \"reason_codes\": [], \"authority\": \"MODEL\", \"citations_hash\": \"659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700\"}",
+        "input_tokens": 1311,
+        "output_tokens": 134,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [
+    {
+      "reply": {
+        "run_id": "3b6bb41899d0429e99cf65142be0a3e8",
+        "conversation_id": "6a694e5dfe4a46db969974a6309d0a88",
+        "state": "ACCEPTED",
+        "message_id": "a8c458e15c8546f59b5490d1380786d0",
+        "candidate_id": "aee47294b5364b42a4a1009e19d8a25e",
+        "content_hash": "829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933",
+        "reply": "图书馆座位预约可以这样办理：先确定你要预约的日期、时间段，以及需要的安静区域，然后向演示图书馆服务台确认座位预约。预约是否成功，以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定具体的开放时刻或电话号码，所以这些信息需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你方便告诉我你打算预约的日期和时段，我可以帮你把要问服务台的信息整理成一句话。",
+        "citations": [
+          {
+            "source_id": "campus-library-1629765e92e0-c001",
+            "document_id": "campus-library",
+            "title": "图书馆预约借阅 library",
+            "revision": "original-v2",
+            "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+            "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+          }
+        ]
+      },
+      "trace": {
+        "run_id": "3b6bb41899d0429e99cf65142be0a3e8",
+        "state": "ACCEPTED",
+        "model_calls": 4,
+        "calls": [
+          {
+            "call_index": 1,
+            "agent": "IntentAgent",
+            "provider": "openai-compatible",
+            "model": "deepseek-v4-flash",
+            "status": "SUCCESS",
+            "elapsed_ms": 318.0311000032816,
+            "input_tokens": 322,
+            "output_tokens": 20,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": "stop"
+          },
+          {
+            "call_index": 2,
+            "agent": "RiskAgent",
+            "provider": "openai-compatible",
+            "model": "deepseek-v4-flash",
+            "status": "SUCCESS",
+            "elapsed_ms": 390.0470999942627,
+            "input_tokens": 404,
+            "output_tokens": 27,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": "stop"
+          },
+          {
+            "call_index": 3,
+            "agent": "ResponseAgent",
+            "provider": "openai-compatible",
+            "model": "deepseek-v4-flash",
+            "status": "SUCCESS",
+            "elapsed_ms": 1038.4034999879077,
+            "input_tokens": 606,
+            "output_tokens": 116,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": "stop"
+          },
+          {
+            "call_index": 4,
+            "agent": "OutputReviewer",
+            "provider": "openai-compatible",
+            "model": "deepseek-v4-flash",
+            "status": "SUCCESS",
+            "elapsed_ms": 915.267699980177,
+            "input_tokens": 1277,
+            "output_tokens": 134,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": "stop"
+          }
+        ],
+        "usage_reporting_calls": 4,
+        "input_tokens": 2609,
+        "output_tokens": 297,
+        "failure_code": null,
+        "events": [
+          {
+            "sequence": 1,
+            "created_at": "2026-10-12T13:03:29.862618+00:00",
+            "event_id": "eed510ea17b64a7995dfa1c8c4916fbd",
+            "state": "ANALYZING",
+            "code": "TURN_STARTED",
+            "result": null
+          },
+          {
+            "sequence": 2,
+            "created_at": "2026-10-12T13:03:30.212547+00:00",
+            "event_id": "0a5729e72d5f4b4bbf5393b4c08af5b4",
+            "state": "ANALYZING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "IntentAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "message_chars": 12,
+                "history_messages": 0
+              },
+              "artifact": {
+                "artifact_id": "43c1050fda634813afbae26d92217c65",
+                "producer": "IntentAgent",
+                "payload": {
+                  "kind": "intent",
+                  "intent": "CAMPUS_SERVICE",
+                  "needs_knowledge": true
+                }
+              },
+              "elapsed_ms": 343.19939999841154,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 3,
+            "created_at": "2026-10-12T13:03:30.640344+00:00",
+            "event_id": "17444f5fd96e43d594a86eca053e4096",
+            "state": "ANALYZING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "RiskAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "message_chars": 12,
+                "history_messages": 0,
+                "intent": "CAMPUS_SERVICE"
+              },
+              "artifact": {
+                "artifact_id": "f8309624a71749509e3b079fd1d27624",
+                "producer": "RiskAgent",
+                "payload": {
+                  "kind": "risk",
+                  "level": "LOW",
+                  "needs_human": false,
+                  "reason_codes": [
+                    "NO_SIGNAL"
+                  ]
+                }
+              },
+              "elapsed_ms": 417.0513999997638,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 4,
+            "created_at": "2026-10-12T13:03:30.669641+00:00",
+            "event_id": "a84ed33d8bf349d3bd83fea8a1d70334",
+            "state": "CONTEXT_READY",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "ContextAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "history_messages": 0,
+                "knowledge_requested": true
+              },
+              "artifact": {
+                "artifact_id": "9b378e04c1a3418d9cebf62dc287ce6f",
+                "producer": "ContextAgent",
+                "payload": {
+                  "kind": "context",
+                  "route": "KNOWLEDGE_SUPPORT",
+                  "history": [],
+                  "knowledge": [
+                    {
+                      "source_id": "campus-library-1629765e92e0-c001",
+                      "title": "图书馆预约借阅 library",
+                      "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                      "revision": "original-v2",
+                      "document_id": "campus-library",
+                      "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+                      "chunk_index": 0,
+                      "start": 0,
+                      "end": 173,
+                      "score": 7.162795219964175
+                    }
+                  ],
+                  "degraded": false,
+                  "retrieval_status": "HIT",
+                  "query_hash": "2ececd41099e494a68fea826ac6bfe187190ea9d2c7c8d7686466438b736b567"
+                }
+              },
+              "elapsed_ms": 14.147199981380254,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 5,
+            "created_at": "2026-10-12T13:03:31.752193+00:00",
+            "event_id": "0f61c467334a43ee94f500c9f064f539",
+            "state": "GENERATING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "ResponseAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "attempt": 1,
+                "history_messages": 0,
+                "route": "KNOWLEDGE_SUPPORT",
+                "source_ids": [
+                  "campus-library-1629765e92e0-c001"
+                ]
+              },
+              "artifact": {
+                "artifact_id": "f387c0b0b7c246c29cf381d1c8564768",
+                "producer": "ResponseAgent",
+                "payload": {
+                  "kind": "candidate",
+                  "candidate_id": "aee47294b5364b42a4a1009e19d8a25e",
+                  "text": "图书馆座位预约可以这样办理：先确定你要预约的日期、时间段，以及需要的安静区域，然后向演示图书馆服务台确认座位预约。预约是否成功，以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定具体的开放时刻或电话号码，所以这些信息需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你方便告诉我你打算预约的日期和时段，我可以帮你把要问服务台的信息整理成一句话。",
+                  "content_hash": "829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933",
+                  "attempt": 1,
+                  "origin": "MODEL",
+                  "citations": [
+                    {
+                      "source_id": "campus-library-1629765e92e0-c001",
+                      "document_id": "campus-library",
+                      "title": "图书馆预约借阅 library",
+                      "revision": "original-v2",
+                      "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                      "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+                    }
+                  ],
+                  "retrieval_status": "HIT",
+                  "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+                }
+              },
+              "elapsed_ms": 1073.4779000049457,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 6,
+            "created_at": "2026-10-12T13:03:32.714783+00:00",
+            "event_id": "68fd6f79e6db465082ee9e75c8431be7",
+            "state": "REVIEWING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "OutputReviewer",
+              "status": "SUCCESS",
+              "input_summary": {
+                "candidate_id": "aee47294b5364b42a4a1009e19d8a25e",
+                "content_hash": "829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933",
+                "candidate_chars": 246
+              },
+              "artifact": {
+                "artifact_id": "a3442d1c32aa4fa88589f401f7c4347e",
+                "producer": "OutputReviewer",
+                "payload": {
+                  "kind": "review",
+                  "candidate_id": "aee47294b5364b42a4a1009e19d8a25e",
+                  "content_hash": "829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933",
+                  "verdict": "PASS",
+                  "reason_codes": [],
+                  "authority": "MODEL",
+                  "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+                }
+              },
+              "elapsed_ms": 950.3219999896828,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 7,
+            "created_at": "2026-10-12T13:03:32.734516+00:00",
+            "event_id": "aef558f24c624ec38bd076b30a5e96d6",
+            "state": "ACCEPTED",
+            "code": "REPLY_COMMITTED",
+            "result": {
+              "agent": "Delivery",
+              "status": "SUCCESS",
+              "input_summary": {
+                "candidate_id": "aee47294b5364b42a4a1009e19d8a25e",
+                "content_hash": "829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933"
+              },
+              "artifact": {
+                "artifact_id": "6ca5bf6a0f234e908889e8b7086063df",
+                "producer": "Delivery",
+                "payload": {
+                  "kind": "delivery",
+                  "candidate_id": "aee47294b5364b42a4a1009e19d8a25e",
+                  "content_hash": "829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933",
+                  "message_id": "a8c458e15c8546f59b5490d1380786d0"
+                }
+              },
+              "elapsed_ms": 7.181000022683293,
+              "failure_code": null
+            }
+          }
+        ]
+      },
+      "raw_model_outputs": [
+        {
+          "agent": "IntentAgent",
+          "controlled_injection": false,
+          "reply": {
+            "content": "{\"intent\": \"CAMPUS_SERVICE\", \"needs_knowledge\": true}",
+            "input_tokens": 322,
+            "output_tokens": 20,
+            "finish_reason": "stop",
+            "request_id": null
+          }
+        },
+        {
+          "agent": "RiskAgent",
+          "controlled_injection": false,
+          "reply": {
+            "content": "{\"level\": \"LOW\", \"needs_human\": false, \"reason_codes\": [\"NO_SIGNAL\"]}",
+            "input_tokens": 404,
+            "output_tokens": 27,
+            "finish_reason": "stop",
+            "request_id": null
+          }
+        },
+        {
+          "agent": "ResponseAgent",
+          "controlled_injection": false,
+          "reply": {
+            "content": "图书馆座位预约可以这样办理：先确定你要预约的日期、时间段，以及需要的安静区域，然后向演示图书馆服务台确认座位预约。预约是否成功，以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定具体的开放时刻或电话号码，所以这些信息需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你方便告诉我你打算预约的日期和时段，我可以帮你把要问服务台的信息整理成一句话。",
+            "input_tokens": 606,
+            "output_tokens": 116,
+            "finish_reason": "stop",
+            "request_id": null
+          }
+        },
+        {
+          "agent": "OutputReviewer",
+          "controlled_injection": false,
+          "reply": {
+            "content": "{\"candidate_id\": \"aee47294b5364b42a4a1009e19d8a25e\", \"content_hash\": \"829bc25b3535c9477779033ff082db69dabce697d420eef0620a769dd7996933\", \"verdict\": \"PASS\", \"reason_codes\": [], \"authority\": \"MODEL\", \"citations_hash\": \"659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700\"}",
+            "input_tokens": 1277,
+            "output_tokens": 134,
+            "finish_reason": "stop",
+            "request_id": null
+          }
+        }
+      ]
+    }
+  ],
+  "reply": {
+    "run_id": "d11e7f8eb5ec4e0e8272d9e8d00f828b",
+    "conversation_id": "6a694e5dfe4a46db969974a6309d0a88",
+    "state": "ACCEPTED",
+    "message_id": "83d34837ea1b4082b61234a35a16af4e",
+    "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+    "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+    "reply": "预约失败后，建议你核对这几项信息，再向演示图书馆服务台确认：\n\n1. 你预约的日期和时间段是否填写准确；\n2. 你选择的安静区域是否与需求一致；\n3. 预约结果是否已由工作人员确认——预约是否成功以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定预约失败的具体原因、处理时限或联系电话，所以这些需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你愿意告诉我你预约的日期、时段和区域，我可以帮你整理成一句方便向服务台询问的话。",
+    "citations": [
+      {
+        "source_id": "campus-library-1629765e92e0-c001",
+        "document_id": "campus-library",
+        "title": "图书馆预约借阅 library",
+        "revision": "original-v2",
+        "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+        "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "d11e7f8eb5ec4e0e8272d9e8d00f828b",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 846.3958999782335,
+        "input_tokens": 473,
+        "output_tokens": 20,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 821.230600005947,
+        "input_tokens": 556,
+        "output_tokens": 27,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1307.9550999973435,
+        "input_tokens": 762,
+        "output_tokens": 143,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1002.5856000138447,
+        "input_tokens": 1311,
+        "output_tokens": 134,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 3102,
+    "output_tokens": 324,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T13:03:32.794350+00:00",
+        "event_id": "b9bebe71e15e4b1dae1bb56a5c8743b6",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T13:03:33.674267+00:00",
+        "event_id": "c3934d8ff3294bc9a86cc4789def8224",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 2
+          },
+          "artifact": {
+            "artifact_id": "4c39798bb7474c2e974ae549bb31e270",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true
+            }
+          },
+          "elapsed_ms": 870.6456999934744,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T13:03:34.518443+00:00",
+        "event_id": "9e399f90c6554e24bf0d9ba5255bc9d0",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 2,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "40b0b4f6cdd44a1faaa33403d19e6eef",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 835.296000004746,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T13:03:34.560708+00:00",
+        "event_id": "004d46046f9d4796821c56a5945fdcc3",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 2,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "f0ef4018f89e4e9cb40ce897a61fd76c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [
+                {
+                  "role": "user",
+                  "text": "图书馆预约座位如何办理？"
+                },
+                {
+                  "role": "assistant",
+                  "text": "图书馆座位预约可以这样办理：先确定你要预约的日期、时间段，以及需要的安静区域，然后向演示图书馆服务台确认座位预约。预约是否成功，以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定具体的开放时刻或电话号码，所以这些信息需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你方便告诉我你打算预约的日期和时段，我可以帮你把要问服务台的信息整理成一句话。"
+                }
+              ],
+              "knowledge": [
+                {
+                  "source_id": "campus-library-1629765e92e0-c001",
+                  "title": "图书馆预约借阅 library",
+                  "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                  "revision": "original-v2",
+                  "document_id": "campus-library",
+                  "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 173,
+                  "score": 7.162795219964175
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "8512883a5202a58a4936a05c1d8d902800521b78162ebc94c4d8e0fed8cb34d3"
+            }
+          },
+          "elapsed_ms": 21.275000006426126,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T13:03:35.914936+00:00",
+        "event_id": "b1424e43cf1949789c789f97d4ff7407",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 2,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-library-1629765e92e0-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "0260b69b834b46a7946d574434988640",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+              "text": "预约失败后，建议你核对这几项信息，再向演示图书馆服务台确认：\n\n1. 你预约的日期和时间段是否填写准确；\n2. 你选择的安静区域是否与需求一致；\n3. 预约结果是否已由工作人员确认——预约是否成功以工作人员的确认结果为准。[source:campus-library-1629765e92e0-c001]\n\n这份资料没有规定预约失败的具体原因、处理时限或联系电话，所以这些需要你直接向图书馆服务台了解。[source:campus-library-1629765e92e0-c001]\n\n如果你愿意告诉我你预约的日期、时段和区域，我可以帮你整理成一句方便向服务台询问的话。",
+              "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-library-1629765e92e0-c001",
+                  "document_id": "campus-library",
+                  "title": "图书馆预约借阅 library",
+                  "revision": "original-v2",
+                  "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                  "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+            }
+          },
+          "elapsed_ms": 1340.2667999907862,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T13:03:36.946474+00:00",
+        "event_id": "3253fde89623451480fdbd52b498c1ef",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+            "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+            "candidate_chars": 286
+          },
+          "artifact": {
+            "artifact_id": "a4376e21bc624cd1b9c0cf08ccf7f1bf",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+              "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+            }
+          },
+          "elapsed_ms": 1025.463400001172,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T13:03:36.955463+00:00",
+        "event_id": "855f8f49943d43cbbe0b0b612e28b4e2",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+            "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71"
+          },
+          "artifact": {
+            "artifact_id": "a910f8ed79cb4c40bd1e456b06cb5824",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+              "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+              "message_id": "83d34837ea1b4082b61234a35a16af4e"
+            }
+          },
+          "elapsed_ms": 3.041399992071092,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "d11e7f8eb5ec4e0e8272d9e8d00f828b",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 846.3958999782335,
+        "input_tokens": 473,
+        "output_tokens": 20,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 821.230600005947,
+        "input_tokens": 556,
+        "output_tokens": 27,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1307.9550999973435,
+        "input_tokens": 762,
+        "output_tokens": 143,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1002.5856000138447,
+        "input_tokens": 1311,
+        "output_tokens": 134,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 3102,
+    "output_tokens": 324,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T13:03:32.794350+00:00",
+        "event_id": "b9bebe71e15e4b1dae1bb56a5c8743b6",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T13:03:33.674267+00:00",
+        "event_id": "c3934d8ff3294bc9a86cc4789def8224",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 2
+          },
+          "artifact": {
+            "artifact_id": "4c39798bb7474c2e974ae549bb31e270",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 870.6456999934744,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T13:03:34.518443+00:00",
+        "event_id": "9e399f90c6554e24bf0d9ba5255bc9d0",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 14,
+            "history_messages": 2,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "40b0b4f6cdd44a1faaa33403d19e6eef",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 835.296000004746,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T13:03:34.560708+00:00",
+        "event_id": "004d46046f9d4796821c56a5945fdcc3",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 2,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "f0ef4018f89e4e9cb40ce897a61fd76c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 21.275000006426126,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T13:03:35.914936+00:00",
+        "event_id": "b1424e43cf1949789c789f97d4ff7407",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 2,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-library-1629765e92e0-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "0260b69b834b46a7946d574434988640",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+              "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71"
+            }
+          },
+          "elapsed_ms": 1340.2667999907862,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T13:03:36.946474+00:00",
+        "event_id": "3253fde89623451480fdbd52b498c1ef",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+            "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+            "candidate_chars": 286
+          },
+          "artifact": {
+            "artifact_id": "a4376e21bc624cd1b9c0cf08ccf7f1bf",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+              "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71"
+            }
+          },
+          "elapsed_ms": 1025.463400001172,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T13:03:36.955463+00:00",
+        "event_id": "855f8f49943d43cbbe0b0b612e28b4e2",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+            "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71"
+          },
+          "artifact": {
+            "artifact_id": "a910f8ed79cb4c40bd1e456b06cb5824",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "f409ed974281411b8fc555c105dd02fe",
+              "content_hash": "339337219be9e7eb48f4f4b804476e2329e8ee77f362620741e8dbbfc9dabf71",
+              "message_id": "83d34837ea1b4082b61234a35a16af4e"
+            }
+          },
+          "elapsed_ms": 3.041399992071092,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

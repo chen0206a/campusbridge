@@ -1,0 +1,617 @@
+{
+  "case_id": "cb2-k03",
+  "group": "knowledge",
+  "score": {
+    "case_id": "cb2-k03",
+    "group": "knowledge",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 4522.939599992242,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"intent\": \"CAMPUS_SERVICE\", \"needs_knowledge\": true, \"needs_human_support\": false}",
+        "input_tokens": 409,
+        "output_tokens": 30,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"level\": \"LOW\", \"needs_human_support\": false, \"reason_codes\": [\"NO_SIGNAL\"]}",
+        "input_tokens": 522,
+        "output_tokens": 29,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "宿舍报修水管漏水，建议先记录这些信息：\n\n- 设施类型：水管漏水\n- 所在位置：具体宿舍楼、房间号或漏水位置\n- 故障现象：例如漏水程度、是否持续、有无积水\n- 可进入维修的时间段：方便工作人员上门的时间\n\n记录后，联系宿舍值班工作人员确认登记方式。[source:campus-housing-91a1ba04598c-c001]\n\n如果现场涉及明显电气危险或有人身安全风险，不要自行修理，先远离风险位置并联系校内值班人员。[source:campus-housing-91a1ba04598c-c001]\n\n目前资料没有提供维修完成时限、费用或联系电话，这些信息建议向值班工作人员确认。[source:campus-housing-91a1ba04598c-c001]",
+        "input_tokens": 937,
+        "output_tokens": 168,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": "{\"candidate_id\": \"05f3330819cf44569980a8fd73ac050c\", \"content_hash\": \"8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79\", \"verdict\": \"PASS\", \"reason_codes\": [], \"authority\": \"MODEL\", \"citations_hash\": \"4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5\"}",
+        "input_tokens": 1490,
+        "output_tokens": 132,
+        "finish_reason": "stop",
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [],
+  "reply": {
+    "run_id": "d4e0e2cb212c4b98b1948c224af36476",
+    "conversation_id": "5aa2b64863954c259227b0a59e6fb28e",
+    "state": "ACCEPTED",
+    "message_id": "0d2701e2d9f5453eacbbd0dcf8148867",
+    "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+    "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+    "reply": "宿舍报修水管漏水，建议先记录这些信息：\n\n- 设施类型：水管漏水\n- 所在位置：具体宿舍楼、房间号或漏水位置\n- 故障现象：例如漏水程度、是否持续、有无积水\n- 可进入维修的时间段：方便工作人员上门的时间\n\n记录后，联系宿舍值班工作人员确认登记方式。[source:campus-housing-91a1ba04598c-c001]\n\n如果现场涉及明显电气危险或有人身安全风险，不要自行修理，先远离风险位置并联系校内值班人员。[source:campus-housing-91a1ba04598c-c001]\n\n目前资料没有提供维修完成时限、费用或联系电话，这些信息建议向值班工作人员确认。[source:campus-housing-91a1ba04598c-c001]",
+    "citations": [
+      {
+        "source_id": "campus-housing-91a1ba04598c-c001",
+        "document_id": "campus-housing",
+        "title": "宿舍设施报修 housing repair",
+        "revision": "original-v2",
+        "quote": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+        "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "d4e0e2cb212c4b98b1948c224af36476",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 896.3875999907032,
+        "input_tokens": 409,
+        "output_tokens": 30,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 838.1317000021227,
+        "input_tokens": 522,
+        "output_tokens": 29,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1561.7632000066806,
+        "input_tokens": 937,
+        "output_tokens": 168,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1076.2811000167858,
+        "input_tokens": 1490,
+        "output_tokens": 132,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 3358,
+    "output_tokens": 359,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-13T03:03:19.586629+00:00",
+        "event_id": "10cb1ce660f84809814e6bfa431cd38b",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-13T03:03:20.503630+00:00",
+        "event_id": "f6eef0fd774549ba8659fe151666d8cf",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "8d08e8e85c1a40a7b35fc341546d1733",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true,
+              "needs_human_support": false
+            }
+          },
+          "elapsed_ms": 912.0112000091467,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-13T03:03:21.368152+00:00",
+        "event_id": "7a1c5f4c443c44a8bcaf694bf8de7796",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "64fde3f442684dbd86e9d862a9f2abe1",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human_support": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 855.7610999851022,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-13T03:03:21.392515+00:00",
+        "event_id": "32d9c3548aa948038a2f5a0e6ec721ff",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "8bcf0beb836b4b41b0fab3a7b80c7bd2",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [],
+              "knowledge": [
+                {
+                  "source_id": "campus-housing-91a1ba04598c-c001",
+                  "title": "宿舍设施报修 housing repair",
+                  "text": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+                  "revision": "original-v2",
+                  "document_id": "campus-housing",
+                  "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 141,
+                  "score": 6.467480599376026
+                },
+                {
+                  "source_id": "campus-lost-1f33b60f06aa-c001",
+                  "title": "失物招领物品核验 lost property",
+                  "text": "这是原创演示失物招领流程。物品丢失后，记录最后看见物品的位置、时间段和可辨识特征，再向演示校园服务工作人员询问失物登记与核验方式。\n\n核验前不要在公开信息中披露完整证件号、密码或支付信息。领取物品需要工作人员确认，资料不保证物品已被找到，也没有规定储存期限或罚金。",
+                  "revision": "original-v2",
+                  "document_id": "campus-lost",
+                  "source_hash": "bc2b6839580b8f6b05465422bb7feee660bf8319430f4e639fada175bb8ebea8",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 132,
+                  "score": 1.6724771205530036
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "b1a35d4817a970afa17b0056e808c62e065565372cdd3209f737c85090294a08"
+            }
+          },
+          "elapsed_ms": 8.584199997130781,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-13T03:03:22.970013+00:00",
+        "event_id": "f7ed6aae82724d4e9feaa46fba2402d4",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-housing-91a1ba04598c-c001",
+              "campus-lost-1f33b60f06aa-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "9fa1c10a142e40d89ff7b167b753c113",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+              "text": "宿舍报修水管漏水，建议先记录这些信息：\n\n- 设施类型：水管漏水\n- 所在位置：具体宿舍楼、房间号或漏水位置\n- 故障现象：例如漏水程度、是否持续、有无积水\n- 可进入维修的时间段：方便工作人员上门的时间\n\n记录后，联系宿舍值班工作人员确认登记方式。[source:campus-housing-91a1ba04598c-c001]\n\n如果现场涉及明显电气危险或有人身安全风险，不要自行修理，先远离风险位置并联系校内值班人员。[source:campus-housing-91a1ba04598c-c001]\n\n目前资料没有提供维修完成时限、费用或联系电话，这些信息建议向值班工作人员确认。[source:campus-housing-91a1ba04598c-c001]",
+              "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-housing-91a1ba04598c-c001",
+                  "document_id": "campus-housing",
+                  "title": "宿舍设施报修 housing repair",
+                  "revision": "original-v2",
+                  "quote": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+                  "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5"
+            }
+          },
+          "elapsed_ms": 1572.7945999824442,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-13T03:03:24.061093+00:00",
+        "event_id": "6a5296813b8d427e83a8cde64ecbd2be",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+            "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+            "candidate_chars": 336
+          },
+          "artifact": {
+            "artifact_id": "615726d6debf4f4bac6c48da37d8278e",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+              "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5"
+            }
+          },
+          "elapsed_ms": 1087.5559000123758,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-13T03:03:24.066175+00:00",
+        "event_id": "277bf14cf39744adb40cc8525d354c6e",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+            "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79"
+          },
+          "artifact": {
+            "artifact_id": "82bdfb6604004b08a338e11618e7197a",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+              "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+              "message_id": "0d2701e2d9f5453eacbbd0dcf8148867"
+            }
+          },
+          "elapsed_ms": 1.799699995899573,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "d4e0e2cb212c4b98b1948c224af36476",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 896.3875999907032,
+        "input_tokens": 409,
+        "output_tokens": 30,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 838.1317000021227,
+        "input_tokens": 522,
+        "output_tokens": 29,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1561.7632000066806,
+        "input_tokens": 937,
+        "output_tokens": 168,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "openai-compatible",
+        "model": "deepseek-v4-flash",
+        "status": "SUCCESS",
+        "elapsed_ms": 1076.2811000167858,
+        "input_tokens": 1490,
+        "output_tokens": 132,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": "stop"
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 3358,
+    "output_tokens": 359,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-13T03:03:19.586629+00:00",
+        "event_id": "10cb1ce660f84809814e6bfa431cd38b",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-13T03:03:20.503630+00:00",
+        "event_id": "f6eef0fd774549ba8659fe151666d8cf",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0
+          },
+          "artifact": {
+            "artifact_id": "8d08e8e85c1a40a7b35fc341546d1733",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 912.0112000091467,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-13T03:03:21.368152+00:00",
+        "event_id": "7a1c5f4c443c44a8bcaf694bf8de7796",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 0,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "64fde3f442684dbd86e9d862a9f2abe1",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 855.7610999851022,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-13T03:03:21.392515+00:00",
+        "event_id": "32d9c3548aa948038a2f5a0e6ec721ff",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 0,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "8bcf0beb836b4b41b0fab3a7b80c7bd2",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 8.584199997130781,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-13T03:03:22.970013+00:00",
+        "event_id": "f7ed6aae82724d4e9feaa46fba2402d4",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 0,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-housing-91a1ba04598c-c001",
+              "campus-lost-1f33b60f06aa-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "9fa1c10a142e40d89ff7b167b753c113",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+              "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79"
+            }
+          },
+          "elapsed_ms": 1572.7945999824442,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-13T03:03:24.061093+00:00",
+        "event_id": "6a5296813b8d427e83a8cde64ecbd2be",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+            "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+            "candidate_chars": 336
+          },
+          "artifact": {
+            "artifact_id": "615726d6debf4f4bac6c48da37d8278e",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+              "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79"
+            }
+          },
+          "elapsed_ms": 1087.5559000123758,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-13T03:03:24.066175+00:00",
+        "event_id": "277bf14cf39744adb40cc8525d354c6e",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+            "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79"
+          },
+          "artifact": {
+            "artifact_id": "82bdfb6604004b08a338e11618e7197a",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "05f3330819cf44569980a8fd73ac050c",
+              "content_hash": "8b816390cfedfc431862edefaf83ef70f9022ad60d3d55461a1df674a5eb8a79",
+              "message_id": "0d2701e2d9f5453eacbbd0dcf8148867"
+            }
+          },
+          "elapsed_ms": 1.799699995899573,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,991 @@
+{
+  "case_id": "cb5-k04",
+  "group": "multiturn",
+  "score": {
+    "case_id": "cb5-k04",
+    "group": "multiturn",
+    "controlled_fault": null,
+    "actual": {
+      "route": "KNOWLEDGE_SUPPORT",
+      "risk": "LOW",
+      "state": "ACCEPTED",
+      "case_created": false,
+      "needs_human_support": false
+    },
+    "checks": {
+      "route": true,
+      "risk": true,
+      "state": true,
+      "case_created": true,
+      "needs_human_support": true,
+      "history": true,
+      "retrieved_document": true,
+      "cited_document": true,
+      "retrieval_status": true,
+      "citation_grounding": true
+    },
+    "case_pass": true,
+    "mismatch_fields": [],
+    "citations": 1,
+    "grounded_citations": 1
+  },
+  "elapsed_ms": 204.18130001053214,
+  "failure_code": null,
+  "raw_model_outputs": [
+    {
+      "agent": "IntentAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "intent": "CAMPUS_SERVICE",
+          "needs_knowledge": true,
+          "needs_human_support": false
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "RiskAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "level": "LOW",
+          "needs_human_support": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "ResponseAgent",
+      "controlled_injection": false,
+      "reply": {
+        "content": "根据演示校园资料，本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。[source:campus-housing-91a1ba04598c-c001]你希望先了解哪个步骤？",
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    },
+    {
+      "agent": "OutputReviewer",
+      "controlled_injection": false,
+      "reply": {
+        "content": {
+          "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+          "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+          "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5",
+          "verdict": "PASS",
+          "reason_codes": []
+        },
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "finish_reason": null,
+        "request_id": null
+      }
+    }
+  ],
+  "preparation_turns": [
+    {
+      "reply": {
+        "run_id": "38be628879f342a0aa51dbd383a6ef8d",
+        "conversation_id": "acda4e198bb34a60909acb98a410949b",
+        "state": "ACCEPTED",
+        "message_id": "fff67074554840d287dc56f268339492",
+        "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+        "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+        "reply": "根据演示校园资料，本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。[source:campus-library-1629765e92e0-c001]你希望先了解哪个步骤？",
+        "citations": [
+          {
+            "source_id": "campus-library-1629765e92e0-c001",
+            "document_id": "campus-library",
+            "title": "图书馆预约借阅 library",
+            "revision": "original-v2",
+            "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+            "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+          }
+        ]
+      },
+      "trace": {
+        "run_id": "38be628879f342a0aa51dbd383a6ef8d",
+        "state": "ACCEPTED",
+        "model_calls": 4,
+        "calls": [
+          {
+            "call_index": 1,
+            "agent": "IntentAgent",
+            "provider": "mock",
+            "model": "campusbridge-mock-v3",
+            "status": "SUCCESS",
+            "elapsed_ms": 0.12749998131766915,
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": null
+          },
+          {
+            "call_index": 2,
+            "agent": "RiskAgent",
+            "provider": "mock",
+            "model": "campusbridge-mock-v3",
+            "status": "SUCCESS",
+            "elapsed_ms": 0.15230002463795245,
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": null
+          },
+          {
+            "call_index": 3,
+            "agent": "ResponseAgent",
+            "provider": "mock",
+            "model": "campusbridge-mock-v3",
+            "status": "SUCCESS",
+            "elapsed_ms": 0.12950002565048635,
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": null
+          },
+          {
+            "call_index": 4,
+            "agent": "OutputReviewer",
+            "provider": "mock",
+            "model": "campusbridge-mock-v3",
+            "status": "SUCCESS",
+            "elapsed_ms": 0.13719999697059393,
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "error_code": null,
+            "output_valid": true,
+            "finish_reason": null
+          }
+        ],
+        "usage_reporting_calls": 4,
+        "input_tokens": 192,
+        "output_tokens": 160,
+        "failure_code": null,
+        "events": [
+          {
+            "sequence": 1,
+            "created_at": "2026-10-12T14:50:05.535217+00:00",
+            "event_id": "6c85c5e8127f4db7b80be6b895bb5b81",
+            "state": "ANALYZING",
+            "code": "TURN_STARTED",
+            "result": null
+          },
+          {
+            "sequence": 2,
+            "created_at": "2026-10-12T14:50:05.548768+00:00",
+            "event_id": "b7f6660c94644822ac5fdb84bb607abc",
+            "state": "ANALYZING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "IntentAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "message_chars": 14,
+                "history_messages": 0
+              },
+              "artifact": {
+                "artifact_id": "246d8d93b0c94641a33660f8e70d6b5c",
+                "producer": "IntentAgent",
+                "payload": {
+                  "kind": "intent",
+                  "intent": "CAMPUS_SERVICE",
+                  "needs_knowledge": true,
+                  "needs_human_support": false
+                }
+              },
+              "elapsed_ms": 10.398899990832433,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 3,
+            "created_at": "2026-10-12T14:50:05.562685+00:00",
+            "event_id": "c0a0b52613844d439778422f32783e17",
+            "state": "ANALYZING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "RiskAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "message_chars": 14,
+                "history_messages": 0,
+                "intent": "CAMPUS_SERVICE"
+              },
+              "artifact": {
+                "artifact_id": "c0c3383e942444f58ae3fdb17882f2a1",
+                "producer": "RiskAgent",
+                "payload": {
+                  "kind": "risk",
+                  "level": "LOW",
+                  "needs_human_support": false,
+                  "reason_codes": [
+                    "NO_SIGNAL"
+                  ]
+                }
+              },
+              "elapsed_ms": 10.354400001233444,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 4,
+            "created_at": "2026-10-12T14:50:05.569681+00:00",
+            "event_id": "2f2a4cb043974db0ae025cd86f33916c",
+            "state": "CONTEXT_READY",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "ContextAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "history_messages": 0,
+                "knowledge_requested": true
+              },
+              "artifact": {
+                "artifact_id": "8e5502d63f3943f08f3d463888fa940c",
+                "producer": "ContextAgent",
+                "payload": {
+                  "kind": "context",
+                  "route": "KNOWLEDGE_SUPPORT",
+                  "history": [],
+                  "knowledge": [
+                    {
+                      "source_id": "campus-library-1629765e92e0-c001",
+                      "title": "图书馆预约借阅 library",
+                      "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                      "revision": "original-v2",
+                      "document_id": "campus-library",
+                      "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+                      "chunk_index": 0,
+                      "start": 0,
+                      "end": 173,
+                      "score": 6.237069633935614
+                    }
+                  ],
+                  "degraded": false,
+                  "retrieval_status": "HIT",
+                  "query_hash": "528a6baa15e5faffa9c086d43b0b01f3202b15179a6f15bd2ac94d5c81e3b13e"
+                }
+              },
+              "elapsed_ms": 2.5402999890502542,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 5,
+            "created_at": "2026-10-12T14:50:05.583807+00:00",
+            "event_id": "d05b578dd8fe4f07a618f69979762134",
+            "state": "GENERATING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "ResponseAgent",
+              "status": "SUCCESS",
+              "input_summary": {
+                "attempt": 1,
+                "history_messages": 0,
+                "route": "KNOWLEDGE_SUPPORT",
+                "source_ids": [
+                  "campus-library-1629765e92e0-c001"
+                ]
+              },
+              "artifact": {
+                "artifact_id": "5e46c4f5f9824b40b4d0a68da8b8e9ba",
+                "producer": "ResponseAgent",
+                "payload": {
+                  "kind": "candidate",
+                  "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+                  "text": "根据演示校园资料，本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。[source:campus-library-1629765e92e0-c001]你希望先了解哪个步骤？",
+                  "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+                  "attempt": 1,
+                  "origin": "MODEL",
+                  "citations": [
+                    {
+                      "source_id": "campus-library-1629765e92e0-c001",
+                      "document_id": "campus-library",
+                      "title": "图书馆预约借阅 library",
+                      "revision": "original-v2",
+                      "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                      "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+                    }
+                  ],
+                  "retrieval_status": "HIT",
+                  "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+                }
+              },
+              "elapsed_ms": 10.133500007214025,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 6,
+            "created_at": "2026-10-12T14:50:05.598468+00:00",
+            "event_id": "9aaf9310732b45d995e60b2b28db1e06",
+            "state": "REVIEWING",
+            "code": "AGENT_COMPLETED",
+            "result": {
+              "agent": "OutputReviewer",
+              "status": "SUCCESS",
+              "input_summary": {
+                "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+                "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+                "candidate_chars": 234
+              },
+              "artifact": {
+                "artifact_id": "8a6979815cff4d38be87b00264c8abd9",
+                "producer": "OutputReviewer",
+                "payload": {
+                  "kind": "review",
+                  "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+                  "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+                  "verdict": "PASS",
+                  "reason_codes": [],
+                  "authority": "MODEL",
+                  "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+                }
+              },
+              "elapsed_ms": 10.981300001731142,
+              "failure_code": null
+            }
+          },
+          {
+            "sequence": 7,
+            "created_at": "2026-10-12T14:50:05.604110+00:00",
+            "event_id": "16dc31141f3d4dd7bda6271c62c70bf8",
+            "state": "ACCEPTED",
+            "code": "REPLY_COMMITTED",
+            "result": {
+              "agent": "Delivery",
+              "status": "SUCCESS",
+              "input_summary": {
+                "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+                "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f"
+              },
+              "artifact": {
+                "artifact_id": "5d30ca17e9d04729a22637050b28a96b",
+                "producer": "Delivery",
+                "payload": {
+                  "kind": "delivery",
+                  "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+                  "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+                  "message_id": "fff67074554840d287dc56f268339492"
+                }
+              },
+              "elapsed_ms": 1.7544000002089888,
+              "failure_code": null
+            }
+          }
+        ]
+      },
+      "raw_model_outputs": [
+        {
+          "agent": "IntentAgent",
+          "controlled_injection": false,
+          "reply": {
+            "content": {
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true,
+              "needs_human_support": false
+            },
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "finish_reason": null,
+            "request_id": null
+          }
+        },
+        {
+          "agent": "RiskAgent",
+          "controlled_injection": false,
+          "reply": {
+            "content": {
+              "level": "LOW",
+              "needs_human_support": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            },
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "finish_reason": null,
+            "request_id": null
+          }
+        },
+        {
+          "agent": "ResponseAgent",
+          "controlled_injection": false,
+          "reply": {
+            "content": "根据演示校园资料，本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。[source:campus-library-1629765e92e0-c001]你希望先了解哪个步骤？",
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "finish_reason": null,
+            "request_id": null
+          }
+        },
+        {
+          "agent": "OutputReviewer",
+          "controlled_injection": false,
+          "reply": {
+            "content": {
+              "candidate_id": "49e424433f034e55a5598f9d7561fca2",
+              "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+              "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700",
+              "verdict": "PASS",
+              "reason_codes": []
+            },
+            "input_tokens": 48,
+            "output_tokens": 40,
+            "finish_reason": null,
+            "request_id": null
+          }
+        }
+      ]
+    }
+  ],
+  "reply": {
+    "run_id": "e269be1bd4e2425dabe75cee2d6ba8e8",
+    "conversation_id": "acda4e198bb34a60909acb98a410949b",
+    "state": "ACCEPTED",
+    "message_id": "cee998bd1f714944a3183afb2ae81bc4",
+    "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+    "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+    "reply": "根据演示校园资料，本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。[source:campus-housing-91a1ba04598c-c001]你希望先了解哪个步骤？",
+    "citations": [
+      {
+        "source_id": "campus-housing-91a1ba04598c-c001",
+        "document_id": "campus-housing",
+        "title": "宿舍设施报修 housing repair",
+        "revision": "original-v2",
+        "quote": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+        "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054"
+      }
+    ]
+  },
+  "trace": {
+    "run_id": "e269be1bd4e2425dabe75cee2d6ba8e8",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.12670000432990491,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13229998876340687,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.12909999350085855,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.15919998986646533,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 192,
+    "output_tokens": 160,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T14:50:05.624794+00:00",
+        "event_id": "21329032791c4b558bda13f518344f21",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T14:50:05.638696+00:00",
+        "event_id": "1c22fe04e7674dbda33cbd04f07a2a43",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 2
+          },
+          "artifact": {
+            "artifact_id": "91972173d015408782a8e8bc88a34480",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent",
+              "intent": "CAMPUS_SERVICE",
+              "needs_knowledge": true,
+              "needs_human_support": false
+            }
+          },
+          "elapsed_ms": 10.64100000075996,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T14:50:05.652502+00:00",
+        "event_id": "b3c4f3293bb94f009fb7eb4779234d07",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 2,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "c49c963ebd3547bbbfdcab8187c54751",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk",
+              "level": "LOW",
+              "needs_human_support": false,
+              "reason_codes": [
+                "NO_SIGNAL"
+              ]
+            }
+          },
+          "elapsed_ms": 10.143899999093264,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T14:50:05.659991+00:00",
+        "event_id": "04b540fefa97493fb19f269bf202fac5",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 2,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "9230a63c034a432e8842cce9f8a0809c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context",
+              "route": "KNOWLEDGE_SUPPORT",
+              "history": [
+                {
+                  "role": "user",
+                  "text": "图书馆借阅和续借先核实什么？"
+                },
+                {
+                  "role": "assistant",
+                  "text": "根据演示校园资料，本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。[source:campus-library-1629765e92e0-c001]你希望先了解哪个步骤？"
+                }
+              ],
+              "knowledge": [
+                {
+                  "source_id": "campus-housing-91a1ba04598c-c001",
+                  "title": "宿舍设施报修 housing repair",
+                  "text": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+                  "revision": "original-v2",
+                  "document_id": "campus-housing",
+                  "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054",
+                  "chunk_index": 0,
+                  "start": 0,
+                  "end": 141,
+                  "score": 8.538421772713571
+                }
+              ],
+              "degraded": false,
+              "retrieval_status": "HIT",
+              "query_hash": "35fa83f4b6a9f47f6de0f8bd0a1fc7c4cf3693fc52f9f0b22cfeb2e1253097de"
+            }
+          },
+          "elapsed_ms": 3.232999995816499,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T14:50:05.673777+00:00",
+        "event_id": "53d66f6e80ff4c38acd88438b52b1949",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 2,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-housing-91a1ba04598c-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "19cd1f71cb864b8cb797817ce98cb0e3",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+              "text": "根据演示校园资料，本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。[source:campus-housing-91a1ba04598c-c001]你希望先了解哪个步骤？",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "attempt": 1,
+              "origin": "MODEL",
+              "citations": [
+                {
+                  "source_id": "campus-housing-91a1ba04598c-c001",
+                  "document_id": "campus-housing",
+                  "title": "宿舍设施报修 housing repair",
+                  "revision": "original-v2",
+                  "quote": "本卡片是虚构宿舍报修指南。普通设施报修先说明设施类型、所在位置、故障现象和可进入维修的时间段，再联系演示宿舍值班工作人员确认登记方式。\n\n涉及明显电气危险或人员当前安全时，不尝试自行修理，先远离风险位置并联系校内值班人员。资料没有提供维修完成时限、费用或联系电话，不能编造这些信息。",
+                  "source_hash": "fb091b024151ee58dd88acc788611857564d6d0231545e5317d7f88158191054"
+                }
+              ],
+              "retrieval_status": "HIT",
+              "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5"
+            }
+          },
+          "elapsed_ms": 9.899600001517683,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T14:50:05.688969+00:00",
+        "event_id": "94649595fe5946d6a3d6f5e15e723ba6",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+            "candidate_chars": 202
+          },
+          "artifact": {
+            "artifact_id": "4d958c8eef404bd589478bfd49fbb545",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "verdict": "PASS",
+              "reason_codes": [],
+              "authority": "MODEL",
+              "citations_hash": "4c5ac3ff479c687ddb83ef9ee3ff1bad20c470d62c0a82ed6c05ffe08c4751c5"
+            }
+          },
+          "elapsed_ms": 11.209399992367253,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T14:50:05.693912+00:00",
+        "event_id": "c11416fbb6b0437684604b06e6ead2e7",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+          },
+          "artifact": {
+            "artifact_id": "aab4e7ec59e4411f89f6ead1b2763a1e",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "message_id": "cee998bd1f714944a3183afb2ae81bc4"
+            }
+          },
+          "elapsed_ms": 1.649599988013506,
+          "failure_code": null
+        }
+      }
+    ]
+  },
+  "student_trace": {
+    "run_id": "e269be1bd4e2425dabe75cee2d6ba8e8",
+    "state": "ACCEPTED",
+    "model_calls": 4,
+    "calls": [
+      {
+        "call_index": 1,
+        "agent": "IntentAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.12670000432990491,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 2,
+        "agent": "RiskAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.13229998876340687,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 3,
+        "agent": "ResponseAgent",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.12909999350085855,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      },
+      {
+        "call_index": 4,
+        "agent": "OutputReviewer",
+        "provider": "mock",
+        "model": "campusbridge-mock-v3",
+        "status": "SUCCESS",
+        "elapsed_ms": 0.15919998986646533,
+        "input_tokens": 48,
+        "output_tokens": 40,
+        "error_code": null,
+        "output_valid": true,
+        "finish_reason": null
+      }
+    ],
+    "usage_reporting_calls": 4,
+    "input_tokens": 192,
+    "output_tokens": 160,
+    "failure_code": null,
+    "events": [
+      {
+        "sequence": 1,
+        "created_at": "2026-10-12T14:50:05.624794+00:00",
+        "event_id": "21329032791c4b558bda13f518344f21",
+        "state": "ANALYZING",
+        "code": "TURN_STARTED",
+        "result": null
+      },
+      {
+        "sequence": 2,
+        "created_at": "2026-10-12T14:50:05.638696+00:00",
+        "event_id": "1c22fe04e7674dbda33cbd04f07a2a43",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "IntentAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 2
+          },
+          "artifact": {
+            "artifact_id": "91972173d015408782a8e8bc88a34480",
+            "producer": "IntentAgent",
+            "payload": {
+              "kind": "intent"
+            }
+          },
+          "elapsed_ms": 10.64100000075996,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 3,
+        "created_at": "2026-10-12T14:50:05.652502+00:00",
+        "event_id": "b3c4f3293bb94f009fb7eb4779234d07",
+        "state": "ANALYZING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "RiskAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "message_chars": 16,
+            "history_messages": 2,
+            "intent": "CAMPUS_SERVICE"
+          },
+          "artifact": {
+            "artifact_id": "c49c963ebd3547bbbfdcab8187c54751",
+            "producer": "RiskAgent",
+            "payload": {
+              "kind": "risk"
+            }
+          },
+          "elapsed_ms": 10.143899999093264,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 4,
+        "created_at": "2026-10-12T14:50:05.659991+00:00",
+        "event_id": "04b540fefa97493fb19f269bf202fac5",
+        "state": "CONTEXT_READY",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ContextAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "history_messages": 2,
+            "knowledge_requested": true
+          },
+          "artifact": {
+            "artifact_id": "9230a63c034a432e8842cce9f8a0809c",
+            "producer": "ContextAgent",
+            "payload": {
+              "kind": "context"
+            }
+          },
+          "elapsed_ms": 3.232999995816499,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 5,
+        "created_at": "2026-10-12T14:50:05.673777+00:00",
+        "event_id": "53d66f6e80ff4c38acd88438b52b1949",
+        "state": "GENERATING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "ResponseAgent",
+          "status": "SUCCESS",
+          "input_summary": {
+            "attempt": 1,
+            "history_messages": 2,
+            "route": "KNOWLEDGE_SUPPORT",
+            "source_ids": [
+              "campus-housing-91a1ba04598c-c001"
+            ]
+          },
+          "artifact": {
+            "artifact_id": "19cd1f71cb864b8cb797817ce98cb0e3",
+            "producer": "ResponseAgent",
+            "payload": {
+              "kind": "candidate",
+              "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+            }
+          },
+          "elapsed_ms": 9.899600001517683,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 6,
+        "created_at": "2026-10-12T14:50:05.688969+00:00",
+        "event_id": "94649595fe5946d6a3d6f5e15e723ba6",
+        "state": "REVIEWING",
+        "code": "AGENT_COMPLETED",
+        "result": {
+          "agent": "OutputReviewer",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+            "candidate_chars": 202
+          },
+          "artifact": {
+            "artifact_id": "4d958c8eef404bd589478bfd49fbb545",
+            "producer": "OutputReviewer",
+            "payload": {
+              "kind": "review",
+              "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+            }
+          },
+          "elapsed_ms": 11.209399992367253,
+          "failure_code": null
+        }
+      },
+      {
+        "sequence": 7,
+        "created_at": "2026-10-12T14:50:05.693912+00:00",
+        "event_id": "c11416fbb6b0437684604b06e6ead2e7",
+        "state": "ACCEPTED",
+        "code": "REPLY_COMMITTED",
+        "result": {
+          "agent": "Delivery",
+          "status": "SUCCESS",
+          "input_summary": {
+            "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+            "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21"
+          },
+          "artifact": {
+            "artifact_id": "aab4e7ec59e4411f89f6ead1b2763a1e",
+            "producer": "Delivery",
+            "payload": {
+              "kind": "delivery",
+              "candidate_id": "8e84a2daf4ad466688f8a970fa4f4dda",
+              "content_hash": "e7c66c83ddb21035db3d2b59229338dc7e6c21c24a90df071dbe96e5e5ab1a21",
+              "message_id": "cee998bd1f714944a3183afb2ae81bc4"
+            }
+          },
+          "elapsed_ms": 1.649599988013506,
+          "failure_code": null
+        }
+      }
+    ]
+  }
+}

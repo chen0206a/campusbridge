@@ -1,0 +1,320 @@
+{
+  "source_artifact": "experiments/archive/stage6/20261013-dynamic-v1/real-dynamic-smoke4/cb6-s01.json",
+  "source_sha256": "a6248dcb23b53fd4796e09059bc9cb0ecec968d487c074731f3ca2eac23ad753",
+  "case_id": "cb6-s01",
+  "plan": {
+    "plan_id": "feebd085afb94de89d559d89788acf4e",
+    "version": "campusbridge-task-plan-v1",
+    "orchestration": "dynamic",
+    "independent_analysis": true,
+    "tasks": [
+      {
+        "task_id": "early-attention",
+        "kind": "attention",
+        "agent": null,
+        "status": "SKIPPED",
+        "enabled": false,
+        "reason": "NO_EXPLICIT_DANGER",
+        "safety_checkpoint": true,
+        "started_ms": null,
+        "finished_ms": 56.01330002536997,
+        "failure_code": null
+      },
+      {
+        "task_id": "intent",
+        "kind": "agent",
+        "agent": "IntentAgent",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "CLASSIFY_CURRENT_REQUEST",
+        "safety_checkpoint": false,
+        "started_ms": 73.95200000610203,
+        "finished_ms": 1787.393999984488,
+        "failure_code": null
+      },
+      {
+        "task_id": "risk",
+        "kind": "agent",
+        "agent": "RiskAgent",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "INDEPENDENT_ASSESSMENT",
+        "safety_checkpoint": false,
+        "started_ms": 89.71129998099059,
+        "finished_ms": 2123.9327000221238,
+        "failure_code": null
+      },
+      {
+        "task_id": "risk-checkpoint",
+        "kind": "attention",
+        "agent": null,
+        "status": "SKIPPED",
+        "enabled": false,
+        "reason": "RISK_DOES_NOT_REQUIRE_ATTENTION",
+        "safety_checkpoint": true,
+        "started_ms": null,
+        "finished_ms": 2164.7528000175953,
+        "failure_code": null
+      },
+      {
+        "task_id": "arbitrate",
+        "kind": "arbitration",
+        "agent": null,
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+        "safety_checkpoint": true,
+        "started_ms": 2195.819600019604,
+        "finished_ms": 2236.4023000118323,
+        "failure_code": null
+      },
+      {
+        "task_id": "attention",
+        "kind": "attention",
+        "agent": null,
+        "status": "SKIPPED",
+        "enabled": false,
+        "reason": "NO_HUMAN_SUPPORT_NEEDED",
+        "safety_checkpoint": true,
+        "started_ms": null,
+        "finished_ms": 2266.048100020271,
+        "failure_code": null
+      },
+      {
+        "task_id": "context",
+        "kind": "agent",
+        "agent": "ContextAgent",
+        "status": "SKIPPED",
+        "enabled": false,
+        "reason": "HISTORY_ALREADY_AVAILABLE",
+        "safety_checkpoint": false,
+        "started_ms": null,
+        "finished_ms": 2285.881599993445,
+        "failure_code": null
+      },
+      {
+        "task_id": "evidence",
+        "kind": "arbitration",
+        "agent": null,
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "VERIFY_CONTEXT_EVIDENCE",
+        "safety_checkpoint": true,
+        "started_ms": 2312.188900017645,
+        "finished_ms": 2346.0796999861486,
+        "failure_code": null
+      },
+      {
+        "task_id": "response-1",
+        "kind": "agent",
+        "agent": "ResponseAgent",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "GENERATE_REVIEWABLE_CANDIDATE",
+        "safety_checkpoint": false,
+        "started_ms": 2362.419300014153,
+        "finished_ms": 3976.3254999998026,
+        "failure_code": null
+      },
+      {
+        "task_id": "review-1",
+        "kind": "agent",
+        "agent": "OutputReviewer",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "REVIEW_ACTUAL_CANDIDATE",
+        "safety_checkpoint": false,
+        "started_ms": 3999.3930000346154,
+        "finished_ms": 4887.36340001924,
+        "failure_code": null
+      },
+      {
+        "task_id": "delivery-1",
+        "kind": "delivery",
+        "agent": "Delivery",
+        "status": "SUCCEEDED",
+        "enabled": true,
+        "reason": "ONLY_MATCHED_PASS_APPROVAL",
+        "safety_checkpoint": true,
+        "started_ms": 4907.215100014582,
+        "finished_ms": 4969.53390003182,
+        "failure_code": null
+      }
+    ],
+    "dependencies": [
+      {
+        "task_id": "risk-checkpoint",
+        "depends_on": "risk",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED",
+          "FAILED"
+        ]
+      },
+      {
+        "task_id": "arbitrate",
+        "depends_on": "risk-checkpoint",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED"
+        ]
+      },
+      {
+        "task_id": "arbitrate",
+        "depends_on": "intent",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED",
+          "FAILED"
+        ]
+      },
+      {
+        "task_id": "arbitrate",
+        "depends_on": "risk",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED",
+          "FAILED"
+        ]
+      },
+      {
+        "task_id": "attention",
+        "depends_on": "arbitrate",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED"
+        ]
+      },
+      {
+        "task_id": "context",
+        "depends_on": "attention",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED"
+        ]
+      },
+      {
+        "task_id": "evidence",
+        "depends_on": "context",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED",
+          "SKIPPED",
+          "BLOCKED"
+        ]
+      },
+      {
+        "task_id": "response-1",
+        "depends_on": "evidence",
+        "allowed_statuses": [
+          "SUCCEEDED",
+          "DEGRADED"
+        ]
+      },
+      {
+        "task_id": "review-1",
+        "depends_on": "response-1",
+        "allowed_statuses": [
+          "SUCCEEDED"
+        ]
+      },
+      {
+        "task_id": "delivery-1",
+        "depends_on": "review-1",
+        "allowed_statuses": [
+          "SUCCEEDED"
+        ]
+      }
+    ],
+    "max_task_executions": 16,
+    "max_model_calls": 6,
+    "max_token_reservation": 131072
+  },
+  "arbitration": [
+    {
+      "stage": "analysis",
+      "final_route": "CONVERSATION",
+      "risk": {
+        "kind": "risk",
+        "level": "LOW",
+        "needs_human_support": false,
+        "reason_codes": [
+          "NO_SIGNAL"
+        ]
+      },
+      "strategy": "DIRECT_SUPPORT",
+      "conflicts": [],
+      "reasons": [
+        "ORDINARY_CONVERSATION"
+      ],
+      "adopted_evidence": [
+        {
+          "origin": "agent",
+          "source_id": "IntentAgent",
+          "content_hash": "ce131815e933be44d4b6574983cab3cbece2f40f77830d57c01dbcea1feeba7e",
+          "reason": "TYPED_AGENT_RESULT"
+        },
+        {
+          "origin": "agent",
+          "source_id": "RiskAgent",
+          "content_hash": "45f323814abde2ee91b40772f8a165effaed684dfc343de0f5173f3b376a42e5",
+          "reason": "TYPED_AGENT_RESULT"
+        }
+      ],
+      "rejected_source_ids": [],
+      "context": null,
+      "response_message": "我想把这周的自习和休息排得更从容一些。"
+    },
+    {
+      "stage": "evidence",
+      "final_route": "CONVERSATION",
+      "risk": {
+        "kind": "risk",
+        "level": "LOW",
+        "needs_human_support": false,
+        "reason_codes": [
+          "NO_SIGNAL"
+        ]
+      },
+      "strategy": "DIRECT_SUPPORT",
+      "conflicts": [],
+      "reasons": [
+        "ORDINARY_CONVERSATION"
+      ],
+      "adopted_evidence": [
+        {
+          "origin": "agent",
+          "source_id": "IntentAgent",
+          "content_hash": "ce131815e933be44d4b6574983cab3cbece2f40f77830d57c01dbcea1feeba7e",
+          "reason": "TYPED_AGENT_RESULT"
+        },
+        {
+          "origin": "agent",
+          "source_id": "RiskAgent",
+          "content_hash": "45f323814abde2ee91b40772f8a165effaed684dfc343de0f5173f3b376a42e5",
+          "reason": "TYPED_AGENT_RESULT"
+        }
+      ],
+      "rejected_source_ids": [],
+      "context": {
+        "kind": "context",
+        "route": "CONVERSATION",
+        "history": [],
+        "knowledge": [],
+        "degraded": false,
+        "retrieval_status": "SKIPPED",
+        "query_hash": null
+      },
+      "response_message": "我想把这周的自习和休息排得更从容一些。"
+    }
+  ],
+  "delivery_state": "ACCEPTED"
+}

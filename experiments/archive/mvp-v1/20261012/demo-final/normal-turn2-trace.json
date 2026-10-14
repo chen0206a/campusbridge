@@ -1,0 +1,199 @@
+{
+  "run_id": "235744acdefb427a899049a859fda34d",
+  "state": "ACCEPTED",
+  "model_calls": 4,
+  "input_tokens": 192,
+  "output_tokens": 160,
+  "failure_code": null,
+  "events": [
+    {
+      "sequence": 1,
+      "created_at": "2026-10-12T06:14:47.328537+00:00",
+      "event_id": "ede6a72f8836482d8deb6a7957db60c2",
+      "state": "ANALYZING",
+      "code": "TURN_STARTED",
+      "result": null
+    },
+    {
+      "sequence": 2,
+      "created_at": "2026-10-12T06:14:47.343044+00:00",
+      "event_id": "8ef466e7d7764bd5adc17d3840c72401",
+      "state": "ANALYZING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "IntentAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "message_chars": 10,
+          "history_messages": 2
+        },
+        "artifact": {
+          "artifact_id": "a63bba18c7ae41d8afd63077235c2927",
+          "producer": "IntentAgent",
+          "payload": {
+            "kind": "intent",
+            "intent": "GENERAL",
+            "needs_knowledge": false
+          }
+        },
+        "elapsed_ms": 10.110700008226559,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 3,
+      "created_at": "2026-10-12T06:14:47.357498+00:00",
+      "event_id": "aa584a4beae141c1b4e439fc4f4dc304",
+      "state": "ANALYZING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "RiskAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "message_chars": 10,
+          "history_messages": 2,
+          "intent": "GENERAL"
+        },
+        "artifact": {
+          "artifact_id": "3b2c1cbd80a4441d88a4330f6f82ee68",
+          "producer": "RiskAgent",
+          "payload": {
+            "kind": "risk",
+            "level": "LOW",
+            "needs_human": false,
+            "reason_codes": [
+              "NO_SIGNAL"
+            ]
+          }
+        },
+        "elapsed_ms": 9.249800001271069,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 4,
+      "created_at": "2026-10-12T06:14:47.363756+00:00",
+      "event_id": "c06842d550aa4162b312820330d3c24c",
+      "state": "CONTEXT_READY",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ContextAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "history_messages": 2,
+          "knowledge_requested": false
+        },
+        "artifact": {
+          "artifact_id": "386212cc91694cc78c67891352ee5159",
+          "producer": "ContextAgent",
+          "payload": {
+            "kind": "context",
+            "route": "CONVERSATION",
+            "history": [
+              {
+                "role": "user",
+                "text": "我想把接下来一周的学习安排梳理清楚"
+              },
+              {
+                "role": "assistant",
+                "text": "谢谢你来聊聊。我们先选一个当前最在意的问题，再一起找一个小步骤。你最希望先处理哪件事？"
+              }
+            ],
+            "knowledge": [],
+            "degraded": false
+          }
+        },
+        "elapsed_ms": 0.12620000052265823,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 5,
+      "created_at": "2026-10-12T06:14:47.379438+00:00",
+      "event_id": "3e95d5ad102e4832afb60dd4a37762dc",
+      "state": "GENERATING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ResponseAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "attempt": 1,
+          "history_messages": 2,
+          "route": "CONVERSATION",
+          "source_ids": []
+        },
+        "artifact": {
+          "artifact_id": "2d1274f4f6dc4909b7fc8abd865622f7",
+          "producer": "ResponseAgent",
+          "payload": {
+            "kind": "candidate",
+            "candidate_id": "36e7dd076a5848ca8c6a33a7ed5f260d",
+            "text": "你上一轮提到的事情我们可以接着梳理。我们先选一个当前最在意的问题，再一起找一个小步骤。你最希望先处理哪件事？",
+            "content_hash": "7ec9cb01916e2fce62ed9efdc0f1b107bd6b5dc17f9f9ecf1c77bf2d89aac710",
+            "attempt": 1,
+            "origin": "MODEL"
+          }
+        },
+        "elapsed_ms": 10.504400008358061,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 6,
+      "created_at": "2026-10-12T06:14:47.393426+00:00",
+      "event_id": "8eced199dc2044f782cb0237ee3e6864",
+      "state": "REVIEWING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "OutputReviewer",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "36e7dd076a5848ca8c6a33a7ed5f260d",
+          "content_hash": "7ec9cb01916e2fce62ed9efdc0f1b107bd6b5dc17f9f9ecf1c77bf2d89aac710",
+          "candidate_chars": 54
+        },
+        "artifact": {
+          "artifact_id": "0f657cd37a5a460c900df2f2cb00dd0e",
+          "producer": "OutputReviewer",
+          "payload": {
+            "kind": "review",
+            "candidate_id": "36e7dd076a5848ca8c6a33a7ed5f260d",
+            "content_hash": "7ec9cb01916e2fce62ed9efdc0f1b107bd6b5dc17f9f9ecf1c77bf2d89aac710",
+            "verdict": "PASS",
+            "reason_codes": [],
+            "authority": "MODEL"
+          }
+        },
+        "elapsed_ms": 7.879699987825006,
+        "failure_code": null
+      }
+    },
+    {
+      "sequence": 7,
+      "created_at": "2026-10-12T06:14:47.399283+00:00",
+      "event_id": "0b5c703b71834269a458035710e35614",
+      "state": "ACCEPTED",
+      "code": "REPLY_COMMITTED",
+      "result": {
+        "agent": "Delivery",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "36e7dd076a5848ca8c6a33a7ed5f260d",
+          "content_hash": "7ec9cb01916e2fce62ed9efdc0f1b107bd6b5dc17f9f9ecf1c77bf2d89aac710"
+        },
+        "artifact": {
+          "artifact_id": "7a547bd4bde247c6ad4fa324c7fd5071",
+          "producer": "Delivery",
+          "payload": {
+            "kind": "delivery",
+            "candidate_id": "36e7dd076a5848ca8c6a33a7ed5f260d",
+            "content_hash": "7ec9cb01916e2fce62ed9efdc0f1b107bd6b5dc17f9f9ecf1c77bf2d89aac710",
+            "message_id": "686f009e802e4e318774bce0e6ceeb0a"
+          }
+        },
+        "elapsed_ms": 1.6986999835353345,
+        "failure_code": null
+      }
+    }
+  ]
+}

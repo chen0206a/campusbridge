@@ -1,0 +1,1083 @@
+{
+  "intent": {
+    "$defs": {
+      "IntentKind": {
+        "enum": [
+          "GENERAL",
+          "SUPPORT",
+          "CAMPUS_SERVICE",
+          "URGENT"
+        ],
+        "title": "IntentKind",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "intent",
+        "default": "intent",
+        "title": "Kind",
+        "type": "string"
+      },
+      "intent": {
+        "$ref": "#/$defs/IntentKind"
+      },
+      "needs_knowledge": {
+        "title": "Needs Knowledge",
+        "type": "boolean"
+      },
+      "needs_human_support": {
+        "default": false,
+        "title": "Needs Human Support",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "intent",
+      "needs_knowledge"
+    ],
+    "title": "IntentOutput",
+    "type": "object"
+  },
+  "risk": {
+    "$defs": {
+      "RiskLevel": {
+        "enum": [
+          "LOW",
+          "MODERATE",
+          "HIGH",
+          "UNKNOWN"
+        ],
+        "title": "RiskLevel",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "risk",
+        "default": "risk",
+        "title": "Kind",
+        "type": "string"
+      },
+      "level": {
+        "$ref": "#/$defs/RiskLevel"
+      },
+      "needs_human_support": {
+        "title": "Needs Human Support",
+        "type": "boolean"
+      },
+      "reason_codes": {
+        "items": {
+          "enum": [
+            "EXPLICIT_DANGER",
+            "MODEL_CONCERN",
+            "ASSESSMENT_UNAVAILABLE",
+            "NO_SIGNAL",
+            "HUMAN_REQUEST"
+          ],
+          "type": "string"
+        },
+        "title": "Reason Codes",
+        "type": "array"
+      }
+    },
+    "required": [
+      "level",
+      "needs_human_support",
+      "reason_codes"
+    ],
+    "title": "RiskOutput",
+    "type": "object"
+  },
+  "review": {
+    "$defs": {
+      "Verdict": {
+        "enum": [
+          "PASS",
+          "RETRY",
+          "REJECT"
+        ],
+        "title": "Verdict",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "const": "review",
+        "default": "review",
+        "title": "Kind",
+        "type": "string"
+      },
+      "candidate_id": {
+        "title": "Candidate Id",
+        "type": "string"
+      },
+      "content_hash": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Content Hash",
+        "type": "string"
+      },
+      "verdict": {
+        "$ref": "#/$defs/Verdict"
+      },
+      "reason_codes": {
+        "default": [],
+        "items": {
+          "enum": [
+            "UNSAFE_INSTRUCTION",
+            "DIAGNOSIS",
+            "PRIVACY_DISCLOSURE",
+            "INTERNAL_LABEL",
+            "SAFETY_GUIDANCE_MISSING",
+            "MOCK_REJECTION",
+            "APPROVED_TEMPLATE",
+            "UNSUPPORTED_CLAIM"
+          ],
+          "type": "string"
+        },
+        "title": "Reason Codes",
+        "type": "array"
+      },
+      "authority": {
+        "default": "MODEL",
+        "enum": [
+          "MODEL",
+          "RULE",
+          "TEMPLATE"
+        ],
+        "title": "Authority",
+        "type": "string"
+      },
+      "citations_hash": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Citations Hash"
+      }
+    },
+    "required": [
+      "candidate_id",
+      "content_hash",
+      "verdict"
+    ],
+    "title": "ReviewOutput",
+    "type": "object"
+  },
+  "task_plan": {
+    "$defs": {
+      "AgentName": {
+        "enum": [
+          "IntentAgent",
+          "RiskAgent",
+          "ContextAgent",
+          "ResponseAgent",
+          "OutputReviewer",
+          "Delivery"
+        ],
+        "title": "AgentName",
+        "type": "string"
+      },
+      "Task": {
+        "additionalProperties": false,
+        "properties": {
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "agent",
+              "arbitration",
+              "attention",
+              "delivery",
+              "template"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "agent": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/AgentName"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "status": {
+            "$ref": "#/$defs/TaskStatus",
+            "default": "PENDING"
+          },
+          "enabled": {
+            "default": true,
+            "title": "Enabled",
+            "type": "boolean"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "safety_checkpoint": {
+            "default": false,
+            "title": "Safety Checkpoint",
+            "type": "boolean"
+          },
+          "started_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Started Ms"
+          },
+          "finished_ms": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Finished Ms"
+          },
+          "failure_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Failure Code"
+          }
+        },
+        "required": [
+          "task_id",
+          "kind",
+          "reason"
+        ],
+        "title": "Task",
+        "type": "object"
+      },
+      "TaskDependency": {
+        "additionalProperties": false,
+        "properties": {
+          "task_id": {
+            "title": "Task Id",
+            "type": "string"
+          },
+          "depends_on": {
+            "title": "Depends On",
+            "type": "string"
+          },
+          "allowed_statuses": {
+            "default": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ],
+            "items": {
+              "$ref": "#/$defs/TaskStatus"
+            },
+            "title": "Allowed Statuses",
+            "type": "array"
+          }
+        },
+        "required": [
+          "task_id",
+          "depends_on"
+        ],
+        "title": "TaskDependency",
+        "type": "object"
+      },
+      "TaskStatus": {
+        "enum": [
+          "PENDING",
+          "RUNNING",
+          "SUCCEEDED",
+          "DEGRADED",
+          "FAILED",
+          "SKIPPED",
+          "BLOCKED",
+          "CANCELLED"
+        ],
+        "title": "TaskStatus",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "plan_id": {
+        "title": "Plan Id",
+        "type": "string"
+      },
+      "version": {
+        "default": "campusbridge-task-plan-v1",
+        "title": "Version",
+        "type": "string"
+      },
+      "orchestration": {
+        "enum": [
+          "sequential",
+          "dynamic"
+        ],
+        "title": "Orchestration",
+        "type": "string"
+      },
+      "independent_analysis": {
+        "title": "Independent Analysis",
+        "type": "boolean"
+      },
+      "tasks": {
+        "items": {
+          "$ref": "#/$defs/Task"
+        },
+        "title": "Tasks",
+        "type": "array"
+      },
+      "dependencies": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/TaskDependency"
+        },
+        "title": "Dependencies",
+        "type": "array"
+      },
+      "max_task_executions": {
+        "title": "Max Task Executions",
+        "type": "integer"
+      },
+      "max_model_calls": {
+        "title": "Max Model Calls",
+        "type": "integer"
+      },
+      "max_token_reservation": {
+        "title": "Max Token Reservation",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "orchestration",
+      "independent_analysis",
+      "tasks",
+      "max_task_executions",
+      "max_model_calls",
+      "max_token_reservation"
+    ],
+    "title": "ExecutionPlan",
+    "type": "object"
+  },
+  "arbitration_input": {
+    "$defs": {
+      "ContextOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "context",
+            "default": "context",
+            "title": "Kind",
+            "type": "string"
+          },
+          "route": {
+            "$ref": "#/$defs/Route"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/$defs/HistoryItem"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "knowledge": {
+            "items": {
+              "$ref": "#/$defs/KnowledgeItem"
+            },
+            "title": "Knowledge",
+            "type": "array"
+          },
+          "degraded": {
+            "default": false,
+            "title": "Degraded",
+            "type": "boolean"
+          },
+          "retrieval_status": {
+            "default": "SKIPPED",
+            "enum": [
+              "SKIPPED",
+              "HIT",
+              "NO_HIT",
+              "ERROR"
+            ],
+            "title": "Retrieval Status",
+            "type": "string"
+          },
+          "query_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query Hash"
+          }
+        },
+        "required": [
+          "route",
+          "history",
+          "knowledge"
+        ],
+        "title": "ContextOutput",
+        "type": "object"
+      },
+      "HistoryItem": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "user",
+              "assistant"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "text"
+        ],
+        "title": "HistoryItem",
+        "type": "object"
+      },
+      "IntentKind": {
+        "enum": [
+          "GENERAL",
+          "SUPPORT",
+          "CAMPUS_SERVICE",
+          "URGENT"
+        ],
+        "title": "IntentKind",
+        "type": "string"
+      },
+      "IntentOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "intent",
+            "default": "intent",
+            "title": "Kind",
+            "type": "string"
+          },
+          "intent": {
+            "$ref": "#/$defs/IntentKind"
+          },
+          "needs_knowledge": {
+            "title": "Needs Knowledge",
+            "type": "boolean"
+          },
+          "needs_human_support": {
+            "default": false,
+            "title": "Needs Human Support",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "intent",
+          "needs_knowledge"
+        ],
+        "title": "IntentOutput",
+        "type": "object"
+      },
+      "KnowledgeItem": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "string"
+          },
+          "document_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Document Id"
+          },
+          "source_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Hash"
+          },
+          "chunk_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Chunk Index"
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Start"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "End"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Score"
+          }
+        },
+        "required": [
+          "source_id",
+          "title",
+          "text",
+          "revision"
+        ],
+        "title": "KnowledgeItem",
+        "type": "object"
+      },
+      "RiskLevel": {
+        "enum": [
+          "LOW",
+          "MODERATE",
+          "HIGH",
+          "UNKNOWN"
+        ],
+        "title": "RiskLevel",
+        "type": "string"
+      },
+      "RiskOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "risk",
+            "default": "risk",
+            "title": "Kind",
+            "type": "string"
+          },
+          "level": {
+            "$ref": "#/$defs/RiskLevel"
+          },
+          "needs_human_support": {
+            "title": "Needs Human Support",
+            "type": "boolean"
+          },
+          "reason_codes": {
+            "items": {
+              "enum": [
+                "EXPLICIT_DANGER",
+                "MODEL_CONCERN",
+                "ASSESSMENT_UNAVAILABLE",
+                "NO_SIGNAL",
+                "HUMAN_REQUEST"
+              ],
+              "type": "string"
+            },
+            "title": "Reason Codes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "level",
+          "needs_human_support",
+          "reason_codes"
+        ],
+        "title": "RiskOutput",
+        "type": "object"
+      },
+      "Route": {
+        "enum": [
+          "CONVERSATION",
+          "KNOWLEDGE_SUPPORT",
+          "HUMAN_SUPPORT"
+        ],
+        "title": "Route",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "message": {
+        "title": "Message",
+        "type": "string"
+      },
+      "history": {
+        "items": {
+          "$ref": "#/$defs/HistoryItem"
+        },
+        "title": "History",
+        "type": "array"
+      },
+      "intent": {
+        "$ref": "#/$defs/IntentOutput"
+      },
+      "risk": {
+        "$ref": "#/$defs/RiskOutput"
+      },
+      "failure_codes": {
+        "default": [],
+        "items": {
+          "type": "string"
+        },
+        "title": "Failure Codes",
+        "type": "array"
+      },
+      "context": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ContextOutput"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "message",
+      "history",
+      "intent",
+      "risk"
+    ],
+    "title": "ArbitrationInput",
+    "type": "object"
+  },
+  "arbitration_decision": {
+    "$defs": {
+      "ContextOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "context",
+            "default": "context",
+            "title": "Kind",
+            "type": "string"
+          },
+          "route": {
+            "$ref": "#/$defs/Route"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/$defs/HistoryItem"
+            },
+            "title": "History",
+            "type": "array"
+          },
+          "knowledge": {
+            "items": {
+              "$ref": "#/$defs/KnowledgeItem"
+            },
+            "title": "Knowledge",
+            "type": "array"
+          },
+          "degraded": {
+            "default": false,
+            "title": "Degraded",
+            "type": "boolean"
+          },
+          "retrieval_status": {
+            "default": "SKIPPED",
+            "enum": [
+              "SKIPPED",
+              "HIT",
+              "NO_HIT",
+              "ERROR"
+            ],
+            "title": "Retrieval Status",
+            "type": "string"
+          },
+          "query_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query Hash"
+          }
+        },
+        "required": [
+          "route",
+          "history",
+          "knowledge"
+        ],
+        "title": "ContextOutput",
+        "type": "object"
+      },
+      "DecisionEvidence": {
+        "additionalProperties": false,
+        "properties": {
+          "origin": {
+            "enum": [
+              "rule",
+              "agent",
+              "knowledge"
+            ],
+            "title": "Origin",
+            "type": "string"
+          },
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "content_hash": {
+            "title": "Content Hash",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "origin",
+          "source_id",
+          "content_hash",
+          "reason"
+        ],
+        "title": "DecisionEvidence",
+        "type": "object"
+      },
+      "HistoryItem": {
+        "additionalProperties": false,
+        "properties": {
+          "role": {
+            "enum": [
+              "user",
+              "assistant"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "text"
+        ],
+        "title": "HistoryItem",
+        "type": "object"
+      },
+      "KnowledgeItem": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "string"
+          },
+          "document_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Document Id"
+          },
+          "source_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Hash"
+          },
+          "chunk_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Chunk Index"
+          },
+          "start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Start"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "End"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Score"
+          }
+        },
+        "required": [
+          "source_id",
+          "title",
+          "text",
+          "revision"
+        ],
+        "title": "KnowledgeItem",
+        "type": "object"
+      },
+      "RiskLevel": {
+        "enum": [
+          "LOW",
+          "MODERATE",
+          "HIGH",
+          "UNKNOWN"
+        ],
+        "title": "RiskLevel",
+        "type": "string"
+      },
+      "RiskOutput": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "risk",
+            "default": "risk",
+            "title": "Kind",
+            "type": "string"
+          },
+          "level": {
+            "$ref": "#/$defs/RiskLevel"
+          },
+          "needs_human_support": {
+            "title": "Needs Human Support",
+            "type": "boolean"
+          },
+          "reason_codes": {
+            "items": {
+              "enum": [
+                "EXPLICIT_DANGER",
+                "MODEL_CONCERN",
+                "ASSESSMENT_UNAVAILABLE",
+                "NO_SIGNAL",
+                "HUMAN_REQUEST"
+              ],
+              "type": "string"
+            },
+            "title": "Reason Codes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "level",
+          "needs_human_support",
+          "reason_codes"
+        ],
+        "title": "RiskOutput",
+        "type": "object"
+      },
+      "Route": {
+        "enum": [
+          "CONVERSATION",
+          "KNOWLEDGE_SUPPORT",
+          "HUMAN_SUPPORT"
+        ],
+        "title": "Route",
+        "type": "string"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "stage": {
+        "enum": [
+          "analysis",
+          "evidence"
+        ],
+        "title": "Stage",
+        "type": "string"
+      },
+      "final_route": {
+        "$ref": "#/$defs/Route"
+      },
+      "risk": {
+        "$ref": "#/$defs/RiskOutput"
+      },
+      "strategy": {
+        "title": "Strategy",
+        "type": "string"
+      },
+      "conflicts": {
+        "default": [],
+        "items": {
+          "type": "string"
+        },
+        "title": "Conflicts",
+        "type": "array"
+      },
+      "reasons": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Reasons",
+        "type": "array"
+      },
+      "adopted_evidence": {
+        "items": {
+          "$ref": "#/$defs/DecisionEvidence"
+        },
+        "title": "Adopted Evidence",
+        "type": "array"
+      },
+      "rejected_source_ids": {
+        "default": [],
+        "items": {
+          "type": "string"
+        },
+        "title": "Rejected Source Ids",
+        "type": "array"
+      },
+      "context": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ContextOutput"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "response_message": {
+        "title": "Response Message",
+        "type": "string"
+      }
+    },
+    "required": [
+      "stage",
+      "final_route",
+      "risk",
+      "strategy",
+      "reasons",
+      "adopted_evidence",
+      "response_message"
+    ],
+    "title": "ArbitrationDecision",
+    "type": "object"
+  }
+}
