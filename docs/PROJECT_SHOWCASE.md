@@ -12,11 +12,13 @@
 
 ## 辅导员工作台
 
-以下桌面图来自原Stage3浏览器验收，保持原字节；界面设计与当前工作台一致，历史工单为虚构内容。
+工作台总览于2026-10-14从当前MockModel + dynamic演示页面重新截取，完整展示工单状态与四条操作历史，采用PNG保存；演示账号和工单内容均为虚构。
 
-![辅导员工作台](assets/showcase/counselor-closed.jpg)
+![辅导员工作台](assets/showcase/counselor-workbench.png)
 
 ## 完整工单流程
+
+以下四张状态详情图保留Stage3浏览器验收原始字节。
 
 | 状态 | 服务端行为 |
 |---|---|

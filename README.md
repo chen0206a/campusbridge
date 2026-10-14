@@ -28,7 +28,7 @@ Python · FastAPI · Pydantic · SQLAlchemy · SQLite FTS5/BM25 · React · Type
 
 辅导员工作台与完整处理记录：
 
-![Counselor workspace](docs/assets/showcase/counselor-closed.jpg)
+![Counselor workspace](docs/assets/showcase/counselor-workbench.png)
 
 [来源详情、移动端与 OPEN/CLAIMED/IN_PROGRESS/CLOSED 全流程截图](docs/PROJECT_SHOWCASE.md)。全部演示账号、表达和工单为虚构数据。
 

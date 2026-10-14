@@ -19,7 +19,7 @@ CampusBridge connects student conversations, cited campus knowledge, and a couns
 
 ![Student chat](docs/assets/showcase/student-chat.jpg)
 
-![Counselor workspace](docs/assets/showcase/counselor-closed.jpg)
+![Counselor workspace](docs/assets/showcase/counselor-workbench.png)
 
 [More screenshots](docs/PROJECT_SHOWCASE.md) · [Sequence and execution examples](docs/EXECUTION_EXAMPLES.md) · [Demo script](docs/DEMO_SCRIPT.md)
 
