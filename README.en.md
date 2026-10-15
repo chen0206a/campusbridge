@@ -1,5 +1,7 @@
 # CampusBridge
 
+Stage D1 adds optional MySQL 8 business persistence, Alembic migrations, row-level concurrency controls and a separate SQLite knowledge index. SQLite + MockModel remains available locally. [Database migration and operational boundaries](docs/STAGE_D1_DATABASE.md).
+
 Optional CPU Dense and RRF Hybrid retrieval are available through the existing KnowledgePort. On 72 frozen queries, BM25 / Dense / Hybrid chunk Recall@3 is 76.79% / 91.07% / 89.29%; on 32 held-out queries it is 83.33% / 85.42% / 89.58%. BM25 remains the dependency-free default. [Implementation and reproduction](docs/RAG_STAGE_B.md) · [Complete retrieval results](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md).
 
 [![CampusBridge CI](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml)

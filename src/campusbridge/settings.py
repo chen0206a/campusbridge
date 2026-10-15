@@ -10,6 +10,14 @@ class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     environment: Literal["development", "test"] = "development"
     database_path: Path | None = None
+    database_url: SecretStr | None = Field(default=None, repr=False, exclude=True)
+    knowledge_database_path: Path | None = None
+    db_pool_size: int = Field(default=10, ge=1, le=100)
+    db_max_overflow: int = Field(default=10, ge=0, le=100)
+    db_pool_timeout: int = Field(default=5, ge=1, le=30)
+    db_pool_recycle: int = Field(default=1800, ge=30, le=3600)
+    db_connect_timeout: int = Field(default=5, ge=1, le=30)
+    db_io_timeout: int = Field(default=10, ge=6, le=60)
     model_provider: Literal["mock", "openai-compatible"] = "mock"
     endpoint: str | None = Field(default=None, repr=False)
     model: str | None = Field(default=None, max_length=120)
@@ -40,10 +48,24 @@ class Settings(BaseModel):
 
     @model_validator(mode="after")
     def isolated_database(self):
-        if self.environment == "test" and self.database_path is None:
+        if self.database_url is not None and not self.database_url.get_secret_value():
+            raise ValueError("DATABASE_URL_MUST_NOT_BE_EMPTY")
+        if self.database_url:
+            from sqlalchemy.engine import make_url
+            try: url = make_url(self.database_url.get_secret_value())
+            except Exception: raise ValueError("DATABASE_URL_INVALID") from None
+            if url.drivername != "mysql+pymysql" or not url.database or not url.username:
+                raise ValueError("DATABASE_URL_REQUIRES_MYSQL_PYMYSQL_DATABASE_USER")
+            if self.environment == "test" and (not url.database.startswith("cb_d1_test_") or not self.knowledge_database_path):
+                raise ValueError("TEST_MYSQL_REQUIRES_ISOLATED_NAME_AND_KNOWLEDGE_PATH")
+        if self.environment == "test" and self.database_path is None and self.database_url is None:
             raise ValueError("Test applications require an explicit isolated database_path")
-        if self.environment == "test" and "development" in self.database_path.parts:
+        if self.environment == "test" and self.database_path and "development" in self.database_path.parts:
             raise ValueError("Tests cannot use the development database")
+        if self.environment == "test" and self.knowledge_database_path and "development" in self.knowledge_database_path.parts:
+            raise ValueError("Tests cannot use development knowledge")
+        if self.knowledge_file.resolve() == self.db_file.resolve():
+            raise ValueError("BUSINESS_AND_KNOWLEDGE_DATABASES_MUST_BE_SEPARATE")
         if self.model_provider == "openai-compatible":
             if not self.endpoint or not self.model or not self.api_key.get_secret_value():
                 raise ValueError("Provider requires CAMPUSBRIDGE_ENDPOINT / MODEL / API_KEY")
@@ -58,6 +80,10 @@ class Settings(BaseModel):
     @property
     def db_file(self):
         return self.database_path or Path("data/development/campusbridge.sqlite3")
+
+    @property
+    def knowledge_file(self):
+        return self.knowledge_database_path or self.db_file.with_name(self.db_file.stem + ".knowledge.sqlite3")
 
     @classmethod
     def from_environment(cls):
@@ -78,6 +104,10 @@ class Settings(BaseModel):
             "dense_min_score": "CAMPUSBRIDGE_DENSE_MIN_SCORE",
             "embedding_model_path": "CAMPUSBRIDGE_EMBEDDING_MODEL_PATH",
             "embedding_threads": "CAMPUSBRIDGE_EMBEDDING_THREADS"})
+        fields.update({"database_url": "CAMPUSBRIDGE_DATABASE_URL", "knowledge_database_path": "CAMPUSBRIDGE_KNOWLEDGE_DATABASE_PATH",
+            "db_pool_size": "CAMPUSBRIDGE_DB_POOL_SIZE", "db_max_overflow": "CAMPUSBRIDGE_DB_MAX_OVERFLOW",
+            "db_pool_timeout": "CAMPUSBRIDGE_DB_POOL_TIMEOUT", "db_pool_recycle": "CAMPUSBRIDGE_DB_POOL_RECYCLE",
+            "db_connect_timeout": "CAMPUSBRIDGE_DB_CONNECT_TIMEOUT", "db_io_timeout": "CAMPUSBRIDGE_DB_IO_TIMEOUT"})
         values = {key: os.environ[name] for key, name in fields.items() if name in os.environ}
         if values.get("model_provider") == "openai-compatible":
             values.setdefault("model_timeout", 20)

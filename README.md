@@ -147,6 +147,10 @@ GitHub Actions 配置覆盖 Ubuntu/Windows、Python 3.12/3.13 后端，以及 No
 
 [Stage B实现与复现](docs/RAG_STAGE_B.md) · [三模式完整结果](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md)。原72条BM25 / Dense / Hybrid Recall@3为 **76.79% / 91.07% / 89.29%**；预先冻结的32条Holdout为 **83.33% / 85.42% / 89.58%**。默认BM25，安装本地CPU Embedding后可通过环境变量切换，继续使用原引用和审核流程。
 
+## 业务数据库
+
+Stage D1新增可选MySQL8业务库与Alembic迁移，知识检索保留独立SQLite，支持工单行锁、持久幂等约束和单Runtime启动保护。[迁移、配置与风险清单](docs/STAGE_D1_DATABASE.md) · [D1验收报告](experiments/stage-d1/20261015-v1/HANDOFF.md)。本地默认仍用SQLite＋MockModel。
+
 ## 可选真实模型
 
 从服务端进程环境传入 `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`、`CAMPUSBRIDGE_ENDPOINT`、`CAMPUSBRIDGE_MODEL`、`CAMPUSBRIDGE_API_KEY`；DeepSeek 使用 `CAMPUSBRIDGE_THINKING_MODE=disabled`。密钥只放服务端环境，前端没有模型密钥。

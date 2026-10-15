@@ -10,7 +10,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 
 from campusbridge.contracts import AccessDenied, FINAL_STATES, NotFound, RunState, StateConflict
-from campusbridge.db import Database
+from campusbridge.db import Database, KnowledgeDatabase
 from campusbridge.knowledge import DemoKnowledge
 from campusbridge.models import MockModel
 from campusbridge.provider import OpenAICompatibleProvider
@@ -46,30 +46,38 @@ def stream_event(name, value):
 
 def create_app(settings=None, model=None, knowledge=None):
     settings = settings or Settings.from_environment()
-    database = Database(settings.db_file)
+    database = Database.business(settings)
     authentication = Authentication(database, settings)
     if settings.seed_demo:
         authentication.seed()
     store = Store(database)
     if model is None:
         model = OpenAICompatibleProvider(settings) if settings.model_provider == "openai-compatible" else MockModel()
+    knowledge_database = None
     if knowledge is None:
-        knowledge = configured_knowledge(database, settings) if settings.knowledge_backend == "fts5" else DemoKnowledge()
+        if settings.knowledge_backend == "fts5":
+            knowledge_database = KnowledgeDatabase(settings.knowledge_file)
+        knowledge = configured_knowledge(knowledge_database, settings) if settings.knowledge_backend == "fts5" else DemoKnowledge()
         if settings.knowledge_backend == "fts5":
             knowledge.import_documents(bundled_documents())
     runtime = CampusRuntime(store, model, knowledge, settings)
 
     @asynccontextmanager
     async def lifetime(app):
-        store.recover_interrupted()
-        yield
-        await runtime.shutdown()
-        database.close()
+        try:
+            database.acquire_runtime_owner(enforce=True)
+            store.recover_interrupted()
+            yield
+        finally:
+            await runtime.shutdown()
+            if knowledge_database is not None: knowledge_database.close()
+            database.close()
 
     app = FastAPI(title="CampusBridge", version="0.1.0", lifespan=lifetime,
                   description="校园学生支持：多 Agent 协作、实际回复审核和人工工单。默认离线 MockModel。")
     app.state.database, app.state.store, app.state.runtime, app.state.authentication = database, store, runtime, authentication
     app.state.knowledge = knowledge
+    app.state.knowledge_database = knowledge_database
     bearer = HTTPBearer(auto_error=False)
 
     def local_request(request: Request):

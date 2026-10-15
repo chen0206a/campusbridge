@@ -39,6 +39,10 @@ BGE-small-zh-v1.5 is published by BAAI under MIT: [official model card](https://
 
 Optional runtime packages are pinned in `requirements-rag.lock`; [installed metadata and upstream links](docs/RAG_DEPENDENCIES.json) record the complete added package set. Primary packages: Torch (BSD-3-Clause), Transformers and Hugging Face Hub (Apache-2.0), NumPy and psutil (BSD-3-Clause). Transitive packages retain their own notices, including regex (Apache-2.0 AND CNRI-Python) and tqdm (MPL-2.0 AND MIT). The base dependency lock is unchanged; these distributions are installed, not vendored.
 
+## Business database dependencies
+
+Stage D1 adds Alembic 1.20.0 (MIT), Mako 1.4.3 (MIT) and MarkupSafe 3.0.3 (BSD-3-Clause) to the base lock. Optional MySQL dependencies are in requirements-mysql.lock: PyMySQL (MIT), cryptography (Apache-2.0 OR BSD-3-Clause), cffi (MIT) and pycparser (BSD-3-Clause). [Installed metadata](docs/DATABASE_DEPENDENCIES.json) records upstream links and versions. The locally installed MySQL Community Server 8.0.42 used for acceptance retains its GPL license and is not bundled in the source repository.
+
 ## Frontend dependency graph
 
 212 locked package entries, including development/build/test dependencies and platform-specific optional packages. Each package version, license and registry source is recorded in [DEPENDENCY_LICENSES.json](docs/DEPENDENCY_LICENSES.json) and frontend/package-lock.json.

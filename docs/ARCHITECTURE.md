@@ -64,6 +64,8 @@ RETRY 最多触发一次重新生成；REJECT、重复拒审、异常、超时�
 
 ## 数据模型与事务
 
+Stage D1增加MySQL8业务数据库适配与Alembic版本迁移，应用启动验证Schema；知识文档、FTS5和向量缓存使用独立SQLite索引。MySQL用父记录/目标行锁、唯一约束及有限死锁重试保证短事务更新；一个专用数据库锁连接限制同配置Runtime并行启动。精确JSON文本与JSON_VALID约束保留审批、Trace的数字与Hash。轻量SQLite模式保留，配置、切换步骤与风险见[数据库说明](STAGE_D1_DATABASE.md)。
+
 | 模型 | 关系/职责 |
 |---|---|
 | Account / Student / LoginToken | 角色、校园范围、虚构学生资料、哈希 token |
