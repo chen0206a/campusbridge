@@ -1,0 +1,14 @@
+# Dedicated disposable *project*, not disposable volumes: no down -v.
+# Synthetic workload capacity test; security-limit correctness is tested separately.
+services:
+  mysql:
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_0900_bin, --skip-log-bin, --slow-query-log=ON, --long-query-time=0.1, --log-output=TABLE]
+  backend:
+    environment:
+      CAMPUSBRIDGE_MODEL_PROVIDER: mock
+      CAMPUSBRIDGE_API_KEY: ''
+      CAMPUSBRIDGE_LOGIN_LIMIT: '1000'
+      CAMPUSBRIDGE_LOGIN_PEER_LIMIT: '10000'
+      CAMPUSBRIDGE_MESSAGE_LIMIT: '1000'
+    volumes:
+      - .:/checks:ro

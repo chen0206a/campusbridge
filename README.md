@@ -20,6 +20,10 @@ Python · FastAPI · Pydantic · SQLAlchemy · SQLite FTS5/BM25 · React · Type
 - **完整产品**：学生端登录、历史、多轮、POST/fetch SSE、刷新与断连恢复；辅导员工单筛选、认领、处理、关闭和操作历史。
 - **可复现评测**：冻结数据/Prompt/源码绑定、原始模型输出与 Trace、逐条计分及 SHA-256；Mock 回归与自然/受控故障分别统计。
 
+工程部署使用 MySQL 业务库、独立 SQLite 知识索引、Redis 缓存与原子限流，单 Backend Docker Compose 可直接启动。[D3 部署说明](docs/STAGE_D3_COMPOSE.md) · [D4 单实例 HTTP 负载与恢复验收](docs/STAGE_D4_RELIABILITY.md)。D4 使用独立合成账户与 MockModel，保留逐请求耗时、资源指标、工单竞争和幂等检查结果。
+
+[D4 实测](experiments/stage-d4/20261015-v1/HANDOFF.md)：同机 Mock 短时负载共 2,796 个 HTTP 请求零失败，16 路工单竞争仅 1 次认领成功；100 VU 时 15.44 RPS、P95 15.75s，记录了随并发升高的尾延迟和恢复行为。
+
 ## 界面展示
 
 学生对话与可追溯知识引用：
