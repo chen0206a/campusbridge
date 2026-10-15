@@ -1,0 +1,156 @@
+name: campusbridge
+
+x-backend-image: &backend-image
+  image: campusbridge-backend:${CAMPUSBRIDGE_IMAGE_TAG:-d3-local}
+  build:
+    context: .
+    dockerfile: Dockerfile
+    target: ${CAMPUSBRIDGE_BUILD_TARGET:-runtime}
+
+services:
+  bootstrap:
+    <<: *backend-image
+    command: [python, -m, campusbridge.deployment, bootstrap]
+    user: '10001:10001'
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    network_mode: none
+    volumes:
+      - root_credentials:/run/cb-root
+      - app_credentials:/run/cb-app
+      - migrator_credentials:/run/cb-migrator
+      - redis_credentials:/run/cb-redis
+    restart: 'no'
+
+  mysql:
+    image: campusbridge-mysql:${CAMPUSBRIDGE_IMAGE_TAG:-d3-local}
+    build:
+      context: .
+      dockerfile: deploy/mysql.Dockerfile
+    user: mysql
+    command: [--character-set-server=utf8mb4, --collation-server=utf8mb4_0900_bin, --skip-log-bin]
+    environment:
+      MYSQL_DATABASE: campusbridge
+      MYSQL_ROOT_PASSWORD_FILE: /run/cb-root/password
+    depends_on:
+      bootstrap: {condition: service_completed_successfully}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - root_credentials:/run/cb-root:ro
+      - app_credentials:/run/cb-app:ro
+      - migrator_credentials:/run/cb-migrator:ro
+    networks: [data]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD-SHELL, 'MYSQL_PWD="$$(cat /run/cb-root/password)" mysql --protocol=TCP -h 127.0.0.1 -u root --silent --skip-column-names -e "SELECT 1" | grep -qx 1']
+      interval: 5s
+      timeout: 4s
+      retries: 40
+      start_period: 30s
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.2-alpine
+    user: redis
+    entrypoint: [sh, /opt/redis-start.sh]
+    depends_on:
+      bootstrap: {condition: service_completed_successfully}
+    volumes:
+      - redis_data:/data
+      - redis_credentials:/run/cb-redis:ro
+      - ./deploy/redis-start.sh:/opt/redis-start.sh:ro
+      - ./deploy/redis-health.sh:/opt/redis-health.sh:ro
+    networks: [data]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, sh, /opt/redis-health.sh]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  migrate:
+    <<: *backend-image
+    command: [python, -m, campusbridge.deployment, migrate]
+    depends_on:
+      mysql: {condition: service_healthy}
+    volumes:
+      - migrator_credentials:/run/cb-migrator:ro
+    networks: [data]
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: 'no'
+
+  backend:
+    <<: *backend-image
+    command: [python, -m, campusbridge.deployment, serve]
+    environment:
+      CAMPUSBRIDGE_KNOWLEDGE_DATABASE_PATH: /var/lib/campusbridge/knowledge/index.sqlite3
+      CAMPUSBRIDGE_TRUSTED_PROXY_HOST: frontend
+      CAMPUSBRIDGE_MODEL_PROVIDER: ${CAMPUSBRIDGE_MODEL_PROVIDER:-mock}
+      CAMPUSBRIDGE_ENDPOINT: ${CAMPUSBRIDGE_ENDPOINT:-https://api.deepseek.com/v1}
+      CAMPUSBRIDGE_MODEL: ${CAMPUSBRIDGE_MODEL:-}
+      CAMPUSBRIDGE_API_KEY: ${CAMPUSBRIDGE_API_KEY:-}
+      CAMPUSBRIDGE_THINKING_MODE: disabled
+      CAMPUSBRIDGE_SEED_DEMO: 'true'
+      CAMPUSBRIDGE_ORCHESTRATION: dynamic
+      CAMPUSBRIDGE_RETRIEVAL_MODE: ${CAMPUSBRIDGE_RETRIEVAL_MODE:-bm25}
+      CAMPUSBRIDGE_RETRIEVAL_FALLBACK: ${CAMPUSBRIDGE_RETRIEVAL_FALLBACK:-error}
+      CAMPUSBRIDGE_DENSE_MIN_SCORE: '0.50'
+      CAMPUSBRIDGE_EMBEDDING_MODEL_PATH: /models/bge-small-zh-v1.5
+      CAMPUSBRIDGE_REDIS_CACHE_ENABLED: 'true'
+      CAMPUSBRIDGE_REDIS_RATE_LIMIT_ENABLED: 'true'
+      CAMPUSBRIDGE_LOGIN_LIMIT: ${CAMPUSBRIDGE_LOGIN_LIMIT:-10}
+      CAMPUSBRIDGE_LOGIN_PEER_LIMIT: ${CAMPUSBRIDGE_LOGIN_PEER_LIMIT:-100}
+      CAMPUSBRIDGE_MESSAGE_LIMIT: ${CAMPUSBRIDGE_MESSAGE_LIMIT:-20}
+    depends_on:
+      migrate: {condition: service_completed_successfully}
+      redis: {condition: service_healthy}
+    volumes:
+      - knowledge_data:/var/lib/campusbridge/knowledge
+      - app_credentials:/run/cb-app:ro
+      - redis_credentials:/run/cb-redis:ro
+    networks: [data, web]
+    read_only: true
+    tmpfs: ['/tmp:size=64m,mode=1777']
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/readyz',timeout=3).read()"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+      start_period: 15s
+    restart: unless-stopped
+
+  frontend:
+    image: campusbridge-frontend:${CAMPUSBRIDGE_IMAGE_TAG:-d3-local}
+    build:
+      context: .
+      dockerfile: deploy/frontend.Dockerfile
+    depends_on:
+      backend: {condition: service_healthy}
+    ports: ['127.0.0.1:${CAMPUSBRIDGE_WEB_PORT:-8080}:8080']
+    networks: [web]
+    read_only: true
+    tmpfs: ['/tmp:size=32m,mode=1777']
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+
+networks:
+  data:
+    internal: true
+  web: {}
+
+volumes:
+  mysql_data: {}
+  redis_data: {}
+  knowledge_data: {}
+  root_credentials: {}
+  app_credentials: {}
+  migrator_credentials: {}
+  redis_credentials: {}

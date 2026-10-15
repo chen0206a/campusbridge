@@ -10,6 +10,7 @@ from campusbridge.api import create_app
 from campusbridge.contracts import AccessDenied, digest
 from campusbridge.db import Account, AgentRun, Conversation, LoginToken, Message, Student
 from campusbridge.settings import Settings
+from campusbridge.transport import require_transport
 
 
 def create_web_app(settings=None, model=None, knowledge=None, static_directory=None):
@@ -19,9 +20,7 @@ def create_web_app(settings=None, model=None, knowledge=None, static_directory=N
     bearer = HTTPBearer(auto_error=False)
 
     def credential(request: Request, value: HTTPAuthorizationCredentials | None = Depends(bearer)):
-        allowed = {"127.0.0.1", "::1"} | ({"testclient"} if config.environment == "test" else set())
-        if request.client is None or request.client.host not in allowed:
-            raise HTTPException(403, "LOCAL_DEVELOPMENT_ONLY")
+        require_transport(request, config)
         if value is None:
             raise HTTPException(401, "AUTHENTICATION_REQUIRED")
         try:

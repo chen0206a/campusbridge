@@ -22,6 +22,7 @@ from campusbridge.settings import Settings
 from campusbridge.store import Store
 from campusbridge.redis_support import RateLimitError, RedisSupport
 from campusbridge.retrieval_cache import cached_knowledge
+from campusbridge.transport import require_transport, rate_peer
 
 
 class InputModel(BaseModel):
@@ -87,11 +88,7 @@ def create_app(settings=None, model=None, knowledge=None):
     bearer = HTTPBearer(auto_error=False)
 
     def local_request(request: Request):
-        allowed = {"127.0.0.1", "::1"}
-        if settings.environment == "test":
-            allowed.add("testclient")
-        if request.client is None or request.client.host not in allowed:
-            raise HTTPException(403, "LOCAL_DEVELOPMENT_ONLY")
+        require_transport(request, settings)
 
     def actor(request: Request, credential: HTTPAuthorizationCredentials | None = Depends(bearer)):
         local_request(request)
@@ -146,7 +143,7 @@ def create_app(settings=None, model=None, knowledge=None):
     @app.post("/api/auth/login")
     def login(body: LoginInput, request: Request):
         local_request(request)
-        redis_support.login(body.username, request.client.host)
+        redis_support.login(body.username, rate_peer(request, settings))
         try:
             return authentication.login(body.username, body.password)
         except AccessDenied:

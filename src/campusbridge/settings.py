@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, hide_input_in_errors=True)
     environment: Literal["development", "test"] = "development"
+    trusted_proxy_host: str | None = Field(default=None, pattern=r"^[a-zA-Z][a-zA-Z0-9.-]{0,62}$")
     database_path: Path | None = None
     database_url: SecretStr | None = Field(default=None, repr=False, exclude=True)
     knowledge_database_path: Path | None = None
@@ -107,6 +108,7 @@ class Settings(BaseModel):
     @classmethod
     def from_environment(cls):
         fields = {"environment": "CAMPUSBRIDGE_ENV", "database_path": "CAMPUSBRIDGE_DATABASE_PATH",
+                  "trusted_proxy_host": "CAMPUSBRIDGE_TRUSTED_PROXY_HOST",
                   "model_provider": "CAMPUSBRIDGE_MODEL_PROVIDER", "seed_demo": "CAMPUSBRIDGE_SEED_DEMO",
                   "endpoint": "CAMPUSBRIDGE_ENDPOINT", "model": "CAMPUSBRIDGE_MODEL", "api_key": "CAMPUSBRIDGE_API_KEY",
                   "provider_json_mode": "CAMPUSBRIDGE_JSON_MODE", "model_timeout": "CAMPUSBRIDGE_MODEL_TIMEOUT",

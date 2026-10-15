@@ -38,7 +38,7 @@ def server():
 def setup(server, tmp_path):
     settings = Settings(environment="test", database_path=tmp_path / "business.sqlite3", redis_cache_enabled=True,
         redis_rate_limit_enabled=True, redis_url=server.url, redis_namespace="cb:test:" + uuid.uuid4().hex,
-        redis_cache_ttl=1, login_limit=3, login_peer_limit=100, message_limit=1, login_window_seconds=1)
+        redis_cache_ttl=1, login_limit=3, login_peer_limit=100, message_limit=1, login_window_seconds=60)
     support = RedisSupport(settings)
     db = KnowledgeDatabase(tmp_path / "knowledge.sqlite3")
     lexical = SQLiteKnowledge(db)
@@ -211,14 +211,18 @@ def test_timeout_bypass_and_limiter_fail_closed(setup):
 def test_atomic_concurrent_limit_expiry_and_accounts(setup):
     _, support, _ = setup
     def call(_):
-        try: support.limit("test", "a", 7, 1); return True
+        # Counter concurrency is independent of the expiry check. A one-second
+        # window can legitimately reset during Docker builds on a loaded host.
+        try: support.limit("test", "a", 7, 60); return True
         except RateLimitError as e: assert e.status == 429; return False
     with ThreadPoolExecutor(max_workers=20) as pool:
         assert sum(pool.map(call, range(40))) == 7
-    support.limit("test", "b", 7, 1)
-    time.sleep(1.1)
-    support.limit("test", "a", 7, 1)
+    support.limit("test", "b", 7, 60)
     assert support.metrics.snapshot()["limit_blocked"] == 33
+    support.limit("expiry", "a", 1, 1)
+    with pytest.raises(RateLimitError): support.limit("expiry", "a", 1, 1)
+    time.sleep(1.1)
+    support.limit("expiry", "a", 1, 1)
 
 
 def test_api_login_message_and_stream_share_server_identity_budget(setup):

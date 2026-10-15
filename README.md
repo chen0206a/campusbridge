@@ -157,6 +157,16 @@ Stage D2 提供可独立启用的 BM25 / Dense / Hybrid 候选缓存，以及登
 
 [配置与一致性设计](docs/STAGE_D2_REDIS.md) · [真实 Redis 验收与性能结果](experiments/stage-d2/20261015-v1/HANDOFF.md)。Runtime 保持 D1 的单实例运行约束。
 
+## Docker Compose 本地部署
+
+```bash
+docker compose up --build -d
+```
+
+打开 `http://127.0.0.1:8080`，无需模型 API Key 即可使用 MockModel。Compose 管理 MySQL 8、Redis、单实例后端和生产前端，独立任务负责凭据初始化与 Alembic 迁移；知识 SQLite 和服务数据使用持久卷。
+
+[部署、迁移、Dense 可选配置与排错](docs/STAGE_D3_COMPOSE.md) · [D3 实际验收](experiments/stage-d3/20261015-v1/HANDOFF.md)
+
 ## 可选真实模型
 
 从服务端进程环境传入 `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`、`CAMPUSBRIDGE_ENDPOINT`、`CAMPUSBRIDGE_MODEL`、`CAMPUSBRIDGE_API_KEY`；DeepSeek 使用 `CAMPUSBRIDGE_THINKING_MODE=disabled`。密钥只放服务端环境，前端没有模型密钥。

@@ -55,6 +55,10 @@ License identifiers: Apache-2.0, BSD-2-Clause, BSD-3-Clause, BlueOak-1.0.0, CC-B
 
 React / React DOM: MIT; Vite: MIT; TypeScript: Apache-2.0; Vitest: MIT; Testing Library: MIT. Original icons are in frontend/src/icons.tsx. There are no downloaded icon packs or image libraries in the product.
 
+## Container runtime images
+
+Stage D3 references upstream MySQL, Redis, Python and Node Docker Official Images, plus [nginx/docker-nginx-unprivileged](https://github.com/nginx/docker-nginx-unprivileged) (image-build source Apache-2.0; Nginx and base packages retain their own licenses). These runtime distributions retain their upstream licenses and notices; CampusBridge's MIT license covers its application and deployment glue. Actual image IDs/digests and versions are recorded in the D3 acceptance artifacts. Docker Desktop is a separately installed vendor tool and is not redistributed in this repository.
+
 ## Tooling used for project assets
 
 `caniuse-lite` packages Can I Use compatibility data under CC-BY-4.0. Attribution: Can I Use contributors; caniuse-lite package metadata credits Ben Briggs; [data source](https://github.com/Fyrd/caniuse), [package source](https://github.com/browserslist/caniuse-lite), [license](https://creativecommons.org/licenses/by/4.0/). It is a build dependency installed through npm and is not vendored in this source export. `mdn-data` uses CC0-1.0; some `lru-cache` entries use BlueOak-1.0.0. Their precise locked versions and registry locations are recorded in the dependency JSON.

@@ -1,0 +1,53 @@
+........................................................................ [ 20%]
+........................sssssssssssssssssss............................. [ 41%]
+.....................................................F............s..... [ 61%]
+........................................................................ [ 82%]
+..............................................................           [100%]
+================================== FAILURES ===================================
+______________ test_atomic_concurrent_limit_expiry_and_accounts _______________
+
+setup = (Settings(environment='test', trusted_proxy_host=None, database_path=WindowsPath('<user>/AppData/Local/Temp/py...edisSupport object at 0x000001F8CBF5E210>, <campusbridge.retrieval_cache.CachedKnowledge object at 0x000001F8CB569C40>)
+
+    def test_atomic_concurrent_limit_expiry_and_accounts(setup):
+        _, support, _ = setup
+        def call(_):
+            try: support.limit("test", "a", 7, 1); return True
+            except RateLimitError as e: assert e.status == 429; return False
+        with ThreadPoolExecutor(max_workers=20) as pool:
+>           assert sum(pool.map(call, range(40))) == 7
+E           assert 14 == 7
+E            +  where 14 = sum(<generator object Executor.map.<locals>.result_iterator at 0x000001F8CBE6F1F0>)
+E            +    where <generator object Executor.map.<locals>.result_iterator at 0x000001F8CBE6F1F0> = map(<function test_atomic_concurrent_limit_expiry_and_accounts.<locals>.call at 0x000001F8CBE1F060>, range(0, 40))
+E            +      where map = <concurrent.futures.thread.ThreadPoolExecutor object at 0x000001F8CBF5DAF0>.map
+E            +      and   range(0, 40) = range(40)
+
+tests\test_redis_d2.py:217: AssertionError
+============================== warnings summary ===============================
+..\..\output\stage-d2\20261015\venv\Lib\site-packages\fastapi\testclient.py:1
+  <workspace>\output\stage-d2\20261015\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SKIPPED [1] tests\test_mysql_d1.py:64: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:79: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:92: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:101: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:119: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:132: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:150: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:163: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:178: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:187: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:196: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:216: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:234: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:250: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:284: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:304: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:314: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:333: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:350: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_redis_mysql_d2.py:12: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+FAILED tests/test_redis_d2.py::test_atomic_concurrent_limit_expiry_and_accounts
+1 failed, 329 passed, 20 skipped, 1 warning in 280.29s (0:04:40)
