@@ -1,0 +1,15 @@
+# Opt-in: requires local CPU model files. No model download in either image.
+services:
+  bootstrap:
+    build: {target: dense}
+  migrate:
+    build: {target: dense}
+  backend:
+    build: {target: dense}
+    environment:
+      CAMPUSBRIDGE_RETRIEVAL_MODE: ${CAMPUSBRIDGE_RETRIEVAL_MODE:-hybrid}
+    volumes:
+      - type: bind
+        source: ${CAMPUSBRIDGE_BGE_MODEL_DIR:?Set an existing local BGE directory}
+        target: /models/bge-small-zh-v1.5
+        read_only: true

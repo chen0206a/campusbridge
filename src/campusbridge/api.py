@@ -10,15 +10,19 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel, ConfigDict, Field, StrictInt
 
 from campusbridge.contracts import AccessDenied, FINAL_STATES, NotFound, RunState, StateConflict
-from campusbridge.db import Database
+from campusbridge.db import Database, KnowledgeDatabase
 from campusbridge.knowledge import DemoKnowledge
 from campusbridge.models import MockModel
 from campusbridge.provider import OpenAICompatibleProvider
 from campusbridge.retrieval import SQLiteKnowledge, bundled_documents
+from campusbridge.dense_retrieval import configured_knowledge
 from campusbridge.runtime import CampusRuntime
 from campusbridge.security import Authentication
 from campusbridge.settings import Settings
 from campusbridge.store import Store
+from campusbridge.redis_support import RateLimitError, RedisSupport
+from campusbridge.retrieval_cache import cached_knowledge
+from campusbridge.transport import require_transport, rate_peer
 
 
 class InputModel(BaseModel):
@@ -45,38 +49,46 @@ def stream_event(name, value):
 
 def create_app(settings=None, model=None, knowledge=None):
     settings = settings or Settings.from_environment()
-    database = Database(settings.db_file)
+    database = Database.business(settings)
     authentication = Authentication(database, settings)
     if settings.seed_demo:
         authentication.seed()
     store = Store(database)
     if model is None:
         model = OpenAICompatibleProvider(settings) if settings.model_provider == "openai-compatible" else MockModel()
+    knowledge_database = None
     if knowledge is None:
-        knowledge = SQLiteKnowledge(database, settings.knowledge_top_k) if settings.knowledge_backend == "fts5" else DemoKnowledge()
-        if isinstance(knowledge, SQLiteKnowledge):
+        if settings.knowledge_backend == "fts5":
+            knowledge_database = KnowledgeDatabase(settings.knowledge_file)
+        knowledge = configured_knowledge(knowledge_database, settings) if settings.knowledge_backend == "fts5" else DemoKnowledge()
+        if settings.knowledge_backend == "fts5":
             knowledge.import_documents(bundled_documents())
+    redis_support = RedisSupport(settings)
+    knowledge = cached_knowledge(knowledge, redis_support)
     runtime = CampusRuntime(store, model, knowledge, settings)
 
     @asynccontextmanager
     async def lifetime(app):
-        store.recover_interrupted()
-        yield
-        await runtime.shutdown()
-        database.close()
+        try:
+            database.acquire_runtime_owner(enforce=True)
+            store.recover_interrupted()
+            yield
+        finally:
+            await runtime.shutdown()
+            redis_support.close()
+            if knowledge_database is not None: knowledge_database.close()
+            database.close()
 
     app = FastAPI(title="CampusBridge", version="0.1.0", lifespan=lifetime,
                   description="校园学生支持：多 Agent 协作、实际回复审核和人工工单。默认离线 MockModel。")
     app.state.database, app.state.store, app.state.runtime, app.state.authentication = database, store, runtime, authentication
     app.state.knowledge = knowledge
+    app.state.knowledge_database = knowledge_database
+    app.state.redis_support = redis_support
     bearer = HTTPBearer(auto_error=False)
 
     def local_request(request: Request):
-        allowed = {"127.0.0.1", "::1"}
-        if settings.environment == "test":
-            allowed.add("testclient")
-        if request.client is None or request.client.host not in allowed:
-            raise HTTPException(403, "LOCAL_DEVELOPMENT_ONLY")
+        require_transport(request, settings)
 
     def actor(request: Request, credential: HTTPAuthorizationCredentials | None = Depends(bearer)):
         local_request(request)
@@ -94,6 +106,11 @@ def create_app(settings=None, model=None, knowledge=None):
     @app.exception_handler(AccessDenied)
     async def denied(request, exc):
         return JSONResponse({"detail": "PERMISSION_DENIED"}, status_code=403)
+
+    @app.exception_handler(RateLimitError)
+    async def limited(request, exc):
+        return JSONResponse({"detail": exc.code}, status_code=exc.status,
+                            headers={"Retry-After": str(exc.retry_after), "Cache-Control": "no-store"})
 
     @app.exception_handler(NotFound)
     async def missing(request, exc):
@@ -126,6 +143,7 @@ def create_app(settings=None, model=None, knowledge=None):
     @app.post("/api/auth/login")
     def login(body: LoginInput, request: Request):
         local_request(request)
+        redis_support.login(body.username, rate_peer(request, settings))
         try:
             return authentication.login(body.username, body.password)
         except AccessDenied:
@@ -142,6 +160,7 @@ def create_app(settings=None, model=None, knowledge=None):
     @app.post("/api/conversations/{conversation_id}/messages")
     async def message(conversation_id: str, body: MessageInput,
                       idempotency_key: Annotated[str, Header(min_length=1, max_length=128)], identity=Depends(student)):
+        await asyncio.to_thread(redis_support.message, identity)
         run_id = store.enqueue(conversation_id, identity, body.message, idempotency_key)
         await runtime.complete(run_id)
         return store.deliverable(run_id, identity)
@@ -171,6 +190,7 @@ def create_app(settings=None, model=None, knowledge=None):
     @app.post("/api/conversations/{conversation_id}/stream")
     async def stream(conversation_id: str, body: MessageInput,
                      idempotency_key: Annotated[str, Header(min_length=1, max_length=128)], identity=Depends(student)):
+        await asyncio.to_thread(redis_support.message, identity)
         run_id = store.enqueue(conversation_id, identity, body.message, idempotency_key)
         return response_stream(run_id, identity)
 

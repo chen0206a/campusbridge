@@ -1,0 +1,118 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0 -- <environment>\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: <project>
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 35 items
+
+tests/test_database_d1.py::test_fresh_business_migrations_and_drift_detection PASSED [  2%]
+tests/test_database_d1.py::test_explicit_legacy_adoption_and_no_implicit_stamp PASSED [  5%]
+tests/test_database_d1.py::test_unknown_legacy_structure_refused_without_stamp PASSED [  8%]
+tests/test_database_d1.py::test_separate_application_business_and_knowledge_stores PASSED [ 11%]
+tests/test_database_d1.py::test_knowledge_split_preserves_all_versions_hashes_and_original_bytes PASSED [ 14%]
+tests/test_database_d1.py::test_single_sqlite_runtime_guard_and_release PASSED [ 17%]
+tests/test_database_d1.py::test_mysql_lock_compilation_and_opaque_key_collation PASSED [ 20%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values0] PASSED [ 22%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values1] PASSED [ 25%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values2] PASSED [ 28%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values3] PASSED [ 31%]
+tests/test_database_d1.py::test_database_url_excluded_from_settings_repr_and_export PASSED [ 34%]
+tests/test_database_d1.py::test_sqlite_parallel_idempotency_and_single_claim PASSED [ 37%]
+tests/test_database_d1.py::test_legacy_knowledge_requires_verified_split_before_application PASSED [ 40%]
+tests/test_database_d1.py::test_late_writer_after_runtime_close_is_rejected PASSED [ 42%]
+tests/test_database_d1.py::test_bounded_deadlock_retry_and_no_retry_of_unknown_commit PASSED [ 45%]
+tests/test_database_d1.py::test_partial_sqlite_schema_and_foreign_key_damage_are_not_stamped PASSED [ 48%]
+tests/test_mysql_d1.py::test_real_mysql_schema_pool_and_no_fts PASSED    [ 51%]
+tests/test_mysql_d1.py::test_concurrent_duplicate_enqueue_and_conflicting_payload PASSED [ 54%]
+tests/test_mysql_d1.py::test_idempotency_across_conversations_and_exact_key_semantics PASSED [ 57%]
+tests/test_mysql_d1.py::test_parallel_claim_has_one_winner_and_atomic_audit PASSED [ 60%]
+tests/test_mysql_d1.py::test_same_case_operation_replays_and_versions_do_not_advance PASSED [ 62%]
+tests/test_mysql_d1.py::test_parallel_model_budget_usage_and_event_sequences PASSED [ 65%]
+tests/test_mysql_d1.py::test_attention_is_singleton_under_concurrent_persistence PASSED [ 68%]
+tests/test_mysql_d1.py::test_single_runtime_owner_and_ownership_loss_fails_closed PASSED [ 71%]
+tests/test_mysql_d1.py::test_connection_pre_ping_replaces_killed_idle_connection PASSED [ 74%]
+tests/test_mysql_d1.py::test_pool_exhaustion_has_finite_timeout PASSED   [ 77%]
+tests/test_mysql_d1.py::test_api_mock_sse_rag_scope_claim_and_generation_failure PASSED [ 80%]
+tests/test_mysql_d1.py::test_real_mysql_duplicate_http_chat_one_model_chain_and_citation PASSED [ 82%]
+tests/test_mysql_d1.py::test_mysql_restart_recovery_preserves_case_and_token_precision PASSED [ 85%]
+tests/test_mysql_d1.py::test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives FAILED [ 88%]
+tests/test_mysql_d1.py::test_real_mysql_tenant_and_case_owner_isolation PASSED [ 91%]
+tests/test_mysql_d1.py::test_database_unique_message_order_is_a_final_fence PASSED [ 94%]
+tests/test_mysql_d1.py::test_application_restart_recovers_interrupted_mysql_run PASSED [ 97%]
+tests/test_mysql_d1.py::test_mysql_copy_failure_rolls_back_already_inserted_parents PASSED [100%]
+
+================================== FAILURES ===================================
+_ test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives __
+
+mysql_db = (<campusbridge.db.Database object at 0x000002D7442A8890>, <campusbridge.db.Database object at 0x000002D7447BBB00>, Set...448BA70>, Identity(account_id='89e80ad689bb428c9bf23aee8d46066e', role='student', campus_id='fictional-campus-a'), ...)
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-277/test_copy_business_from_readon0')
+
+    def test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives(mysql_db,tmp_path):
+        db, admin, _, _, _, _, _ = mysql_db
+        # Target must be completely empty. Remove only this isolated fixture's demo rows.
+        with admin.engine.begin() as connection:
+            for table in reversed(metadata().sorted_tables): connection.execute(table.delete())
+        source = Database(tmp_path/"legacy.sqlite3")
+        settings = Settings(environment="test", database_path=tmp_path/"legacy.sqlite3")
+        auth = Authentication(source, settings); auth.seed()
+        actor = auth.authenticate(auth.login("student_lan", DEMO_PASSWORD)["access_token"])
+        store = Store(source)
+        conv = store.create_conversation(actor)["conversation_id"]
+        run = store.enqueue(conv,actor,"迁移中文🌟","preserved-key")
+        risk_conversation = store.create_conversation(actor)["conversation_id"]
+        risk_run = store.enqueue(risk_conversation,actor,"我无法保证自己的安全","preserved-risk")
+        from campusbridge.knowledge import DemoKnowledge
+        runtime = CampusRuntime(store,MockModel(),DemoKnowledge(),settings)
+        asyncio.run(runtime.complete(risk_run))
+        original_reply = store.deliverable(risk_run,actor)
+        counselor = auth.authenticate(auth.login("counselor_yu",DEMO_PASSWORD)["access_token"])
+        case = store.cases(counselor)[0]["case_id"]
+        for action,version,note in (("claim",0,""),("process",1,"已联系学生"),("close",2,"确认跟进完成")):
+            store.case_action(case,counselor,action,note,version,"preserved-"+action)
+        source.close()
+        import hashlib
+        before = hashlib.sha256((tmp_path/"legacy.sqlite3").read_bytes()).hexdigest()
+>       report = copy_business(tmp_path/"legacy.sqlite3",db)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:275: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source_path = WindowsPath('<temp>/pytest-of-17299/pytest-277/test_copy_business_from_readon0/legacy.sqlite3')
+target = <campusbridge.db.Database object at 0x000002D7442A8890>
+
+    def copy_business(source_path, target):
+        if not target.is_mysql: raise ValueError("MYSQL_TARGET_REQUIRED")
+        verify_schema(target.engine)
+        target.acquire_runtime_owner()
+        try:
+            with readonly_source(source_path) as source, target.engine.begin() as connection:
+                tables = metadata().sorted_tables
+                for table in tables:
+                    if connection.scalar(select(func.count()).select_from(table)):
+                        raise ValueError("BUSINESS_TARGET_MUST_BE_EMPTY")
+                counts, hashes = {}, {}
+                for table in tables:
+                    rows = [dict(row) for row in source.execute(select(table)).mappings()]
+                    counts[table.name] = len(rows)
+                    if rows: connection.execute(table.insert(), rows)
+                    copied = [dict(row) for row in connection.execute(select(table)).mappings()]
+                    if fingerprint(rows) != fingerprint(copied):
+                        primary = list(table.primary_key.columns)[0].name
+                        original = {r[primary]:r for r in rows}
+                        diagnostic = next((mismatch_path(original[r[primary]],r) for r in copied if mismatch_path(original[r[primary]],r)), "SERIALIZATION")
+>                       raise RuntimeError("COPIED_DATA_MISMATCH:"+table.name+":"+diagnostic)
+E                       RuntimeError: COPIED_DATA_MISMATCH:run_events:row.event.task_event.task.finished_ms:float_VALUE_DIFFERENCE
+
+src\campusbridge\data_migration.py:118: RuntimeError
+============================== warnings summary ===============================
+..\..\output\stage-d1\20261015\venv\Lib\site-packages\fastapi\testclient.py:1
+  <environment>\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: <scratch>\pytest.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_mysql_d1.py::test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives
+================== 1 failed, 34 passed, 1 warning in 54.92s ===================

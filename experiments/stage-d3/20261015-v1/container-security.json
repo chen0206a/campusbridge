@@ -1,0 +1,60 @@
+{
+  "mysql": {
+    "user": "mysql",
+    "read_only_root": false,
+    "port_bindings": {},
+    "cap_drop": null,
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "health": "healthy",
+    "runtime_id": "uid=999(mysql) gid=999(mysql) groups=999(mysql)"
+  },
+  "redis": {
+    "user": "redis",
+    "read_only_root": false,
+    "port_bindings": {},
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "health": "healthy",
+    "runtime_id": "uid=999(redis) gid=1000(redis) groups=1000(redis)"
+  },
+  "backend": {
+    "user": "10001:10001",
+    "read_only_root": true,
+    "port_bindings": {},
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "health": "healthy",
+    "runtime_id": "uid=10001(campusbridge) gid=10001(campusbridge) groups=10001(campusbridge)"
+  },
+  "frontend": {
+    "user": "101:101",
+    "read_only_root": true,
+    "port_bindings": {
+      "8080/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "8080"
+        }
+      ]
+    },
+    "cap_drop": [
+      "ALL"
+    ],
+    "security_opt": [
+      "no-new-privileges:true"
+    ],
+    "health": "healthy",
+    "runtime_id": "uid=101(nginx) gid=101(nginx) groups=101(nginx)"
+  },
+  "data_network_internal": true
+}

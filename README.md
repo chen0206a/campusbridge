@@ -139,6 +139,34 @@ python scripts/verify_archive.py
 
 GitHub Actions 配置覆盖 Ubuntu/Windows、Python 3.12/3.13 后端，以及 Node 22 前端测试与构建。CI 不配置真实模型密钥。[干净目录复现报告](docs/CLEAN_REPRODUCTION.md)
 
+## RAG 专项检索基线
+
+[Stage A检索评测](docs/RAG_STAGE_A.md)：72条固定合成开发查询、16篇隔离语料。当前BM25 Chunk Recall@1/3/5为60.71%/76.79%/76.79%，MRR为0.7143。逐条结果、配置与Hash独立保存，0模型调用，生产检索方案保持不变。本轮后端回归228项通过。
+
+## RAG Dense / Hybrid
+
+[Stage B实现与复现](docs/RAG_STAGE_B.md) · [三模式完整结果](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md)。原72条BM25 / Dense / Hybrid Recall@3为 **76.79% / 91.07% / 89.29%**；预先冻结的32条Holdout为 **83.33% / 85.42% / 89.58%**。默认BM25，安装本地CPU Embedding后可通过环境变量切换，继续使用原引用和审核流程。
+
+## 业务数据库
+
+Stage D1新增可选MySQL8业务库与Alembic迁移，知识检索保留独立SQLite，支持工单行锁、持久幂等约束和单Runtime启动保护。[迁移、配置与风险清单](docs/STAGE_D1_DATABASE.md) · [D1验收报告](experiments/stage-d1/20261015-v1/HANDOFF.md)。本地默认仍用SQLite＋MockModel。
+
+## Redis 检索缓存与限流
+
+Stage D2 提供可独立启用的 BM25 / Dense / Hybrid 候选缓存，以及登录、消息提交的原子限流。缓存命中后重新验证校园、有效文档版本和来源 Hash；Redis 故障时检索回源，认证与消息限流返回明确的 503。默认关闭 Redis，继续支持 SQLite＋MockModel 本地体验。
+
+[配置与一致性设计](docs/STAGE_D2_REDIS.md) · [真实 Redis 验收与性能结果](experiments/stage-d2/20261015-v1/HANDOFF.md)。Runtime 保持 D1 的单实例运行约束。
+
+## Docker Compose 本地部署
+
+```bash
+docker compose up --build -d
+```
+
+打开 `http://127.0.0.1:8080`，无需模型 API Key 即可使用 MockModel。Compose 管理 MySQL 8、Redis、单实例后端和生产前端，独立任务负责凭据初始化与 Alembic 迁移；知识 SQLite 和服务数据使用持久卷。
+
+[部署、迁移、Dense 可选配置与排错](docs/STAGE_D3_COMPOSE.md) · [D3 实际验收](experiments/stage-d3/20261015-v1/HANDOFF.md)
+
 ## 可选真实模型
 
 从服务端进程环境传入 `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`、`CAMPUSBRIDGE_ENDPOINT`、`CAMPUSBRIDGE_MODEL`、`CAMPUSBRIDGE_API_KEY`；DeepSeek 使用 `CAMPUSBRIDGE_THINKING_MODE=disabled`。密钥只放服务端环境，前端没有模型密钥。

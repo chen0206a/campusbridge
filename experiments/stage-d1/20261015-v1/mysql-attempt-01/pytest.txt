@@ -1,0 +1,801 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.15, pytest-9.1.1, pluggy-1.6.0 -- <environment>\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: <project>
+configfile: pyproject.toml
+plugins: anyio-4.15.1
+collecting ... collected 26 items
+
+tests/test_database_d1.py::test_fresh_business_migrations_and_drift_detection PASSED [  3%]
+tests/test_database_d1.py::test_explicit_legacy_adoption_and_no_implicit_stamp PASSED [  7%]
+tests/test_database_d1.py::test_unknown_legacy_structure_refused_without_stamp PASSED [ 11%]
+tests/test_database_d1.py::test_separate_application_business_and_knowledge_stores PASSED [ 15%]
+tests/test_database_d1.py::test_knowledge_split_preserves_all_versions_hashes_and_original_bytes PASSED [ 19%]
+tests/test_database_d1.py::test_single_sqlite_runtime_guard_and_release PASSED [ 23%]
+tests/test_database_d1.py::test_mysql_lock_compilation_and_opaque_key_collation PASSED [ 26%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values0] PASSED [ 30%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values1] PASSED [ 34%]
+tests/test_database_d1.py::test_database_settings_reject_unsafe_or_unsupported[values2] PASSED [ 38%]
+tests/test_database_d1.py::test_database_url_excluded_from_settings_repr_and_export PASSED [ 42%]
+tests/test_database_d1.py::test_sqlite_parallel_idempotency_and_single_claim PASSED [ 46%]
+tests/test_mysql_d1.py::test_real_mysql_schema_pool_and_no_fts ERROR     [ 50%]
+tests/test_mysql_d1.py::test_concurrent_duplicate_enqueue_and_conflicting_payload ERROR [ 53%]
+tests/test_mysql_d1.py::test_idempotency_across_conversations_and_exact_key_semantics ERROR [ 57%]
+tests/test_mysql_d1.py::test_parallel_claim_has_one_winner_and_atomic_audit ERROR [ 61%]
+tests/test_mysql_d1.py::test_same_case_operation_replays_and_versions_do_not_advance ERROR [ 65%]
+tests/test_mysql_d1.py::test_parallel_model_budget_usage_and_event_sequences ERROR [ 69%]
+tests/test_mysql_d1.py::test_attention_is_singleton_under_concurrent_persistence ERROR [ 73%]
+tests/test_mysql_d1.py::test_single_runtime_owner_and_ownership_loss_fails_closed ERROR [ 76%]
+tests/test_mysql_d1.py::test_connection_pre_ping_replaces_killed_idle_connection ERROR [ 80%]
+tests/test_mysql_d1.py::test_pool_exhaustion_has_finite_timeout ERROR    [ 84%]
+tests/test_mysql_d1.py::test_api_mock_sse_rag_scope_claim_and_generation_failure ERROR [ 88%]
+tests/test_mysql_d1.py::test_real_mysql_duplicate_http_chat_one_model_chain_and_citation ERROR [ 92%]
+tests/test_mysql_d1.py::test_mysql_restart_recovery_preserves_case_and_token_precision ERROR [ 96%]
+tests/test_mysql_d1.py::test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives ERROR [100%]
+
+=================================== ERRORS ====================================
+__________ ERROR at setup of test_real_mysql_schema_pool_and_no_fts ___________
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_real_mysql_schema_pool_an0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D130204D0>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_concurrent_duplicate_enqueue_and_conflicting_payload _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_concurrent_duplicate_enqu0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D13204170>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_idempotency_across_conversations_and_exact_key_semantics _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_idempotency_across_conver0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D1329FA40>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+____ ERROR at setup of test_parallel_claim_has_one_winner_and_atomic_audit ____
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_parallel_claim_has_one_wi0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D1345AE10>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_same_case_operation_replays_and_versions_do_not_advance _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_same_case_operation_repla0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D130211C0>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+___ ERROR at setup of test_parallel_model_budget_usage_and_event_sequences ____
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_parallel_model_budget_usa0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D12F6F800>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_attention_is_singleton_under_concurrent_persistence __
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_attention_is_singleton_un0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D12DA1340>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_single_runtime_owner_and_ownership_loss_fails_closed _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_single_runtime_owner_and_0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D12E34A70>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_connection_pre_ping_replaces_killed_idle_connection __
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_connection_pre_ping_repla0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D12BEF2C0>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+__________ ERROR at setup of test_pool_exhaustion_has_finite_timeout __________
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_pool_exhaustion_has_finit0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D132C3B00>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_api_mock_sse_rag_scope_claim_and_generation_failure __
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_api_mock_sse_rag_scope_cl0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D1317DEE0>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_real_mysql_duplicate_http_chat_one_model_chain_and_citation _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_real_mysql_duplicate_http0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D13021C40>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_mysql_restart_recovery_preserves_case_and_token_precision _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_mysql_restart_recovery_pr0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D134AF7A0>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+_ ERROR at setup of test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives _
+
+tmp_path = WindowsPath('<temp>/pytest-of-17299/pytest-272/test_copy_business_from_readon0')
+
+    @pytest.fixture
+    def mysql_db(tmp_path):
+        if os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_ALLOW") != "1": pytest.skip("Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py")
+        url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_URL", "")
+        admin_url = os.environ.get("CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL", "")
+        parsed, admin_parsed = make_url(url), make_url(admin_url)
+        if not parsed.database.startswith("cb_d1_test_") or parsed.database != admin_parsed.database or parsed.host != admin_parsed.host:
+            pytest.fail("REFUSE_NON_ISOLATED_MYSQL_TEST_TARGET")
+        admin = Database(url=admin_url, scope="business", schema="none")
+        try:
+            from alembic import command
+            from campusbridge.schema import config
+            with admin.engine.connect() as connection:
+                command.downgrade(config(connection), "base")
+                connection.commit()
+            migrate(admin.engine)
+>           db = Database(url=url, scope="business", schema="verify")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:44: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\campusbridge\db.py:233: in __init__
+    verify_schema(self.engine)
+src\campusbridge\schema.py:81: in verify_schema
+    _validate_structure(connection, head=True)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+connection = <sqlalchemy.engine.base.Connection object at 0x0000018D12C30EC0>
+head = True
+
+    def _validate_structure(connection, *, head):
+        inspector = inspect(connection)
+        for table in specification():
+            name = table["name"]
+            if name not in inspector.get_table_names(): raise RuntimeError("SCHEMA_TABLE_MISSING:" + name)
+            actual = {c["name"]: c for c in inspector.get_columns(name)}
+            if set(actual) != {c["name"] for c in table["columns"]}: raise RuntimeError("SCHEMA_COLUMNS_MISMATCH:" + name)
+            for c in table["columns"]:
+                found = actual[c["name"]]
+                if found["nullable"] != c["nullable"]: raise RuntimeError("SCHEMA_NULLABILITY_MISMATCH:" + name)
+                expected_type = c["type"]
+                actual_type = str(found["type"]).upper()
+                if expected_type == "DOUBLE" and connection.dialect.name == "sqlite" and actual_type in {"FLOAT", "REAL"}:
+                    continue
+                if actual_type != expected_type and not (expected_type == "BOOLEAN" and actual_type in {"TINYINT", "TINYINT(1)"}):
+>                   raise RuntimeError("SCHEMA_TYPE_MISMATCH:" + name + "." + c["name"])
+E                   RuntimeError: SCHEMA_TYPE_MISMATCH:accounts.id
+
+src\campusbridge\schema.py:34: RuntimeError
+============================== warnings summary ===============================
+..\..\output\stage-d1\20261015\venv\Lib\site-packages\fastapi\testclient.py:1
+  <environment>\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: <scratch>\pytest.xml -
+=========================== short test summary info ===========================
+ERROR tests/test_mysql_d1.py::test_real_mysql_schema_pool_and_no_fts - Runtim...
+ERROR tests/test_mysql_d1.py::test_concurrent_duplicate_enqueue_and_conflicting_payload
+ERROR tests/test_mysql_d1.py::test_idempotency_across_conversations_and_exact_key_semantics
+ERROR tests/test_mysql_d1.py::test_parallel_claim_has_one_winner_and_atomic_audit
+ERROR tests/test_mysql_d1.py::test_same_case_operation_replays_and_versions_do_not_advance
+ERROR tests/test_mysql_d1.py::test_parallel_model_budget_usage_and_event_sequences
+ERROR tests/test_mysql_d1.py::test_attention_is_singleton_under_concurrent_persistence
+ERROR tests/test_mysql_d1.py::test_single_runtime_owner_and_ownership_loss_fails_closed
+ERROR tests/test_mysql_d1.py::test_connection_pre_ping_replaces_killed_idle_connection
+ERROR tests/test_mysql_d1.py::test_pool_exhaustion_has_finite_timeout - Runti...
+ERROR tests/test_mysql_d1.py::test_api_mock_sse_rag_scope_claim_and_generation_failure
+ERROR tests/test_mysql_d1.py::test_real_mysql_duplicate_http_chat_one_model_chain_and_citation
+ERROR tests/test_mysql_d1.py::test_mysql_restart_recovery_preserves_case_and_token_precision
+ERROR tests/test_mysql_d1.py::test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives
+================== 12 passed, 1 warning, 14 errors in 27.12s ==================

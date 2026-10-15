@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="35" time="63.278" timestamp="2026-10-15T12:19:24.639488+08:00" hostname="Esilmn"><testcase classname="tests.test_database_d1" name="test_fresh_business_migrations_and_drift_detection" time="0.178" /><testcase classname="tests.test_database_d1" name="test_explicit_legacy_adoption_and_no_implicit_stamp" time="0.128" /><testcase classname="tests.test_database_d1" name="test_unknown_legacy_structure_refused_without_stamp" time="0.055" /><testcase classname="tests.test_database_d1" name="test_separate_application_business_and_knowledge_stores" time="0.409" /><testcase classname="tests.test_database_d1" name="test_knowledge_split_preserves_all_versions_hashes_and_original_bytes" time="0.212" /><testcase classname="tests.test_database_d1" name="test_single_sqlite_runtime_guard_and_release" time="0.272" /><testcase classname="tests.test_database_d1" name="test_mysql_lock_compilation_and_opaque_key_collation" time="0.025" /><testcase classname="tests.test_database_d1" name="test_database_settings_reject_unsafe_or_unsupported[values0]" time="0.002" /><testcase classname="tests.test_database_d1" name="test_database_settings_reject_unsafe_or_unsupported[values1]" time="0.001" /><testcase classname="tests.test_database_d1" name="test_database_settings_reject_unsafe_or_unsupported[values2]" time="0.001" /><testcase classname="tests.test_database_d1" name="test_database_settings_reject_unsafe_or_unsupported[values3]" time="0.006" /><testcase classname="tests.test_database_d1" name="test_database_url_excluded_from_settings_repr_and_export" time="0.012" /><testcase classname="tests.test_database_d1" name="test_sqlite_parallel_idempotency_and_single_claim" time="1.765" /><testcase classname="tests.test_database_d1" name="test_legacy_knowledge_requires_verified_split_before_application" time="1.419" /><testcase classname="tests.test_database_d1" name="test_late_writer_after_runtime_close_is_rejected" time="0.204" /><testcase classname="tests.test_database_d1" name="test_bounded_deadlock_retry_and_no_retry_of_unknown_commit" time="0.033" /><testcase classname="tests.test_database_d1" name="test_partial_sqlite_schema_and_foreign_key_damage_are_not_stamped" time="0.369" /><testcase classname="tests.test_mysql_d1" name="test_real_mysql_schema_pool_and_no_fts" time="2.925" /><testcase classname="tests.test_mysql_d1" name="test_concurrent_duplicate_enqueue_and_conflicting_payload" time="2.826" /><testcase classname="tests.test_mysql_d1" name="test_idempotency_across_conversations_and_exact_key_semantics" time="2.736" /><testcase classname="tests.test_mysql_d1" name="test_parallel_claim_has_one_winner_and_atomic_audit" time="3.061" /><testcase classname="tests.test_mysql_d1" name="test_same_case_operation_replays_and_versions_do_not_advance" time="2.864" /><testcase classname="tests.test_mysql_d1" name="test_parallel_model_budget_usage_and_event_sequences" time="3.070" /><testcase classname="tests.test_mysql_d1" name="test_attention_is_singleton_under_concurrent_persistence" time="2.831" /><testcase classname="tests.test_mysql_d1" name="test_single_runtime_owner_and_ownership_loss_fails_closed" time="2.765" /><testcase classname="tests.test_mysql_d1" name="test_connection_pre_ping_replaces_killed_idle_connection" time="2.724" /><testcase classname="tests.test_mysql_d1" name="test_pool_exhaustion_has_finite_timeout" time="3.370" /><testcase classname="tests.test_mysql_d1" name="test_api_mock_sse_rag_scope_claim_and_generation_failure" time="4.013" /><testcase classname="tests.test_mysql_d1" name="test_real_mysql_duplicate_http_chat_one_model_chain_and_citation" time="3.577" /><testcase classname="tests.test_mysql_d1" name="test_mysql_restart_recovery_preserves_case_and_token_precision" time="2.524" /><testcase classname="tests.test_mysql_d1" name="test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives" time="4.376"><failure message="RuntimeError: COPIED_DATA_MISMATCH:run_events">mysql_db = (&lt;campusbridge.db.Database object at 0x0000020CD00A57F0&gt;, &lt;campusbridge.db.Database object at 0x0000020CD0480A70&gt;, Set...FEF86E0&gt;, Identity(account_id='0f05412126554e389ccb9e4ffe93b1fd', role='student', campus_id='fictional-campus-a'), ...)
+tmp_path = WindowsPath('&lt;temp&gt;/pytest-of-17299/pytest-275/test_copy_business_from_readon0')
+
+    def test_copy_business_from_readonly_sqlite_is_atomic_and_idempotency_survives(mysql_db,tmp_path):
+        db, admin, _, _, _, _, _ = mysql_db
+        # Target must be completely empty. Remove only this isolated fixture's demo rows.
+        with admin.engine.begin() as connection:
+            for table in reversed(metadata().sorted_tables): connection.execute(table.delete())
+        source = Database(tmp_path/"legacy.sqlite3")
+        settings = Settings(environment="test", database_path=tmp_path/"legacy.sqlite3")
+        auth = Authentication(source, settings); auth.seed()
+        actor = auth.authenticate(auth.login("student_lan", DEMO_PASSWORD)["access_token"])
+        store = Store(source)
+        conv = store.create_conversation(actor)["conversation_id"]
+        run = store.enqueue(conv,actor,"迁移中文🌟","preserved-key")
+        risk_conversation = store.create_conversation(actor)["conversation_id"]
+        risk_run = store.enqueue(risk_conversation,actor,"我无法保证自己的安全","preserved-risk")
+        from campusbridge.knowledge import DemoKnowledge
+        runtime = CampusRuntime(store,MockModel(),DemoKnowledge(),settings)
+        asyncio.run(runtime.complete(risk_run))
+        original_reply = store.deliverable(risk_run,actor)
+        counselor = auth.authenticate(auth.login("counselor_yu",DEMO_PASSWORD)["access_token"])
+        case = store.cases(counselor)[0]["case_id"]
+        for action,version,note in (("claim",0,""),("process",1,"已联系学生"),("close",2,"确认跟进完成")):
+            store.case_action(case,counselor,action,note,version,"preserved-"+action)
+        source.close()
+        import hashlib
+        before = hashlib.sha256((tmp_path/"legacy.sqlite3").read_bytes()).hexdigest()
+&gt;       report = copy_business(tmp_path/"legacy.sqlite3",db)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_mysql_d1.py:275: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source_path = WindowsPath('&lt;temp&gt;/pytest-of-17299/pytest-275/test_copy_business_from_readon0/legacy.sqlite3')
+target = &lt;campusbridge.db.Database object at 0x0000020CD00A57F0&gt;
+
+    def copy_business(source_path, target):
+        if not target.is_mysql: raise ValueError("MYSQL_TARGET_REQUIRED")
+        verify_schema(target.engine)
+        target.acquire_runtime_owner()
+        try:
+            with readonly_source(source_path) as source, target.engine.begin() as connection:
+                tables = metadata().sorted_tables
+                for table in tables:
+                    if connection.scalar(select(func.count()).select_from(table)):
+                        raise ValueError("BUSINESS_TARGET_MUST_BE_EMPTY")
+                counts, hashes = {}, {}
+                for table in tables:
+                    rows = [dict(row) for row in source.execute(select(table)).mappings()]
+                    counts[table.name] = len(rows)
+                    if rows: connection.execute(table.insert(), rows)
+                    copied = [dict(row) for row in connection.execute(select(table)).mappings()]
+&gt;                   if fingerprint(rows) != fingerprint(copied): raise RuntimeError("COPIED_DATA_MISMATCH:"+table.name)
+                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                   RuntimeError: COPIED_DATA_MISMATCH:run_events
+
+src\campusbridge\data_migration.py:97: RuntimeError</failure></testcase><testcase classname="tests.test_mysql_d1" name="test_real_mysql_tenant_and_case_owner_isolation" time="2.771" /><testcase classname="tests.test_mysql_d1" name="test_database_unique_message_order_is_a_final_fence" time="2.680" /><testcase classname="tests.test_mysql_d1" name="test_application_restart_recovers_interrupted_mysql_run" time="2.836" /><testcase classname="tests.test_mysql_d1" name="test_mysql_copy_failure_rolls_back_already_inserted_parents" time="3.636" /></testsuite></testsuites>

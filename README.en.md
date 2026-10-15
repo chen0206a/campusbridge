@@ -1,5 +1,11 @@
 # CampusBridge
 
+Stage D1 adds optional MySQL 8 business persistence, Alembic migrations, row-level concurrency controls and a separate SQLite knowledge index. SQLite + MockModel remains available locally. [Database migration and operational boundaries](docs/STAGE_D1_DATABASE.md).
+
+Stage D3 provides `docker compose up --build -d`: MySQL 8, Redis, one backend worker and a production frontend at `http://127.0.0.1:8080`. MockModel needs no API key; dedicated bootstrap/migration jobs and named volumes manage credentials, schema and knowledge persistence. [Deployment guide](docs/STAGE_D3_COMPOSE.md) · [Actual acceptance](experiments/stage-d3/20261015-v1/HANDOFF.md).
+
+Optional CPU Dense and RRF Hybrid retrieval are available through the existing KnowledgePort. On 72 frozen queries, BM25 / Dense / Hybrid chunk Recall@3 is 76.79% / 91.07% / 89.29%; on 32 held-out queries it is 83.33% / 85.42% / 89.58%. BM25 remains the dependency-free default. [Implementation and reproduction](docs/RAG_STAGE_B.md) · [Complete retrieval results](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md).
+
 [![CampusBridge CI](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml)
 
 **Original student-support agents with dynamic planning, evidence arbitration, reviewed delivery, and human follow-up.** [中文](README.md)
@@ -87,8 +93,16 @@ Clean Windows installation passed **203 backend tests and 27 frontend tests**, t
 
 Optional real providers use server-side `CAMPUSBRIDGE_ENDPOINT`, `CAMPUSBRIDGE_MODEL`, `CAMPUSBRIDGE_API_KEY` and `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`. The frontend receives no model credential. New evaluations freeze a new packet for the current checkout and enforce an explicit cost budget.
 
+## Offline retrieval baseline (Stage A)
+
+[RAG evaluation](docs/RAG_STAGE_A.md) adds 72 fixed synthetic development queries and an isolated 16-document corpus. Current BM25 chunk Recall@1/3/5 is 60.71%/76.79%/76.79%; MRR is 0.7143. Raw results, source bindings and configuration hashes are retained with zero model calls. Production retrieval is unchanged; 228 backend tests pass in this local branch.
+
 ## License and scope
 
 [MIT](LICENSE) for original source, Prompts, synthetic knowledge/data and assets. [Provenance](docs/PROVENANCE.md) · [Dependency notices](THIRD_PARTY_NOTICES.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md).
 
 The system supports student conversations and human follow-up. Professional staff own diagnosis and real intervention. All public demonstration data is fictional.
+
+## Optional Redis retrieval cache and rate limiting
+
+Stage D2 adds candidate caching for BM25/Dense/Hybrid and atomic login/message limits. Cache hits revalidate campus, active document revision and source hashes against the knowledge store. Cache outages bypass Redis; enabled authentication/message limits fail closed with HTTP 503. Both features are disabled by default, so SQLite + MockModel works without redis-py. See [design and commands](docs/STAGE_D2_REDIS.md) and [real Redis acceptance](experiments/stage-d2/20261015-v1/HANDOFF.md). Business execution retains D1's single-runtime guard.

@@ -33,6 +33,20 @@ CampusBridge original code, Prompts, synthetic datasets, UI icons and diagrams a
 
 certifi uses MPL-2.0; greenlet uses MIT AND PSF-2.0; packaging uses Apache-2.0 OR BSD-2-Clause. Their installed distributions include upstream notices. The project MIT license applies to CampusBridge code.
 
+## Optional local RAG dependencies and model
+
+BGE-small-zh-v1.5 is published by BAAI under MIT: [official model card](https://huggingface.co/BAAI/bge-small-zh-v1.5). Stage B pins revision `7999e1d3359715c523056ef9478215996d62a620`. Weights and upstream model files are downloaded separately and are excluded from the repository. Their upstream notices remain in the external snapshot.
+
+Optional runtime packages are pinned in `requirements-rag.lock`; [installed metadata and upstream links](docs/RAG_DEPENDENCIES.json) record the complete added package set. Primary packages: Torch (BSD-3-Clause), Transformers and Hugging Face Hub (Apache-2.0), NumPy and psutil (BSD-3-Clause). Transitive packages retain their own notices, including regex (Apache-2.0 AND CNRI-Python) and tqdm (MPL-2.0 AND MIT). The base dependency lock is unchanged; these distributions are installed, not vendored.
+
+## Business database dependencies
+
+Stage D1 adds Alembic 1.20.0 (MIT), Mako 1.4.3 (MIT) and MarkupSafe 3.0.3 (BSD-3-Clause) to the base lock. Optional MySQL dependencies are in requirements-mysql.lock: PyMySQL (MIT), cryptography (Apache-2.0 OR BSD-3-Clause), cffi (MIT) and pycparser (BSD-3-Clause). [Installed metadata](docs/DATABASE_DEPENDENCIES.json) records upstream links and versions. The locally installed MySQL Community Server 8.0.42 used for acceptance retains its GPL license and is not bundled in the source repository.
+
+## Optional Redis infrastructure
+
+Stage D2 uses redis-py 7.4.1 (MIT), pinned in requirements-redis.lock. [Upstream client](https://github.com/redis/redis-py). Redis Server is operated separately and is not distributed with CampusBridge. Local D2 acceptance used the Ubuntu Redis 7.0.15 binary (BSD-3-Clause) in an external temporary directory; production operators should choose a maintained security-patched server distribution and review its applicable license. No server binaries, snapshots or credentials are included here.
+
 ## Frontend dependency graph
 
 212 locked package entries, including development/build/test dependencies and platform-specific optional packages. Each package version, license and registry source is recorded in [DEPENDENCY_LICENSES.json](docs/DEPENDENCY_LICENSES.json) and frontend/package-lock.json.
@@ -40,6 +54,10 @@ certifi uses MPL-2.0; greenlet uses MIT AND PSF-2.0; packaging uses Apache-2.0 O
 License identifiers: Apache-2.0, BSD-2-Clause, BSD-3-Clause, BlueOak-1.0.0, CC-BY-4.0, CC0-1.0, ISC, MIT, MIT-0.
 
 React / React DOM: MIT; Vite: MIT; TypeScript: Apache-2.0; Vitest: MIT; Testing Library: MIT. Original icons are in frontend/src/icons.tsx. There are no downloaded icon packs or image libraries in the product.
+
+## Container runtime images
+
+Stage D3 references upstream MySQL, Redis, Python and Node Docker Official Images, plus [nginx/docker-nginx-unprivileged](https://github.com/nginx/docker-nginx-unprivileged) (image-build source Apache-2.0; Nginx and base packages retain their own licenses). These runtime distributions retain their upstream licenses and notices; CampusBridge's MIT license covers its application and deployment glue. Actual image IDs/digests and versions are recorded in the D3 acceptance artifacts. Docker Desktop is a separately installed vendor tool and is not redistributed in this repository.
 
 ## Tooling used for project assets
 

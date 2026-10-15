@@ -30,6 +30,8 @@ flowchart TD
 
 ## Agent 契约
 
+Stage B在同一KnowledgePort后增加可选检索：BM25保留FTS5；Dense使用本地CPU BGE与内容寻址SQLite向量缓存；Hybrid通过等权RRF融合。三种模式都按校园与有效版本筛选，返回原source ID、正文和Hash。ContextAgent、Arbitrator、回复、审核和交付协议保持原样。实测、启动预热及现有词面仲裁的兼容问题见[RAG Stage B](RAG_STAGE_B.md)。
+
 | 角色 | 输入 | 产物 | 模型调用 |
 |---|---|---|---|
 | IntentAgent | 当前消息、有限历史 | IntentOutput：GENERAL/SUPPORT/CAMPUS_SERVICE/URGENT、知识需求 | ModelPort |
@@ -61,6 +63,8 @@ RETRY 最多触发一次重新生成；REJECT、重复拒审、异常、超时�
 当前确定性规则覆盖明确危险表达触发、诊断断言、隔离求助、常见联系方式/凭据、后台风险标签和高风险当前安全引导。风险模型无法降低明确规则触发的 HIGH；风险评估不可用时使用 UNKNOWN 并转人工确认。工单用于支持跟进，不由模型作疾病诊断或自动关闭。
 
 ## 数据模型与事务
+
+Stage D1增加MySQL8业务数据库适配与Alembic版本迁移，应用启动验证Schema；知识文档、FTS5和向量缓存使用独立SQLite索引。MySQL用父记录/目标行锁、唯一约束及有限死锁重试保证短事务更新；一个专用数据库锁连接限制同配置Runtime并行启动。精确JSON文本与JSON_VALID约束保留审批、Trace的数字与Hash。轻量SQLite模式保留，配置、切换步骤与风险见[数据库说明](STAGE_D1_DATABASE.md)。
 
 | 模型 | 关系/职责 |
 |---|---|

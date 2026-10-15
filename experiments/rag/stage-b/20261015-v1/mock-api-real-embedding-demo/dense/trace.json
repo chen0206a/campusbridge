@@ -1,0 +1,1880 @@
+{
+  "run_id": "2ac8dfe1fd42479f955368f91b9403a2",
+  "state": "ACCEPTED",
+  "model_calls": 4,
+  "calls": [
+    {
+      "call_index": 1,
+      "agent": "IntentAgent",
+      "provider": "mock",
+      "model": "campusbridge-mock-v3",
+      "status": "SUCCESS",
+      "elapsed_ms": 0.0,
+      "input_tokens": 48,
+      "output_tokens": 40,
+      "error_code": null,
+      "output_valid": true,
+      "finish_reason": null,
+      "call_id": "80031bfea28b4fe1ae4fad8ae0885e85"
+    },
+    {
+      "call_index": 2,
+      "agent": "RiskAgent",
+      "provider": "mock",
+      "model": "campusbridge-mock-v3",
+      "status": "SUCCESS",
+      "elapsed_ms": 15.999999999849024,
+      "input_tokens": 48,
+      "output_tokens": 40,
+      "error_code": null,
+      "output_valid": true,
+      "finish_reason": null,
+      "call_id": "f23096aa6feb4e97bc00547b0edad4ef"
+    },
+    {
+      "call_index": 3,
+      "agent": "ResponseAgent",
+      "provider": "mock",
+      "model": "campusbridge-mock-v3",
+      "status": "SUCCESS",
+      "elapsed_ms": 0.0,
+      "input_tokens": 48,
+      "output_tokens": 40,
+      "error_code": null,
+      "output_valid": true,
+      "finish_reason": null,
+      "call_id": "a39873d9baa9472284b301e84e4c3df7"
+    },
+    {
+      "call_index": 4,
+      "agent": "OutputReviewer",
+      "provider": "mock",
+      "model": "campusbridge-mock-v3",
+      "status": "SUCCESS",
+      "elapsed_ms": 0.0,
+      "input_tokens": 48,
+      "output_tokens": 40,
+      "error_code": null,
+      "output_valid": true,
+      "finish_reason": null,
+      "call_id": "41d5ea92d86b442aafd183f3e6c93fed"
+    }
+  ],
+  "usage_reporting_calls": 4,
+  "input_tokens": 192,
+  "output_tokens": 160,
+  "failure_code": null,
+  "events": [
+    {
+      "sequence": 1,
+      "created_at": "2026-10-15T03:46:17.011500+00:00",
+      "event_id": "c39dd7c99b0a428cb250ab0d98243e2f",
+      "state": "ANALYZING",
+      "code": "TURN_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 2,
+      "created_at": "2026-10-15T03:46:17.016451+00:00",
+      "event_id": "9195e5c9a7134ec985c330e681a9b25f",
+      "state": "ANALYZING",
+      "code": "PLAN_CREATED",
+      "result": null,
+      "plan": {
+        "plan_id": "0cf0e68b91c84dc0b8e0d0b44cdfa0db",
+        "version": "campusbridge-task-plan-v1",
+        "orchestration": "dynamic",
+        "independent_analysis": true,
+        "tasks": [
+          {
+            "task_id": "early-attention",
+            "kind": "attention",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": false,
+            "reason": "NO_EXPLICIT_DANGER",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "intent",
+            "kind": "agent",
+            "agent": "IntentAgent",
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "CLASSIFY_CURRENT_REQUEST",
+            "safety_checkpoint": false,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk",
+            "kind": "agent",
+            "agent": "RiskAgent",
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "INDEPENDENT_ASSESSMENT",
+            "safety_checkpoint": false,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk-checkpoint",
+            "kind": "attention",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": false,
+            "reason": "WAIT_FOR_TYPED_RISK_RESULT",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "arbitrate",
+            "kind": "arbitration",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          }
+        ],
+        "dependencies": [
+          {
+            "task_id": "risk-checkpoint",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk-checkpoint",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "intent",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          }
+        ],
+        "max_task_executions": 16,
+        "max_model_calls": 6,
+        "max_token_reservation": 131072
+      },
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 3,
+      "created_at": "2026-10-15T03:46:17.022603+00:00",
+      "event_id": "8be1c9914de54d78a92086fb722b7e78",
+      "state": "ANALYZING",
+      "code": "TASK_SKIPPED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "early-attention",
+          "kind": "attention",
+          "agent": null,
+          "status": "SKIPPED",
+          "enabled": false,
+          "reason": "NO_EXPLICIT_DANGER",
+          "safety_checkpoint": true,
+          "started_ms": null,
+          "finished_ms": 31.000000000176442,
+          "failure_code": null
+        },
+        "dependencies": [],
+        "task_executions": 0,
+        "token_reservation": 0
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 4,
+      "created_at": "2026-10-15T03:46:17.032662+00:00",
+      "event_id": "b7097f4efe21407dae4895e94d489ccb",
+      "state": "ANALYZING",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "intent",
+          "kind": "agent",
+          "agent": "IntentAgent",
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "CLASSIFY_CURRENT_REQUEST",
+          "safety_checkpoint": false,
+          "started_ms": 31.000000000176442,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [],
+        "task_executions": 1,
+        "token_reservation": 0
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 5,
+      "created_at": "2026-10-15T03:46:17.043218+00:00",
+      "event_id": "36f0dbedc145498f8763cc76717d0644",
+      "state": "ANALYZING",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "risk",
+          "kind": "agent",
+          "agent": "RiskAgent",
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "INDEPENDENT_ASSESSMENT",
+          "safety_checkpoint": false,
+          "started_ms": 47.000000000025466,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [],
+        "task_executions": 2,
+        "token_reservation": 0
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 6,
+      "created_at": "2026-10-15T03:46:17.092356+00:00",
+      "event_id": "e02b24e3194f4579960c6fba340e2a6c",
+      "state": "ANALYZING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "IntentAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "message_chars": 16,
+          "history_messages": 0,
+          "independent": true
+        },
+        "artifact": {
+          "artifact_id": "634881f2d96a45dcbfc6dc1a269de410",
+          "producer": "IntentAgent",
+          "payload": {
+            "kind": "intent",
+            "intent": "CAMPUS_SERVICE",
+            "needs_knowledge": true,
+            "needs_human_support": false
+          }
+        },
+        "elapsed_ms": 30.99999999994907,
+        "failure_code": null
+      },
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 7,
+      "created_at": "2026-10-15T03:46:17.097498+00:00",
+      "event_id": "06d53cecce4047309a584f0d878a0ed5",
+      "state": "ANALYZING",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "intent",
+          "kind": "agent",
+          "agent": "IntentAgent",
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "CLASSIFY_CURRENT_REQUEST",
+          "safety_checkpoint": false,
+          "started_ms": 31.000000000176442,
+          "finished_ms": 109.00000000015098,
+          "failure_code": null
+        },
+        "dependencies": [],
+        "task_executions": 2,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 8,
+      "created_at": "2026-10-15T03:46:17.102334+00:00",
+      "event_id": "fa9789f862414e789beeb7fa5a55202b",
+      "state": "ANALYZING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "RiskAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "message_chars": 16,
+          "history_messages": 0,
+          "independent": true
+        },
+        "artifact": {
+          "artifact_id": "6e3e3469a04b43c2b689e36f633abfaf",
+          "producer": "RiskAgent",
+          "payload": {
+            "kind": "risk",
+            "level": "LOW",
+            "needs_human_support": false,
+            "reason_codes": [
+              "NO_SIGNAL"
+            ]
+          }
+        },
+        "elapsed_ms": 15.999999999849024,
+        "failure_code": null
+      },
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 9,
+      "created_at": "2026-10-15T03:46:17.107331+00:00",
+      "event_id": "e9809e6676034a3e9b0a092ec6548ac7",
+      "state": "ANALYZING",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "risk",
+          "kind": "agent",
+          "agent": "RiskAgent",
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "INDEPENDENT_ASSESSMENT",
+          "safety_checkpoint": false,
+          "started_ms": 47.000000000025466,
+          "finished_ms": 109.00000000015098,
+          "failure_code": null
+        },
+        "dependencies": [],
+        "task_executions": 2,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 10,
+      "created_at": "2026-10-15T03:46:17.115101+00:00",
+      "event_id": "9068c866fa8e46ea82cb8be16cc35d2f",
+      "state": "ANALYZING",
+      "code": "PLAN_UPDATED",
+      "result": null,
+      "plan": {
+        "plan_id": "0cf0e68b91c84dc0b8e0d0b44cdfa0db",
+        "version": "campusbridge-task-plan-v1",
+        "orchestration": "dynamic",
+        "independent_analysis": true,
+        "tasks": [
+          {
+            "task_id": "early-attention",
+            "kind": "attention",
+            "agent": null,
+            "status": "SKIPPED",
+            "enabled": false,
+            "reason": "NO_EXPLICIT_DANGER",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": 31.000000000176442,
+            "failure_code": null
+          },
+          {
+            "task_id": "intent",
+            "kind": "agent",
+            "agent": "IntentAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "CLASSIFY_CURRENT_REQUEST",
+            "safety_checkpoint": false,
+            "started_ms": 31.000000000176442,
+            "finished_ms": 109.00000000015098,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk",
+            "kind": "agent",
+            "agent": "RiskAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "INDEPENDENT_ASSESSMENT",
+            "safety_checkpoint": false,
+            "started_ms": 47.000000000025466,
+            "finished_ms": 109.00000000015098,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk-checkpoint",
+            "kind": "attention",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": false,
+            "reason": "RISK_DOES_NOT_REQUIRE_ATTENTION",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "arbitrate",
+            "kind": "arbitration",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          }
+        ],
+        "dependencies": [
+          {
+            "task_id": "risk-checkpoint",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk-checkpoint",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "intent",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          }
+        ],
+        "max_task_executions": 16,
+        "max_model_calls": 6,
+        "max_token_reservation": 131072
+      },
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 11,
+      "created_at": "2026-10-15T03:46:17.123971+00:00",
+      "event_id": "7b55b5fe9c3346fab6d893406a5d7c0c",
+      "state": "ANALYZING",
+      "code": "TASK_SKIPPED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "risk-checkpoint",
+          "kind": "attention",
+          "agent": null,
+          "status": "SKIPPED",
+          "enabled": false,
+          "reason": "RISK_DOES_NOT_REQUIRE_ATTENTION",
+          "safety_checkpoint": true,
+          "started_ms": null,
+          "finished_ms": 125.0,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "risk-checkpoint",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          }
+        ],
+        "task_executions": 2,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 12,
+      "created_at": "2026-10-15T03:46:17.130254+00:00",
+      "event_id": "d75b2448665c49bcb4494638898a5e5a",
+      "state": "ANALYZING",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "arbitrate",
+          "kind": "arbitration",
+          "agent": null,
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+          "safety_checkpoint": true,
+          "started_ms": 141.0000000000764,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk-checkpoint",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "intent",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          }
+        ],
+        "task_executions": 2,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 13,
+      "created_at": "2026-10-15T03:46:17.134257+00:00",
+      "event_id": "b0b0d3a132b649bb8b3d2d47c1e4e0c2",
+      "state": "ANALYZING",
+      "code": "ARBITRATION_DECIDED",
+      "result": null,
+      "plan": null,
+      "task_event": null,
+      "arbitration": {
+        "stage": "analysis",
+        "final_route": "KNOWLEDGE_SUPPORT",
+        "risk": {
+          "kind": "risk",
+          "level": "LOW",
+          "needs_human_support": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "strategy": "EVIDENCE_GROUNDED",
+        "conflicts": [],
+        "reasons": [
+          "KNOWLEDGE_REQUESTED"
+        ],
+        "adopted_evidence": [
+          {
+            "origin": "agent",
+            "source_id": "IntentAgent",
+            "content_hash": "49de8c672a915a698e5867f57d4622bbe5ffb575300303f4bcdb7a44bee97947",
+            "reason": "TYPED_AGENT_RESULT"
+          },
+          {
+            "origin": "agent",
+            "source_id": "RiskAgent",
+            "content_hash": "45f323814abde2ee91b40772f8a165effaed684dfc343de0f5173f3b376a42e5",
+            "reason": "TYPED_AGENT_RESULT"
+          }
+        ],
+        "rejected_source_ids": [],
+        "context": null,
+        "response_message": "图书馆座位预约需要准备哪些信息？"
+      }
+    },
+    {
+      "sequence": 14,
+      "created_at": "2026-10-15T03:46:17.142844+00:00",
+      "event_id": "855c3fae2d0c48a08361015d0f12fc8b",
+      "state": "ANALYZING",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "arbitrate",
+          "kind": "arbitration",
+          "agent": null,
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+          "safety_checkpoint": true,
+          "started_ms": 141.0000000000764,
+          "finished_ms": 141.0000000000764,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk-checkpoint",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "intent",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          }
+        ],
+        "task_executions": 2,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 15,
+      "created_at": "2026-10-15T03:46:17.150269+00:00",
+      "event_id": "ce8c6d0924e5470fa04b12ec73771e36",
+      "state": "ANALYZING",
+      "code": "PLAN_UPDATED",
+      "result": null,
+      "plan": {
+        "plan_id": "0cf0e68b91c84dc0b8e0d0b44cdfa0db",
+        "version": "campusbridge-task-plan-v1",
+        "orchestration": "dynamic",
+        "independent_analysis": true,
+        "tasks": [
+          {
+            "task_id": "early-attention",
+            "kind": "attention",
+            "agent": null,
+            "status": "SKIPPED",
+            "enabled": false,
+            "reason": "NO_EXPLICIT_DANGER",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": 31.000000000176442,
+            "failure_code": null
+          },
+          {
+            "task_id": "intent",
+            "kind": "agent",
+            "agent": "IntentAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "CLASSIFY_CURRENT_REQUEST",
+            "safety_checkpoint": false,
+            "started_ms": 31.000000000176442,
+            "finished_ms": 109.00000000015098,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk",
+            "kind": "agent",
+            "agent": "RiskAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "INDEPENDENT_ASSESSMENT",
+            "safety_checkpoint": false,
+            "started_ms": 47.000000000025466,
+            "finished_ms": 109.00000000015098,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk-checkpoint",
+            "kind": "attention",
+            "agent": null,
+            "status": "SKIPPED",
+            "enabled": false,
+            "reason": "RISK_DOES_NOT_REQUIRE_ATTENTION",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": 125.0,
+            "failure_code": null
+          },
+          {
+            "task_id": "arbitrate",
+            "kind": "arbitration",
+            "agent": null,
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+            "safety_checkpoint": true,
+            "started_ms": 141.0000000000764,
+            "finished_ms": 141.0000000000764,
+            "failure_code": null
+          },
+          {
+            "task_id": "attention",
+            "kind": "attention",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": false,
+            "reason": "NO_HUMAN_SUPPORT_NEEDED",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "context",
+            "kind": "agent",
+            "agent": "ContextAgent",
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "RAG_REQUESTED",
+            "safety_checkpoint": false,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "evidence",
+            "kind": "arbitration",
+            "agent": null,
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "VERIFY_CONTEXT_EVIDENCE",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "response-1",
+            "kind": "agent",
+            "agent": "ResponseAgent",
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "GENERATE_REVIEWABLE_CANDIDATE",
+            "safety_checkpoint": false,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "review-1",
+            "kind": "agent",
+            "agent": "OutputReviewer",
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "REVIEW_ACTUAL_CANDIDATE",
+            "safety_checkpoint": false,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          },
+          {
+            "task_id": "delivery-1",
+            "kind": "delivery",
+            "agent": "Delivery",
+            "status": "PENDING",
+            "enabled": true,
+            "reason": "ONLY_MATCHED_PASS_APPROVAL",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": null,
+            "failure_code": null
+          }
+        ],
+        "dependencies": [
+          {
+            "task_id": "risk-checkpoint",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk-checkpoint",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "intent",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "attention",
+            "depends_on": "arbitrate",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          },
+          {
+            "task_id": "context",
+            "depends_on": "attention",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "evidence",
+            "depends_on": "context",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED"
+            ]
+          },
+          {
+            "task_id": "response-1",
+            "depends_on": "evidence",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          },
+          {
+            "task_id": "review-1",
+            "depends_on": "response-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          },
+          {
+            "task_id": "delivery-1",
+            "depends_on": "review-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          }
+        ],
+        "max_task_executions": 16,
+        "max_model_calls": 6,
+        "max_token_reservation": 131072
+      },
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 16,
+      "created_at": "2026-10-15T03:46:17.159854+00:00",
+      "event_id": "f0adf3384a4c40e6822d9675cf892bd7",
+      "state": "ANALYZING",
+      "code": "TASK_SKIPPED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "attention",
+          "kind": "attention",
+          "agent": null,
+          "status": "SKIPPED",
+          "enabled": false,
+          "reason": "NO_HUMAN_SUPPORT_NEEDED",
+          "safety_checkpoint": true,
+          "started_ms": null,
+          "finished_ms": 156.00000000017644,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "attention",
+            "depends_on": "arbitrate",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          }
+        ],
+        "task_executions": 2,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 17,
+      "created_at": "2026-10-15T03:46:17.166860+00:00",
+      "event_id": "3f89db1898b2489eaa5ce92004427dee",
+      "state": "ANALYZING",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "context",
+          "kind": "agent",
+          "agent": "ContextAgent",
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "RAG_REQUESTED",
+          "safety_checkpoint": false,
+          "started_ms": 172.00000000002547,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "context",
+            "depends_on": "attention",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          }
+        ],
+        "task_executions": 3,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 18,
+      "created_at": "2026-10-15T03:46:17.230633+00:00",
+      "event_id": "fb9005447462458787460b1a2d3aac30",
+      "state": "CONTEXT_READY",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ContextAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "history_messages": 0,
+          "knowledge_requested": true
+        },
+        "artifact": {
+          "artifact_id": "45107b5e58fe492d8dd04b66b58ed8b3",
+          "producer": "ContextAgent",
+          "payload": {
+            "kind": "context",
+            "route": "KNOWLEDGE_SUPPORT",
+            "history": [],
+            "knowledge": [
+              {
+                "source_id": "campus-library-1629765e92e0-c001",
+                "title": "图书馆预约借阅 library",
+                "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                "revision": "original-v2",
+                "document_id": "campus-library",
+                "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+                "chunk_index": 0,
+                "start": 0,
+                "end": 173,
+                "score": 0.7079063485741154
+              },
+              {
+                "source_id": "campus-support-d91d2d6046aa-c001",
+                "title": "学生支持咨询预约 support appointment",
+                "text": "这是原创虚构校园流程。学生支持咨询预约可从学生支持值班人员开始，说明希望讨论的事情、可联系的时间段和偏好的沟通方式，工作人员再确认预约安排。\n\n预约不是疾病诊断。暂时不愿详细讲述时，可以先说明希望获得哪类支持。存在当前安全担忧时，优先联系身边可信任的人和校内值班人员；即时危险时联系当地紧急服务，不等待普通预约。",
+                "revision": "original-v2",
+                "document_id": "campus-support",
+                "source_hash": "8c23749b9e7b2281503da866e4410bb80adebbd9fde765ddd7949a8be27b9b1a",
+                "chunk_index": 0,
+                "start": 0,
+                "end": 156,
+                "score": 0.5813837734624852
+              }
+            ],
+            "degraded": false,
+            "retrieval_status": "HIT",
+            "query_hash": "fab2cddcd8380badaea4605938a1cfabe93b73c4a57fc998298a7ec7e5c822fe"
+          }
+        },
+        "elapsed_ms": 62.00000000012551,
+        "failure_code": null
+      },
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 19,
+      "created_at": "2026-10-15T03:46:17.237799+00:00",
+      "event_id": "b701bb90bdef421b8cc1712651c6c001",
+      "state": "CONTEXT_READY",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "context",
+          "kind": "agent",
+          "agent": "ContextAgent",
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "RAG_REQUESTED",
+          "safety_checkpoint": false,
+          "started_ms": 172.00000000002547,
+          "finished_ms": 250.0,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "context",
+            "depends_on": "attention",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          }
+        ],
+        "task_executions": 3,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 20,
+      "created_at": "2026-10-15T03:46:17.243236+00:00",
+      "event_id": "fbda7d7bd6d84178878019a75064b895",
+      "state": "CONTEXT_READY",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "evidence",
+          "kind": "arbitration",
+          "agent": null,
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "VERIFY_CONTEXT_EVIDENCE",
+          "safety_checkpoint": true,
+          "started_ms": 250.0,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "evidence",
+            "depends_on": "context",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED"
+            ]
+          }
+        ],
+        "task_executions": 3,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 21,
+      "created_at": "2026-10-15T03:46:17.256509+00:00",
+      "event_id": "4b09dd69b94747ebb45229ab3f139e28",
+      "state": "CONTEXT_READY",
+      "code": "ARBITRATION_DECIDED",
+      "result": null,
+      "plan": null,
+      "task_event": null,
+      "arbitration": {
+        "stage": "evidence",
+        "final_route": "KNOWLEDGE_SUPPORT",
+        "risk": {
+          "kind": "risk",
+          "level": "LOW",
+          "needs_human_support": false,
+          "reason_codes": [
+            "NO_SIGNAL"
+          ]
+        },
+        "strategy": "EVIDENCE_GROUNDED",
+        "conflicts": [],
+        "reasons": [
+          "KNOWLEDGE_REQUESTED"
+        ],
+        "adopted_evidence": [
+          {
+            "origin": "agent",
+            "source_id": "IntentAgent",
+            "content_hash": "49de8c672a915a698e5867f57d4622bbe5ffb575300303f4bcdb7a44bee97947",
+            "reason": "TYPED_AGENT_RESULT"
+          },
+          {
+            "origin": "agent",
+            "source_id": "RiskAgent",
+            "content_hash": "45f323814abde2ee91b40772f8a165effaed684dfc343de0f5173f3b376a42e5",
+            "reason": "TYPED_AGENT_RESULT"
+          },
+          {
+            "origin": "knowledge",
+            "source_id": "campus-library-1629765e92e0-c001",
+            "content_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+            "reason": "VALID_IDENTITY_AND_LEXICAL_RELEVANCE"
+          },
+          {
+            "origin": "knowledge",
+            "source_id": "campus-support-d91d2d6046aa-c001",
+            "content_hash": "8c23749b9e7b2281503da866e4410bb80adebbd9fde765ddd7949a8be27b9b1a",
+            "reason": "VALID_IDENTITY_AND_LEXICAL_RELEVANCE"
+          }
+        ],
+        "rejected_source_ids": [],
+        "context": {
+          "kind": "context",
+          "route": "KNOWLEDGE_SUPPORT",
+          "history": [],
+          "knowledge": [
+            {
+              "source_id": "campus-library-1629765e92e0-c001",
+              "title": "图书馆预约借阅 library",
+              "text": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+              "revision": "original-v2",
+              "document_id": "campus-library",
+              "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171",
+              "chunk_index": 0,
+              "start": 0,
+              "end": 173,
+              "score": 0.7079063485741154
+            },
+            {
+              "source_id": "campus-support-d91d2d6046aa-c001",
+              "title": "学生支持咨询预约 support appointment",
+              "text": "这是原创虚构校园流程。学生支持咨询预约可从学生支持值班人员开始，说明希望讨论的事情、可联系的时间段和偏好的沟通方式，工作人员再确认预约安排。\n\n预约不是疾病诊断。暂时不愿详细讲述时，可以先说明希望获得哪类支持。存在当前安全担忧时，优先联系身边可信任的人和校内值班人员；即时危险时联系当地紧急服务，不等待普通预约。",
+              "revision": "original-v2",
+              "document_id": "campus-support",
+              "source_hash": "8c23749b9e7b2281503da866e4410bb80adebbd9fde765ddd7949a8be27b9b1a",
+              "chunk_index": 0,
+              "start": 0,
+              "end": 156,
+              "score": 0.5813837734624852
+            }
+          ],
+          "degraded": false,
+          "retrieval_status": "HIT",
+          "query_hash": "fab2cddcd8380badaea4605938a1cfabe93b73c4a57fc998298a7ec7e5c822fe"
+        },
+        "response_message": "图书馆座位预约需要准备哪些信息？"
+      }
+    },
+    {
+      "sequence": 22,
+      "created_at": "2026-10-15T03:46:17.276509+00:00",
+      "event_id": "6974aa167f604aafbc9eacbb61239623",
+      "state": "CONTEXT_READY",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "evidence",
+          "kind": "arbitration",
+          "agent": null,
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "VERIFY_CONTEXT_EVIDENCE",
+          "safety_checkpoint": true,
+          "started_ms": 250.0,
+          "finished_ms": 281.00000000017644,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "evidence",
+            "depends_on": "context",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED"
+            ]
+          }
+        ],
+        "task_executions": 3,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 23,
+      "created_at": "2026-10-15T03:46:17.299223+00:00",
+      "event_id": "fa3197a53af942ad8281853627cfe79a",
+      "state": "CONTEXT_READY",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "response-1",
+          "kind": "agent",
+          "agent": "ResponseAgent",
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "GENERATE_REVIEWABLE_CANDIDATE",
+          "safety_checkpoint": false,
+          "started_ms": 297.00000000002547,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "response-1",
+            "depends_on": "evidence",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          }
+        ],
+        "task_executions": 4,
+        "token_reservation": 6880
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 24,
+      "created_at": "2026-10-15T03:46:17.367899+00:00",
+      "event_id": "193690c9c9494ad1b569cd33c1388182",
+      "state": "GENERATING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "ResponseAgent",
+        "status": "SUCCESS",
+        "input_summary": {
+          "attempt": 1,
+          "history_messages": 0,
+          "route": "KNOWLEDGE_SUPPORT",
+          "source_ids": [
+            "campus-library-1629765e92e0-c001",
+            "campus-support-d91d2d6046aa-c001"
+          ]
+        },
+        "artifact": {
+          "artifact_id": "6b11797b40ee44fa83ba11d482963171",
+          "producer": "ResponseAgent",
+          "payload": {
+            "kind": "candidate",
+            "candidate_id": "3f9f0720d0854ca9a41af8388039260b",
+            "text": "根据演示校园资料，本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。[source:campus-library-1629765e92e0-c001]你希望先了解哪个步骤？",
+            "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+            "attempt": 1,
+            "origin": "MODEL",
+            "citations": [
+              {
+                "source_id": "campus-library-1629765e92e0-c001",
+                "document_id": "campus-library",
+                "title": "图书馆预约借阅 library",
+                "revision": "original-v2",
+                "quote": "本卡片描述虚构演示校园，不代表任何真实学校的规章。\n\n图书馆座位预约：先确定日期、时间段和需要的安静区域，再向演示图书馆服务台确认座位预约。预约是否成功以工作人员确认结果为准，本资料没有规定具体开放时刻或电话号码。\n\n图书借阅与续借：准备需要借阅的书名或馆藏编号，向图书馆服务台询问借阅资格、归还日期及续借条件。资料未覆盖逾期费用，不能推测金额。",
+                "source_hash": "ae32e8cda68218d8f9aea2c692890fe77f834f21ba9c3a9c3e9d786fc74f6171"
+              }
+            ],
+            "retrieval_status": "HIT",
+            "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+          }
+        },
+        "elapsed_ms": 30.99999999994907,
+        "failure_code": null
+      },
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 25,
+      "created_at": "2026-10-15T03:46:17.378005+00:00",
+      "event_id": "e91eb6eba2f848eab7c53972cfa61f15",
+      "state": "GENERATING",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "response-1",
+          "kind": "agent",
+          "agent": "ResponseAgent",
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "GENERATE_REVIEWABLE_CANDIDATE",
+          "safety_checkpoint": false,
+          "started_ms": 297.00000000002547,
+          "finished_ms": 391.0000000000764,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "response-1",
+            "depends_on": "evidence",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          }
+        ],
+        "task_executions": 4,
+        "token_reservation": 12395
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 26,
+      "created_at": "2026-10-15T03:46:17.383159+00:00",
+      "event_id": "ccecfdbab6e84db986a7ed2f68d10b20",
+      "state": "GENERATING",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "review-1",
+          "kind": "agent",
+          "agent": "OutputReviewer",
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "REVIEW_ACTUAL_CANDIDATE",
+          "safety_checkpoint": false,
+          "started_ms": 391.0000000000764,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "review-1",
+            "depends_on": "response-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          }
+        ],
+        "task_executions": 5,
+        "token_reservation": 12395
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 27,
+      "created_at": "2026-10-15T03:46:17.414711+00:00",
+      "event_id": "16851c876ef0453f8aae6db41430229e",
+      "state": "REVIEWING",
+      "code": "AGENT_COMPLETED",
+      "result": {
+        "agent": "OutputReviewer",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "3f9f0720d0854ca9a41af8388039260b",
+          "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+          "candidate_chars": 234
+        },
+        "artifact": {
+          "artifact_id": "8bdc0c71345a42bcbde083176b48de11",
+          "producer": "OutputReviewer",
+          "payload": {
+            "kind": "review",
+            "candidate_id": "3f9f0720d0854ca9a41af8388039260b",
+            "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+            "verdict": "PASS",
+            "reason_codes": [],
+            "authority": "MODEL",
+            "citations_hash": "659b70d427d08a76b979e7a9069ca70d1f281dea1e9d74aba5f739d6a8c6d700"
+          }
+        },
+        "elapsed_ms": 30.99999999994907,
+        "failure_code": null
+      },
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 28,
+      "created_at": "2026-10-15T03:46:17.420694+00:00",
+      "event_id": "37f96e9465a943cea26d8754ce63b897",
+      "state": "REVIEWING",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "review-1",
+          "kind": "agent",
+          "agent": "OutputReviewer",
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "REVIEW_ACTUAL_CANDIDATE",
+          "safety_checkpoint": false,
+          "started_ms": 391.0000000000764,
+          "finished_ms": 422.00000000002547,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "review-1",
+            "depends_on": "response-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          }
+        ],
+        "task_executions": 5,
+        "token_reservation": 19653
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 29,
+      "created_at": "2026-10-15T03:46:17.436933+00:00",
+      "event_id": "eb0e74229e574cf1be74093030b02eef",
+      "state": "REVIEWING",
+      "code": "TASK_STARTED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "delivery-1",
+          "kind": "delivery",
+          "agent": "Delivery",
+          "status": "RUNNING",
+          "enabled": true,
+          "reason": "ONLY_MATCHED_PASS_APPROVAL",
+          "safety_checkpoint": true,
+          "started_ms": 438.00000000010186,
+          "finished_ms": null,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "delivery-1",
+            "depends_on": "review-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          }
+        ],
+        "task_executions": 5,
+        "token_reservation": 19653
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 30,
+      "created_at": "2026-10-15T03:46:17.461208+00:00",
+      "event_id": "0df8cf9de6e2498abc72c6d77d1e1656",
+      "state": "ACCEPTED",
+      "code": "REPLY_COMMITTED",
+      "result": {
+        "agent": "Delivery",
+        "status": "SUCCESS",
+        "input_summary": {
+          "candidate_id": "3f9f0720d0854ca9a41af8388039260b",
+          "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f"
+        },
+        "artifact": {
+          "artifact_id": "c65cc52555724c35956831ba66584e01",
+          "producer": "Delivery",
+          "payload": {
+            "kind": "delivery",
+            "candidate_id": "3f9f0720d0854ca9a41af8388039260b",
+            "content_hash": "0bb368d589e4050f6d0f78592cc40bd76c604c49646039850f9580f6b5021e1f",
+            "message_id": "0fa4e6ffe02745fd84e238600189c45d"
+          }
+        },
+        "elapsed_ms": 7.911400000011781,
+        "failure_code": null
+      },
+      "plan": null,
+      "task_event": null,
+      "arbitration": null
+    },
+    {
+      "sequence": 31,
+      "created_at": "2026-10-15T03:46:17.478159+00:00",
+      "event_id": "ad9c5c361e0d4d84bafaa64ad78cbb44",
+      "state": "ACCEPTED",
+      "code": "TASK_FINISHED",
+      "result": null,
+      "plan": null,
+      "task_event": {
+        "task": {
+          "task_id": "delivery-1",
+          "kind": "delivery",
+          "agent": "Delivery",
+          "status": "SUCCEEDED",
+          "enabled": true,
+          "reason": "ONLY_MATCHED_PASS_APPROVAL",
+          "safety_checkpoint": true,
+          "started_ms": 438.00000000010186,
+          "finished_ms": 484.000000000151,
+          "failure_code": null
+        },
+        "dependencies": [
+          {
+            "task_id": "delivery-1",
+            "depends_on": "review-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          }
+        ],
+        "task_executions": 5,
+        "token_reservation": 19653
+      },
+      "arbitration": null
+    },
+    {
+      "sequence": 32,
+      "created_at": "2026-10-15T03:46:17.494155+00:00",
+      "event_id": "cf547b765a774715b0a003605572515a",
+      "state": "ACCEPTED",
+      "code": "PLAN_TERMINAL",
+      "result": null,
+      "plan": {
+        "plan_id": "0cf0e68b91c84dc0b8e0d0b44cdfa0db",
+        "version": "campusbridge-task-plan-v1",
+        "orchestration": "dynamic",
+        "independent_analysis": true,
+        "tasks": [
+          {
+            "task_id": "early-attention",
+            "kind": "attention",
+            "agent": null,
+            "status": "SKIPPED",
+            "enabled": false,
+            "reason": "NO_EXPLICIT_DANGER",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": 31.000000000176442,
+            "failure_code": null
+          },
+          {
+            "task_id": "intent",
+            "kind": "agent",
+            "agent": "IntentAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "CLASSIFY_CURRENT_REQUEST",
+            "safety_checkpoint": false,
+            "started_ms": 31.000000000176442,
+            "finished_ms": 109.00000000015098,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk",
+            "kind": "agent",
+            "agent": "RiskAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "INDEPENDENT_ASSESSMENT",
+            "safety_checkpoint": false,
+            "started_ms": 47.000000000025466,
+            "finished_ms": 109.00000000015098,
+            "failure_code": null
+          },
+          {
+            "task_id": "risk-checkpoint",
+            "kind": "attention",
+            "agent": null,
+            "status": "SKIPPED",
+            "enabled": false,
+            "reason": "RISK_DOES_NOT_REQUIRE_ATTENTION",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": 125.0,
+            "failure_code": null
+          },
+          {
+            "task_id": "arbitrate",
+            "kind": "arbitration",
+            "agent": null,
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "SERVER_POLICY_AND_RESULT_MERGE",
+            "safety_checkpoint": true,
+            "started_ms": 141.0000000000764,
+            "finished_ms": 141.0000000000764,
+            "failure_code": null
+          },
+          {
+            "task_id": "attention",
+            "kind": "attention",
+            "agent": null,
+            "status": "SKIPPED",
+            "enabled": false,
+            "reason": "NO_HUMAN_SUPPORT_NEEDED",
+            "safety_checkpoint": true,
+            "started_ms": null,
+            "finished_ms": 156.00000000017644,
+            "failure_code": null
+          },
+          {
+            "task_id": "context",
+            "kind": "agent",
+            "agent": "ContextAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "RAG_REQUESTED",
+            "safety_checkpoint": false,
+            "started_ms": 172.00000000002547,
+            "finished_ms": 250.0,
+            "failure_code": null
+          },
+          {
+            "task_id": "evidence",
+            "kind": "arbitration",
+            "agent": null,
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "VERIFY_CONTEXT_EVIDENCE",
+            "safety_checkpoint": true,
+            "started_ms": 250.0,
+            "finished_ms": 281.00000000017644,
+            "failure_code": null
+          },
+          {
+            "task_id": "response-1",
+            "kind": "agent",
+            "agent": "ResponseAgent",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "GENERATE_REVIEWABLE_CANDIDATE",
+            "safety_checkpoint": false,
+            "started_ms": 297.00000000002547,
+            "finished_ms": 391.0000000000764,
+            "failure_code": null
+          },
+          {
+            "task_id": "review-1",
+            "kind": "agent",
+            "agent": "OutputReviewer",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "REVIEW_ACTUAL_CANDIDATE",
+            "safety_checkpoint": false,
+            "started_ms": 391.0000000000764,
+            "finished_ms": 422.00000000002547,
+            "failure_code": null
+          },
+          {
+            "task_id": "delivery-1",
+            "kind": "delivery",
+            "agent": "Delivery",
+            "status": "SUCCEEDED",
+            "enabled": true,
+            "reason": "ONLY_MATCHED_PASS_APPROVAL",
+            "safety_checkpoint": true,
+            "started_ms": 438.00000000010186,
+            "finished_ms": 484.000000000151,
+            "failure_code": null
+          }
+        ],
+        "dependencies": [
+          {
+            "task_id": "risk-checkpoint",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk-checkpoint",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "intent",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "arbitrate",
+            "depends_on": "risk",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED",
+              "FAILED"
+            ]
+          },
+          {
+            "task_id": "attention",
+            "depends_on": "arbitrate",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          },
+          {
+            "task_id": "context",
+            "depends_on": "attention",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED"
+            ]
+          },
+          {
+            "task_id": "evidence",
+            "depends_on": "context",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED",
+              "SKIPPED",
+              "BLOCKED"
+            ]
+          },
+          {
+            "task_id": "response-1",
+            "depends_on": "evidence",
+            "allowed_statuses": [
+              "SUCCEEDED",
+              "DEGRADED"
+            ]
+          },
+          {
+            "task_id": "review-1",
+            "depends_on": "response-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          },
+          {
+            "task_id": "delivery-1",
+            "depends_on": "review-1",
+            "allowed_statuses": [
+              "SUCCEEDED"
+            ]
+          }
+        ],
+        "max_task_executions": 16,
+        "max_model_calls": 6,
+        "max_token_reservation": 131072
+      },
+      "task_event": null,
+      "arbitration": null
+    }
+  ]
+}

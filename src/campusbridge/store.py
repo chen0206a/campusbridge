@@ -1,8 +1,9 @@
 import json
 import time
+from functools import wraps
 
 from sqlalchemy import func, select, text
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError, OperationalError
 
 from campusbridge.contracts import (
     AccessDenied, AgentName, AgentResult, CandidateOutput, CaseState, ContextOutput, DeliveryOutput, Event,
@@ -18,9 +19,31 @@ def canonical(data):
     return json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+def mysql_conflict_retry(operation):
+    """Retry only rolled-back InnoDB deadlocks/lock waits, never ambiguous disconnects."""
+    @wraps(operation)
+    def invoke(*args, **kwargs):
+        for attempt in range(3):
+            try: return operation(*args, **kwargs)
+            except OperationalError as exc:
+                if not getattr(exc.orig, "args", ()) or exc.orig.args[0] not in {1205, 1213}: raise
+                if attempt == 2: raise StateConflict("DATABASE_WRITE_CONFLICT") from None
+                time.sleep(.01 * (2 ** attempt))
+    return invoke
+
+
 class Store:
     def __init__(self, database):
         self.db = database
+
+    def _locked_run(self, session, run_id, *, conversation=False):
+        if conversation:
+            conversation_id = session.scalar(select(AgentRun.conversation_id).where(AgentRun.id == run_id))
+            if conversation_id is None: raise NotFound("RUN_NOT_FOUND")
+            self.db.lock(session, Conversation, conversation_id)
+        value = self.db.lock(session, AgentRun, run_id)
+        if value is None: raise NotFound("RUN_NOT_FOUND")
+        return value
 
     @staticmethod
     def student(actor):
@@ -32,10 +55,12 @@ class Store:
         if actor.role != "counselor":
             raise AccessDenied("COUNSELOR_ROLE_REQUIRED")
 
-    def conversation(self, session, conversation_id, actor):
-        value = session.get(Conversation, conversation_id)
+    def conversation(self, session, conversation_id, actor, *, for_update=False):
+        value = self.db.lock(session, Conversation, conversation_id) if for_update else session.get(Conversation, conversation_id)
         if value is None or actor.role != "student" or value.student_id != actor.account_id:
             raise NotFound("CONVERSATION_NOT_FOUND")
+        owner = session.get(Account, value.student_id)
+        if owner is None or owner.campus_id != actor.campus_id: raise NotFound("CONVERSATION_NOT_FOUND")
         return value
 
     def run(self, session, run_id, actor):
@@ -50,7 +75,7 @@ class Store:
 
     def create_conversation(self, actor):
         self.student(actor)
-        with self.db.sessions.begin() as session:
+        with self.db.write() as session:
             conversation = Conversation(id=identifier(), student_id=actor.account_id)
             session.add(conversation)
             session.flush()
@@ -77,9 +102,12 @@ class Store:
     def enqueue(self, conversation_id, actor, message, key):
         self.student(actor)
         fingerprint = digest(canonical({"conversation": conversation_id, "message": message}))
-        with self.db.sessions.begin() as session:
-            session.execute(text("BEGIN IMMEDIATE"))
-            self.conversation(session, conversation_id, actor)
+        with self.db.write() as session:
+            # Lock an existing parent before the first idempotency-key insert.
+            # This covers the student's keys across different conversations too.
+            owner = self.db.lock(session, Account, actor.account_id)
+            if owner is None or owner.campus_id != actor.campus_id: raise NotFound("CONVERSATION_NOT_FOUND")
+            self.conversation(session, conversation_id, actor, for_update=True)
             existing = session.scalar(select(AgentRun).where(AgentRun.student_id == actor.account_id, AgentRun.operation_key == key))
             if existing:
                 if existing.request_hash != fingerprint:
@@ -101,8 +129,8 @@ class Store:
                     "message": run.input_text, "state": RunState(run.state), "campus_id": account.campus_id}
 
     def begin(self, run_id, history_limit):
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id, conversation=True)
             if run.state != RunState.QUEUED.value:
                 raise StateConflict("RUN_ALREADY_STARTED")
             history = session.scalars(select(Message).where(Message.conversation_id == run.conversation_id)
@@ -116,12 +144,12 @@ class Store:
 
     @staticmethod
     def _event(session, run, event):
-        sequence = session.scalar(select(func.count()).select_from(RunEvent).where(RunEvent.run_id == run.id)) + 1
+        sequence = session.scalar(select(func.coalesce(func.max(RunEvent.sequence), 0)).where(RunEvent.run_id == run.id)) + 1
         session.add(RunEvent(id=event.event_id, run_id=run.id, sequence=sequence, event=event.model_dump(mode="json")))
 
     def record(self, run_id, event, failure_code=None):
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
             if RunState(run.state) in FINAL_STATES:
                 raise StateConflict("RUN_IS_TERMINAL")
             run.state = event.state.value
@@ -134,29 +162,29 @@ class Store:
 
     def audit(self, run_id, event):
         """Coordinator metadata; never changes business RunState, including terminal-state auditing."""
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
             if run is None:
                 raise NotFound("RUN_NOT_FOUND")
             self._event(session, run, event)
 
     def count_call(self, run_id, limit):
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
             if run.model_calls >= limit:
                 return False
             run.model_calls += 1
             return True
 
     def usage(self, run_id, reply):
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
             run.input_tokens += reply.input_tokens or 0
             run.output_tokens += reply.output_tokens or 0
 
     def start_model_call(self, run_id, task, limit, provider, model):
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
             if run.model_calls >= limit:
                 return None
             run.model_calls += 1
@@ -166,32 +194,32 @@ class Store:
             return call.id
 
     def finish_model_call(self, call_id, status, elapsed_ms, error_code=None, reply=None):
-        with self.db.sessions.begin() as session:
-            call = session.get(ModelCall, call_id)
+        with self.db.write() as session:
+            run_id = session.scalar(select(ModelCall.run_id).where(ModelCall.id == call_id))
+            run = self._locked_run(session, run_id)
+            call = self.db.lock(session, ModelCall, call_id)
             if call.status != "STARTED":
                 return
             call.status, call.elapsed_ms, call.error_code = status, elapsed_ms, error_code
             if reply:
                 call.input_tokens, call.output_tokens = reply.input_tokens, reply.output_tokens
                 call.finish_reason = reply.finish_reason
-                run = session.get(AgentRun, call.run_id)
                 run.input_tokens += reply.input_tokens or 0
                 run.output_tokens += reply.output_tokens or 0
 
     def model_output_validity(self, call_id, valid, error_code=None):
         if call_id is None:
             return
-        with self.db.sessions.begin() as session:
-            call = session.get(ModelCall, call_id)
+        with self.db.write() as session:
+            call = self.db.lock(session, ModelCall, call_id)
             if call.status == "SUCCESS":
                 call.output_valid, call.error_code = valid, error_code
 
     def persist_attention(self, run_id, assessment):
         if not assessment.needs_human:
             return None
-        with self.db.sessions.begin() as session:
-            session.execute(text("BEGIN IMMEDIATE"))
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
             existing = session.scalar(select(RiskEvent).where(RiskEvent.run_id == run_id))
             if existing:
                 return session.scalar(select(SupportCase.id).where(SupportCase.risk_event_id == existing.id))
@@ -212,8 +240,8 @@ class Store:
     def commit_reply(self, run_id, candidate, approval, final_state):
         preparation_started = time.perf_counter()
         permit_delivery(candidate, approval)
-        with self.db.sessions.begin() as session:
-            run = session.get(AgentRun, run_id)
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id, conversation=True)
             if RunState(run.state) in FINAL_STATES:
                 raise StateConflict("RUN_IS_TERMINAL")
             if run.candidate != candidate.model_dump(mode="json"):
@@ -299,8 +327,8 @@ class Store:
 
     def recover_interrupted(self):
         # Single-process MVP: startup recovery never launches a new model request.
-        with self.db.sessions.begin() as session:
-            runs = session.scalars(select(AgentRun).where(AgentRun.state.not_in([state.value for state in FINAL_STATES]))).all()
+        with self.db.write() as session:
+            runs = session.scalars(select(AgentRun).where(AgentRun.state.not_in([state.value for state in FINAL_STATES])).order_by(AgentRun.id).with_for_update()).all()
             for run in runs:
                 run.state = RunState.FAILED.value
                 run.failure_code = "SERVER_RESTARTED"
@@ -308,9 +336,8 @@ class Store:
             for call in session.scalars(select(ModelCall).where(ModelCall.status == "STARTED")):
                 call.status, call.error_code = "INTERRUPTED", "SERVER_RESTARTED"
 
-    @staticmethod
-    def _case(session, case_id, actor):
-        case = session.get(SupportCase, case_id)
+    def _case(self, session, case_id, actor, *, for_update=False):
+        case = self.db.lock(session, SupportCase, case_id) if for_update else session.get(SupportCase, case_id)
         if case is None or case.campus_id != actor.campus_id:
             raise NotFound("CASE_NOT_FOUND")
         return case
@@ -341,9 +368,8 @@ class Store:
         self.counselor(actor)
         note = sanitized_input(note.strip())
         fingerprint = digest(canonical({"action": action, "note": note, "expected_version": expected_version}))
-        with self.db.sessions.begin() as session:
-            session.execute(text("BEGIN IMMEDIATE"))
-            case = self._case(session, case_id, actor)
+        with self.db.write() as session:
+            case = self._case(session, case_id, actor, for_update=True)
             previous = session.scalar(select(CaseEvent).where(CaseEvent.case_id == case_id, CaseEvent.operation_key == key))
             if previous:
                 if previous.actor_id != actor.account_id or previous.request_hash != fingerprint:
@@ -375,3 +401,10 @@ class Store:
                 note=note, result_version=case.version))
             return {"case_id": case.id, "state": target.value, "version": case.version,
                     "actor_id": actor.account_id, "idempotent_replay": False}
+
+
+# Each method contains one short database transaction and no model/network side effect.
+for _operation in ("create_conversation", "enqueue", "begin", "record", "audit", "count_call", "usage",
+                   "start_model_call", "finish_model_call", "model_output_validity", "persist_attention",
+                   "commit_reply", "recover_interrupted", "case_action"):
+    setattr(Store, _operation, mysql_conflict_retry(getattr(Store, _operation)))

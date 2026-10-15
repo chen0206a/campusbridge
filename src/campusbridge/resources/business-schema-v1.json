@@ -1,0 +1,764 @@
+[
+  {
+    "name": "accounts",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "username",
+        "type": "VARCHAR(80)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "password_hash",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "role",
+        "type": "VARCHAR(20)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "campus_id",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "enabled",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "username"
+      ]
+    ],
+    "indexes": []
+  },
+  {
+    "name": "login_tokens",
+    "columns": [
+      {
+        "name": "token_hash",
+        "type": "VARCHAR(64)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "account_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "accounts.id"
+        ]
+      },
+      {
+        "name": "expires_at",
+        "type": "DOUBLE",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [],
+    "indexes": []
+  },
+  {
+    "name": "students",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": [
+          "accounts.id"
+        ]
+      },
+      {
+        "name": "display_name",
+        "type": "VARCHAR(80)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "synthetic",
+        "type": "BOOLEAN",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [],
+    "indexes": []
+  },
+  {
+    "name": "conversations",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "student_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "students.id"
+        ]
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [],
+    "indexes": [
+      {
+        "name": "ix_conversations_student_id",
+        "columns": [
+          "student_id"
+        ],
+        "unique": false
+      }
+    ]
+  },
+  {
+    "name": "agent_runs",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "conversation_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "conversations.id"
+        ]
+      },
+      {
+        "name": "student_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "students.id"
+        ]
+      },
+      {
+        "name": "operation_key",
+        "type": "VARCHAR(128)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "request_hash",
+        "type": "VARCHAR(64)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "input_text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "state",
+        "type": "VARCHAR(30)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "candidate",
+        "type": "JSON",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "approval",
+        "type": "JSON",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "response_message_id",
+        "type": "VARCHAR(32)",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "failure_code",
+        "type": "VARCHAR(80)",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "model_calls",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "input_tokens",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "output_tokens",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "student_id",
+        "operation_key"
+      ]
+    ],
+    "indexes": [
+      {
+        "name": "ix_agent_runs_conversation_id",
+        "columns": [
+          "conversation_id"
+        ],
+        "unique": false
+      }
+    ]
+  },
+  {
+    "name": "messages",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "conversation_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "conversations.id"
+        ]
+      },
+      {
+        "name": "run_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "agent_runs.id"
+        ]
+      },
+      {
+        "name": "role",
+        "type": "VARCHAR(20)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "order_index",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "run_id",
+        "role"
+      ]
+    ],
+    "indexes": [
+      {
+        "name": "ix_messages_conversation_id",
+        "columns": [
+          "conversation_id"
+        ],
+        "unique": false
+      }
+    ]
+  },
+  {
+    "name": "model_calls",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "run_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "agent_runs.id"
+        ]
+      },
+      {
+        "name": "call_index",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "agent",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "provider",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "model",
+        "type": "VARCHAR(120)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "status",
+        "type": "VARCHAR(30)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "input_tokens",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "output_tokens",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "elapsed_ms",
+        "type": "DOUBLE",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "error_code",
+        "type": "VARCHAR(80)",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "output_valid",
+        "type": "BOOLEAN",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "finish_reason",
+        "type": "VARCHAR(30)",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "run_id",
+        "call_index"
+      ]
+    ],
+    "indexes": [
+      {
+        "name": "ix_model_calls_run_id",
+        "columns": [
+          "run_id"
+        ],
+        "unique": false
+      }
+    ]
+  },
+  {
+    "name": "risk_events",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "run_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "agent_runs.id"
+        ]
+      },
+      {
+        "name": "student_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "students.id"
+        ]
+      },
+      {
+        "name": "assessment",
+        "type": "JSON",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "run_id"
+      ]
+    ],
+    "indexes": []
+  },
+  {
+    "name": "run_events",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "run_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "agent_runs.id"
+        ]
+      },
+      {
+        "name": "sequence",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "event",
+        "type": "JSON",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "run_id",
+        "sequence"
+      ]
+    ],
+    "indexes": [
+      {
+        "name": "ix_run_events_run_id",
+        "columns": [
+          "run_id"
+        ],
+        "unique": false
+      }
+    ]
+  },
+  {
+    "name": "support_cases",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "risk_event_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "risk_events.id"
+        ]
+      },
+      {
+        "name": "student_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "students.id"
+        ]
+      },
+      {
+        "name": "campus_id",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "state",
+        "type": "VARCHAR(30)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "owner_id",
+        "type": "VARCHAR(32)",
+        "nullable": true,
+        "primary_key": false,
+        "foreign_keys": [
+          "accounts.id"
+        ]
+      },
+      {
+        "name": "version",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "risk_event_id"
+      ]
+    ],
+    "indexes": [
+      {
+        "name": "ix_support_cases_campus_id",
+        "columns": [
+          "campus_id"
+        ],
+        "unique": false
+      }
+    ]
+  },
+  {
+    "name": "case_events",
+    "columns": [
+      {
+        "name": "id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": true,
+        "foreign_keys": []
+      },
+      {
+        "name": "case_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "support_cases.id"
+        ]
+      },
+      {
+        "name": "operation_key",
+        "type": "VARCHAR(128)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "request_hash",
+        "type": "VARCHAR(64)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "actor_id",
+        "type": "VARCHAR(32)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": [
+          "accounts.id"
+        ]
+      },
+      {
+        "name": "action",
+        "type": "VARCHAR(30)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "from_state",
+        "type": "VARCHAR(30)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "to_state",
+        "type": "VARCHAR(30)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "note",
+        "type": "TEXT",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "result_version",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      },
+      {
+        "name": "created_at",
+        "type": "VARCHAR(40)",
+        "nullable": false,
+        "primary_key": false,
+        "foreign_keys": []
+      }
+    ],
+    "unique": [
+      [
+        "case_id",
+        "operation_key"
+      ]
+    ],
+    "indexes": [
+      {
+        "name": "ix_case_events_case_id",
+        "columns": [
+          "case_id"
+        ],
+        "unique": false
+      }
+    ]
+  }
+]
