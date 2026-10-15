@@ -30,6 +30,8 @@ flowchart TD
 
 ## Agent 契约
 
+Stage B在同一KnowledgePort后增加可选检索：BM25保留FTS5；Dense使用本地CPU BGE与内容寻址SQLite向量缓存；Hybrid通过等权RRF融合。三种模式都按校园与有效版本筛选，返回原source ID、正文和Hash。ContextAgent、Arbitrator、回复、审核和交付协议保持原样。实测、启动预热及现有词面仲裁的兼容问题见[RAG Stage B](RAG_STAGE_B.md)。
+
 | 角色 | 输入 | 产物 | 模型调用 |
 |---|---|---|---|
 | IntentAgent | 当前消息、有限历史 | IntentOutput：GENERAL/SUPPORT/CAMPUS_SERVICE/URGENT、知识需求 | ModelPort |

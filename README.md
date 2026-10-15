@@ -143,6 +143,10 @@ GitHub Actions 配置覆盖 Ubuntu/Windows、Python 3.12/3.13 后端，以及 No
 
 [Stage A检索评测](docs/RAG_STAGE_A.md)：72条固定合成开发查询、16篇隔离语料。当前BM25 Chunk Recall@1/3/5为60.71%/76.79%/76.79%，MRR为0.7143。逐条结果、配置与Hash独立保存，0模型调用，生产检索方案保持不变。本轮后端回归228项通过。
 
+## RAG Dense / Hybrid
+
+[Stage B实现与复现](docs/RAG_STAGE_B.md) · [三模式完整结果](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md)。原72条BM25 / Dense / Hybrid Recall@3为 **76.79% / 91.07% / 89.29%**；预先冻结的32条Holdout为 **83.33% / 85.42% / 89.58%**。默认BM25，安装本地CPU Embedding后可通过环境变量切换，继续使用原引用和审核流程。
+
 ## 可选真实模型
 
 从服务端进程环境传入 `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`、`CAMPUSBRIDGE_ENDPOINT`、`CAMPUSBRIDGE_MODEL`、`CAMPUSBRIDGE_API_KEY`；DeepSeek 使用 `CAMPUSBRIDGE_THINKING_MODE=disabled`。密钥只放服务端环境，前端没有模型密钥。

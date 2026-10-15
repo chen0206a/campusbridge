@@ -9,11 +9,11 @@ from pathlib import Path
 
 DIRECTORIES = {'src', 'scripts', 'tests', 'docs', 'eval', 'experiments', '.github', 'frontend'}
 ROOT_FILES = {'README.md', 'README.en.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'pyproject.toml',
-              'requirements.lock', '.env.example', '.gitignore', '.gitattributes', 'SECURITY.md', 'CONTRIBUTING.md'}
+              'requirements.lock', 'requirements-rag.lock', '.env.example', '.gitignore', '.gitattributes', 'SECURITY.md', 'CONTRIBUTING.md'}
 EXCLUDED_PARTS = {'.git', '.venv', 'venv', '__pycache__', '.pytest_cache', 'node_modules',
                   'build', 'dist', 'coverage', '.cache'}
 EXCLUDED_SUFFIXES = {'.db', '.sqlite', '.sqlite3', '.pyc', '.log', '.pem', '.key', '.gguf',
-                     '.safetensors', '.tsbuildinfo', '.zip', '.gz'}
+                     '.safetensors', '.tsbuildinfo', '.zip', '.gz', '.onnx', '.bin', '.npy', '.npz'}
 TEXT_SUFFIXES = {'.py', '.md', '.json', '.jsonl', '.txt', '.toml', '.yml', '.yaml', '.ts',
                  '.tsx', '.css', '.html', '.svg', '.drawio', '.lock'}
 CHECKS = (

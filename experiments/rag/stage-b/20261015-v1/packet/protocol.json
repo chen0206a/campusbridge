@@ -1,0 +1,23 @@
+{
+  "version": "rag-stage-b-v1",
+  "model_id": "BAAI/bge-small-zh-v1.5",
+  "model_revision": "7999e1d3359715c523056ef9478215996d62a620",
+  "ranking_depth": 5,
+  "context_depth": 3,
+  "candidate_k": 20,
+  "rrf_k": 60,
+  "equal_rrf_weights": true,
+  "threshold_grid": [
+    0.5,
+    0.6,
+    0.7,
+    0.8
+  ],
+  "selection": "per mode maximize 0.5*dev chunk Recall@3 + 0.5*dev no-answer empty rejection; ties prefer larger threshold",
+  "fixed_before_embedding_calls": true,
+  "query_cache": false,
+  "timed_repeats": 3,
+  "insufficient_evidence": "unsupported_fact separated; retrieval does not certify answerability",
+  "labels": "developer-authored synthetic, not independent human adjudication",
+  "stage_a_original_queries_sha256": "d82374f32005ae41a48ecad865a061f9fa43beb1e437fcba9bebb496500d2006"
+}

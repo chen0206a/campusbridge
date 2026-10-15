@@ -17,3 +17,5 @@ FastAPI、Pydantic、SQLAlchemy、uvicorn、pytest、httpx 等通过包管理器
 公开导出以 scripts/release.py 的允许清单为准，包含项目代码、文档、素材、合成案例和实验公共副本。原始历史模型成绩、输出与Prompt保持原字节，实验索引按原Hash验证每份副本。开发数据库、.env、虚拟环境、缓存和临时日志排除。
 
 资产来源见 [ASSETS.md](ASSETS.md)，发布检查见 [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)。专项检索评测的合成资料与标注来源记录在对应版本的 provenance 文件中。
+
+RAG Stage B新增的Dev/Holdout为本项目编写的虚构校园检索查询，首次Embedding调用前固定；知识原文复用Stage A合成资料。BGE模型的独立MIT许可、下载来源和可选推理依赖见[RAG实现说明](RAG_STAGE_B.md)及[第三方许可](../THIRD_PARTY_NOTICES.md)。

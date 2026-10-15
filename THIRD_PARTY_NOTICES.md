@@ -33,6 +33,12 @@ CampusBridge original code, Prompts, synthetic datasets, UI icons and diagrams a
 
 certifi uses MPL-2.0; greenlet uses MIT AND PSF-2.0; packaging uses Apache-2.0 OR BSD-2-Clause. Their installed distributions include upstream notices. The project MIT license applies to CampusBridge code.
 
+## Optional local RAG dependencies and model
+
+BGE-small-zh-v1.5 is published by BAAI under MIT: [official model card](https://huggingface.co/BAAI/bge-small-zh-v1.5). Stage B pins revision `7999e1d3359715c523056ef9478215996d62a620`. Weights and upstream model files are downloaded separately and are excluded from the repository. Their upstream notices remain in the external snapshot.
+
+Optional runtime packages are pinned in `requirements-rag.lock`; [installed metadata and upstream links](docs/RAG_DEPENDENCIES.json) record the complete added package set. Primary packages: Torch (BSD-3-Clause), Transformers and Hugging Face Hub (Apache-2.0), NumPy and psutil (BSD-3-Clause). Transitive packages retain their own notices, including regex (Apache-2.0 AND CNRI-Python) and tqdm (MPL-2.0 AND MIT). The base dependency lock is unchanged; these distributions are installed, not vendored.
+
 ## Frontend dependency graph
 
 212 locked package entries, including development/build/test dependencies and platform-specific optional packages. Each package version, license and registry source is recorded in [DEPENDENCY_LICENSES.json](docs/DEPENDENCY_LICENSES.json) and frontend/package-lock.json.

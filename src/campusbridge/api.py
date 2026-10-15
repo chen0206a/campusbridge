@@ -15,6 +15,7 @@ from campusbridge.knowledge import DemoKnowledge
 from campusbridge.models import MockModel
 from campusbridge.provider import OpenAICompatibleProvider
 from campusbridge.retrieval import SQLiteKnowledge, bundled_documents
+from campusbridge.dense_retrieval import configured_knowledge
 from campusbridge.runtime import CampusRuntime
 from campusbridge.security import Authentication
 from campusbridge.settings import Settings
@@ -53,8 +54,8 @@ def create_app(settings=None, model=None, knowledge=None):
     if model is None:
         model = OpenAICompatibleProvider(settings) if settings.model_provider == "openai-compatible" else MockModel()
     if knowledge is None:
-        knowledge = SQLiteKnowledge(database, settings.knowledge_top_k) if settings.knowledge_backend == "fts5" else DemoKnowledge()
-        if isinstance(knowledge, SQLiteKnowledge):
+        knowledge = configured_knowledge(database, settings) if settings.knowledge_backend == "fts5" else DemoKnowledge()
+        if settings.knowledge_backend == "fts5":
             knowledge.import_documents(bundled_documents())
     runtime = CampusRuntime(store, model, knowledge, settings)
 

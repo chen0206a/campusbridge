@@ -19,6 +19,12 @@ class Settings(BaseModel):
     provider_thinking_mode: Literal["enabled", "disabled"] | None = None
     knowledge_backend: Literal["fts5", "demo"] = "fts5"
     knowledge_top_k: int = Field(default=3, ge=1, le=5)
+    retrieval_mode: Literal["bm25", "dense", "hybrid"] = "bm25"
+    retrieval_fallback: Literal["error", "bm25"] = "error"
+    retrieval_candidate_k: int = Field(default=20, ge=5, le=40)
+    dense_min_score: float = Field(default=0.65, ge=-1, le=1)
+    embedding_model_path: Path = Path("models/bge-small-zh-v1.5")
+    embedding_threads: int = Field(default=2, ge=1, le=16)
     seed_demo: bool = True
     model_timeout: float = Field(default=2, gt=0, le=30)
     context_timeout: float = Field(default=1, gt=0, le=10)
@@ -66,6 +72,12 @@ class Settings(BaseModel):
                   "max_parallel_agents": "CAMPUSBRIDGE_MAX_PARALLEL_AGENTS",
                   "max_task_executions": "CAMPUSBRIDGE_MAX_TASK_EXECUTIONS",
                   "max_turn_token_reservation": "CAMPUSBRIDGE_MAX_TURN_TOKEN_RESERVATION"}
+        fields.update({"retrieval_mode": "CAMPUSBRIDGE_RETRIEVAL_MODE",
+            "retrieval_fallback": "CAMPUSBRIDGE_RETRIEVAL_FALLBACK",
+            "retrieval_candidate_k": "CAMPUSBRIDGE_RETRIEVAL_CANDIDATE_K",
+            "dense_min_score": "CAMPUSBRIDGE_DENSE_MIN_SCORE",
+            "embedding_model_path": "CAMPUSBRIDGE_EMBEDDING_MODEL_PATH",
+            "embedding_threads": "CAMPUSBRIDGE_EMBEDDING_THREADS"})
         values = {key: os.environ[name] for key, name in fields.items() if name in os.environ}
         if values.get("model_provider") == "openai-compatible":
             values.setdefault("model_timeout", 20)
