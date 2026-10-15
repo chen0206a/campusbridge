@@ -34,6 +34,7 @@ def main():
     parser.add_argument("--mysqld", type=Path, required=True)
     parser.add_argument("--scratch", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--extra-test", action="append", default=[], help="Additional local test file (e.g. D2 Redis/MySQL coexistence)")
     args = parser.parse_args()
     if args.scratch.exists() or args.output.exists() or args.scratch.resolve().is_relative_to(ROOT):
         parser.error("Use new output and new external scratch directories")
@@ -83,7 +84,7 @@ def main():
         env = {**os.environ, "PYTHONUTF8": "1", "CAMPUSBRIDGE_TEST_MYSQL_ALLOW": "1",
             "CAMPUSBRIDGE_TEST_MYSQL_URL": f"mysql+pymysql://cb_d1_app:{quote(app_password,safe='')}@127.0.0.1:{port}/{database}?charset=utf8mb4",
             "CAMPUSBRIDGE_TEST_MYSQL_MIGRATION_URL": f"mysql+pymysql://root:{quote(root_password,safe='')}@127.0.0.1:{port}/{database}?charset=utf8mb4"}
-        result = subprocess.run([sys.executable, "-X", "utf8", "-m", "pytest", "tests/test_database_d1.py", "tests/test_mysql_d1.py",
+        result = subprocess.run([sys.executable, "-X", "utf8", "-m", "pytest", "tests/test_database_d1.py", "tests/test_mysql_d1.py", *args.extra_test,
             "-v", "--junitxml=" + str(args.scratch / "pytest.xml")], cwd=ROOT, env=env, capture_output=True, encoding="utf-8")
         def sanitized(value):
             for secret in (root_password, app_password, quote(root_password, safe=""), quote(app_password, safe="")):

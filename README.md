@@ -151,6 +151,12 @@ GitHub Actions 配置覆盖 Ubuntu/Windows、Python 3.12/3.13 后端，以及 No
 
 Stage D1新增可选MySQL8业务库与Alembic迁移，知识检索保留独立SQLite，支持工单行锁、持久幂等约束和单Runtime启动保护。[迁移、配置与风险清单](docs/STAGE_D1_DATABASE.md) · [D1验收报告](experiments/stage-d1/20261015-v1/HANDOFF.md)。本地默认仍用SQLite＋MockModel。
 
+## Redis 检索缓存与限流
+
+Stage D2 提供可独立启用的 BM25 / Dense / Hybrid 候选缓存，以及登录、消息提交的原子限流。缓存命中后重新验证校园、有效文档版本和来源 Hash；Redis 故障时检索回源，认证与消息限流返回明确的 503。默认关闭 Redis，继续支持 SQLite＋MockModel 本地体验。
+
+[配置与一致性设计](docs/STAGE_D2_REDIS.md) · [真实 Redis 验收与性能结果](experiments/stage-d2/20261015-v1/HANDOFF.md)。Runtime 保持 D1 的单实例运行约束。
+
 ## 可选真实模型
 
 从服务端进程环境传入 `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`、`CAMPUSBRIDGE_ENDPOINT`、`CAMPUSBRIDGE_MODEL`、`CAMPUSBRIDGE_API_KEY`；DeepSeek 使用 `CAMPUSBRIDGE_THINKING_MODE=disabled`。密钥只放服务端环境，前端没有模型密钥。

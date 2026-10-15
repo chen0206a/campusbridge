@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 
 
 class Settings(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(extra="forbid", frozen=True, hide_input_in_errors=True)
     environment: Literal["development", "test"] = "development"
     database_path: Path | None = None
     database_url: SecretStr | None = Field(default=None, repr=False, exclude=True)
@@ -33,6 +33,19 @@ class Settings(BaseModel):
     dense_min_score: float = Field(default=0.65, ge=-1, le=1)
     embedding_model_path: Path = Path("models/bge-small-zh-v1.5")
     embedding_threads: int = Field(default=2, ge=1, le=16)
+    redis_cache_enabled: bool = False
+    redis_rate_limit_enabled: bool = False
+    redis_url: SecretStr = Field(default=SecretStr("redis://127.0.0.1:6379/0"), repr=False, exclude=True)
+    redis_namespace: str = Field(default="campusbridge:d2", pattern=r"^[A-Za-z0-9:_-]{1,64}$")
+    redis_timeout: float = Field(default=0.15, ge=0.01, le=2)
+    redis_max_connections: int = Field(default=32, ge=1, le=128)
+    redis_cache_ttl: int = Field(default=120, ge=1, le=3600)
+    login_limit: int = Field(default=10, ge=1, le=1000)
+    login_peer_limit: int = Field(default=100, ge=1, le=10000)
+    login_window_seconds: int = Field(default=60, ge=1, le=3600)
+    message_limit: int = Field(default=20, ge=1, le=1000)
+    message_window_seconds: int = Field(default=60, ge=1, le=3600)
+    rate_limit_status: Literal[429, 503] = 429
     seed_demo: bool = True
     model_timeout: float = Field(default=2, gt=0, le=30)
     context_timeout: float = Field(default=1, gt=0, le=10)
@@ -48,6 +61,12 @@ class Settings(BaseModel):
 
     @model_validator(mode="after")
     def isolated_database(self):
+        redis_parts = urlsplit(self.redis_url.get_secret_value())
+        if (redis_parts.scheme not in {"redis", "rediss"} or not redis_parts.hostname
+                or redis_parts.query or redis_parts.fragment):
+            raise ValueError("REDIS_URL_REQUIRES_REDIS_OR_REDISS_WITHOUT_QUERY")
+        if self.redis_cache_enabled and self.redis_timeout * 2 >= self.context_timeout:
+            raise ValueError("REDIS_CACHE_TIMEOUT_MUST_LEAVE_CONTEXT_BUDGET")
         if self.database_url is not None and not self.database_url.get_secret_value():
             raise ValueError("DATABASE_URL_MUST_NOT_BE_EMPTY")
         if self.database_url:
@@ -109,6 +128,12 @@ class Settings(BaseModel):
             "db_pool_timeout": "CAMPUSBRIDGE_DB_POOL_TIMEOUT", "db_pool_recycle": "CAMPUSBRIDGE_DB_POOL_RECYCLE",
             "db_connect_timeout": "CAMPUSBRIDGE_DB_CONNECT_TIMEOUT", "db_io_timeout": "CAMPUSBRIDGE_DB_IO_TIMEOUT"})
         values = {key: os.environ[name] for key, name in fields.items() if name in os.environ}
+        for key in ("redis_cache_enabled", "redis_rate_limit_enabled", "redis_url", "redis_namespace", "redis_timeout",
+                    "redis_max_connections", "redis_cache_ttl", "login_limit", "login_peer_limit", "login_window_seconds",
+                    "message_limit", "message_window_seconds", "rate_limit_status"):
+            name = "CAMPUSBRIDGE_" + key.upper()
+            if name in os.environ:
+                values[key] = int(os.environ[name]) if key == "rate_limit_status" else os.environ[name]
         if values.get("model_provider") == "openai-compatible":
             values.setdefault("model_timeout", 20)
             values.setdefault("run_timeout", 90)

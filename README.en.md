@@ -100,3 +100,7 @@ Optional real providers use server-side `CAMPUSBRIDGE_ENDPOINT`, `CAMPUSBRIDGE_M
 [MIT](LICENSE) for original source, Prompts, synthetic knowledge/data and assets. [Provenance](docs/PROVENANCE.md) · [Dependency notices](THIRD_PARTY_NOTICES.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md).
 
 The system supports student conversations and human follow-up. Professional staff own diagnosis and real intervention. All public demonstration data is fictional.
+
+## Optional Redis retrieval cache and rate limiting
+
+Stage D2 adds candidate caching for BM25/Dense/Hybrid and atomic login/message limits. Cache hits revalidate campus, active document revision and source hashes against the knowledge store. Cache outages bypass Redis; enabled authentication/message limits fail closed with HTTP 503. Both features are disabled by default, so SQLite + MockModel works without redis-py. See [design and commands](docs/STAGE_D2_REDIS.md) and [real Redis acceptance](experiments/stage-d2/20261015-v1/HANDOFF.md). Business execution retains D1's single-runtime guard.

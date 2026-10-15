@@ -14,6 +14,9 @@ from campusbridge.settings import Settings
 
 def warm(app):
     knowledge = app.state.knowledge
+    from campusbridge.retrieval_cache import CachedKnowledge
+    if isinstance(knowledge, CachedKnowledge):
+        knowledge = knowledge.inner
     if not isinstance(knowledge, SemanticKnowledge):
         return []
     with knowledge.db.sessions() as session:

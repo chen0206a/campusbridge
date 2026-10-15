@@ -43,6 +43,10 @@ Optional runtime packages are pinned in `requirements-rag.lock`; [installed meta
 
 Stage D1 adds Alembic 1.20.0 (MIT), Mako 1.4.3 (MIT) and MarkupSafe 3.0.3 (BSD-3-Clause) to the base lock. Optional MySQL dependencies are in requirements-mysql.lock: PyMySQL (MIT), cryptography (Apache-2.0 OR BSD-3-Clause), cffi (MIT) and pycparser (BSD-3-Clause). [Installed metadata](docs/DATABASE_DEPENDENCIES.json) records upstream links and versions. The locally installed MySQL Community Server 8.0.42 used for acceptance retains its GPL license and is not bundled in the source repository.
 
+## Optional Redis infrastructure
+
+Stage D2 uses redis-py 7.4.1 (MIT), pinned in requirements-redis.lock. [Upstream client](https://github.com/redis/redis-py). Redis Server is operated separately and is not distributed with CampusBridge. Local D2 acceptance used the Ubuntu Redis 7.0.15 binary (BSD-3-Clause) in an external temporary directory; production operators should choose a maintained security-patched server distribution and review its applicable license. No server binaries, snapshots or credentials are included here.
+
 ## Frontend dependency graph
 
 212 locked package entries, including development/build/test dependencies and platform-specific optional packages. Each package version, license and registry source is recorded in [DEPENDENCY_LICENSES.json](docs/DEPENDENCY_LICENSES.json) and frontend/package-lock.json.
