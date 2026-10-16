@@ -6,7 +6,7 @@
 
 An original campus-support application with typed task planning, concurrent agent analysis, evidence arbitration, reviewed delivery, and auditable human follow-up. [English README](README.en.md)
 
-Python · FastAPI · Pydantic · SQLAlchemy · SQLite FTS5/BM25 · React · TypeScript · Vite · MIT
+Python · FastAPI · Pydantic · SQLAlchemy · MySQL · Redis · SQLite FTS5/BM25 · Docker Compose · React · TypeScript · Vite · MIT
 
 [快速运行](#快速运行无需-api-key) · [架构](#动态协作架构) · [真实实验](#真实-deepseek-实验) · [演示脚本](docs/DEMO_SCRIPT.md) · [复现记录](docs/CLEAN_REPRODUCTION.md)
 
@@ -23,6 +23,10 @@ Python · FastAPI · Pydantic · SQLAlchemy · SQLite FTS5/BM25 · React · Type
 工程部署使用 MySQL 业务库、独立 SQLite 知识索引、Redis 缓存与原子限流，单 Backend Docker Compose 可直接启动。[D3 部署说明](docs/STAGE_D3_COMPOSE.md) · [D4 单实例 HTTP 负载与恢复验收](docs/STAGE_D4_RELIABILITY.md)。D4 使用独立合成账户与 MockModel，保留逐请求耗时、资源指标、工单竞争和幂等检查结果。
 
 [D4 实测](experiments/stage-d4/20261015-v1/HANDOFF.md)：同机 Mock 短时负载共 2,796 个 HTTP 请求零失败，16 路工单竞争仅 1 次认领成功；100 VU 时 15.44 RPS、P95 15.75s，记录了随并发升高的尾延迟和恢复行为。
+
+[D5 性能剖析](docs/STAGE_D5_PERFORMANCE.md) 提供事件循环、数据库事务/连接池、会话锁与 Agent 阶段计时，并使用独立快照线程和逐行日志保存高并发资源曲线。
+
+[D5 同条件对照](experiments/stage-d5/20261016-v1/HANDOFF.md)：减少协调器审计的重复查询与事务后，100 VU 吞吐 15.08→18.14 RPS、P95 15.29→12.99s、P99 16.62→13.79s；两轮八档监控采集无缺项，保留原始请求、计时和客户端资源数据。
 
 ## 界面展示
 

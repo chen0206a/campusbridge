@@ -47,3 +47,23 @@ def test_profile_lifetime_exports_without_http(tmp_path):
 def test_profiling_environment_switch(monkeypatch):
     monkeypatch.setenv('CAMPUSBRIDGE_PERFORMANCE_ENABLED','true')
     assert Settings.from_environment().performance_enabled
+
+
+def test_queue_wait_is_distinct_from_sql_execution(tmp_path):
+    from types import SimpleNamespace
+    engine=create_engine('sqlite:///'+str(tmp_path/'pool.sqlite3'),pool_size=1,max_overflow=0)
+    profile=Performance()
+    instrument_database(SimpleNamespace(engine=engine,write=lambda:None),profile,'pool_test')
+    started=threading.Event()
+    def acquire():
+        started.set()
+        with engine.connect() as connection:assert connection.scalar(text('SELECT 1'))==1
+    with engine.connect():
+        worker=threading.Thread(target=acquire);worker.start()
+        assert started.wait(1)
+        time.sleep(.05)
+    worker.join(2);assert not worker.is_alive()
+    rows=profile.snapshot()['durations']
+    assert rows['pool_test.pool_queue_wait']['sum_ms']>=10
+    assert rows['pool_test.sql_execute']['count']==1
+    engine.dispose()

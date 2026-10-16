@@ -4,7 +4,7 @@ Stage 6 在以下业务链上增加轻量 TaskPlanner、TaskScheduler 和 Arbitr
 
 ## 分层
 
-API 层校验身份、DTO、scope 和传输。Runtime 掌握协作顺序、路由、预算与最终交付决定。Agent 用明确输入输出契约调用统一 ModelPort；ContextAgent 使用 KnowledgePort。Store 用短 SQLAlchemy Session 管理 SQLite 事务和业务状态。模型 await 期间不持有数据库事务。
+API 层校验身份、DTO、scope 和传输。Runtime 掌握协作顺序、路由、预算与最终交付决定。Agent 用明确输入输出契约调用统一 ModelPort；ContextAgent 使用 KnowledgePort。Store 用短 SQLAlchemy Session 管理 MySQL 业务事务，保留 SQLite 轻量模式；SQLite FTS5 知识索引独立存储。模型 await 期间不持有数据库事务。
 
 ```mermaid
 flowchart TD
@@ -78,7 +78,9 @@ Stage D1增加MySQL8业务数据库适配与Alembic版本迁移，应用启动�
 
 风险事件、工单及创建审计同事务提交，生成在其后。故障注入测试证明该事务整体回滚时不启动生成；生成故障时已提交工单仍可查询和认领。
 
-工单操作使用 SQLite BEGIN IMMEDIATE 串行写入，验证 campus、角色、owner、expected_version、状态和 note。相同 case/key/actor/payload 重放原操作结果，其他复用返回冲突。并发认领仅一名成功，所有状态和意见写入审计事件。
+工单操作在 MySQL 下使用行锁、唯一约束和版本校验；SQLite 轻量模式使用 BEGIN IMMEDIATE。服务端验证 campus、角色、owner、expected_version、状态和 note。相同 case/key/actor/payload 重放原操作结果，其他复用返回冲突。并发认领仅一名成功，所有状态和意见写入审计事件。
+
+D5 将动态仲裁的连续同步元数据合并为短审计事务，在已有 Run 行锁内绑定状态和分配连续序号；不跨业务检查点或模型 await 缓存事件。实际回复审核、风险工单提交和 SSE 校验保持原有时机。[可选性能剖析与对照口径](STAGE_D5_PERFORMANCE.md) 记录事件循环、数据库、会话锁及负载生成器指标。
 
 ## 接口扩展
 
