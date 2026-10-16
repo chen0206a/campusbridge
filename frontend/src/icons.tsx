@@ -1,5 +1,11 @@
 import type { CSSProperties } from 'react';
 const paths: Record<string, string> = {
+  search: 'm16 16 5 5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z',
+  spark: 'm12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3Z',
+  users: 'M15 21v-2a6 6 0 0 0-12 0v2m9-13a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm4-4a3 3 0 0 1 0 6m2 4a5 5 0 0 1 3 5v2',
+  calendar: 'M4 5h16v16H4V5Zm0 5h16M8 3v4m8-4v4m-9 7h3m3 0h3m-9 4h3',
+  layers: 'm12 3 10 5-10 5L2 8l10-5Zm-10 9 10 5 10-5M2 16l10 5 10-5',
+  target: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-5 0a4 4 0 1 1-8 0 4 4 0 0 1 8 0Zm-4-2v4m-2-2h4',
   plus: 'M12 5v14M5 12h14', send: 'm4 4 17 8-17 8 3-8-3-8Zm3 8h14', chat: 'M20 15a3 3 0 0 1-3 3H9l-5 3V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3Z',
   book: 'M12 5C8 2 4 3 3 4v15c3-2 6-2 9 0m0-14c4-3 8-2 9-1v15c-3-2-6-2-9 0V5Z',
   leaf: 'M5 20c0-8 2-14 14-16 1 10-2 17-9 15M5 20l10-11', shield: 'M12 3 3 7v5c0 5 5 8 9 10 4-2 9-5 9-10V7l-9-4Zm-4 9 3 3 5-6',

@@ -4,12 +4,14 @@ import { Avatar, Brand, Icon } from './icons';
 import { Loading, MessageText, Notice, SourceDialog } from './components';
 import { activeConversation, readPending, savePending } from './session';
 import { streamReply } from './sse';
+import { SupportGuide } from './SupportGuide';
 import type { Citation, Conversation, Message, Pending, Reply, User } from './types';
 
 const starters = [
   { icon: 'book', title: '了解校园事务', text: '预约、借阅、助学与校园生活', question: '图书馆预约座位需要做什么？' },
-  { icon: 'leaf', title: '梳理当下的感受', text: '给压力一个出口，找到小步骤', question: '最近作业有些多，我想先梳理一下压力。' },
-  { icon: 'chat', title: '一起理清计划', text: '从学习安排到日常的小目标', question: '我想把接下来一周的学习安排梳理清楚。' },
+  { icon: 'spark', title: '梳理当下的感受', text: '给压力一个出口，找到小步骤', question: '最近作业有些多，我想先梳理一下压力。' },
+  { icon: 'calendar', title: '一起理清计划', text: '从学习安排到日常的小目标', question: '我想把接下来一周的学习安排梳理清楚。' },
+  { icon: 'users', title: '寻找人工支持', text: '说清你的需要，让支持继续发生', question: '我想找辅导员聊聊最近适应校园生活的困难。' },
 ];
 
 export function StudentWorkspace({ user, onLogout }: { user: User; onLogout: () => void }) {
@@ -17,6 +19,7 @@ export function StudentWorkspace({ user, onLogout }: { user: User; onLogout: () 
   const [active, setActive] = useState<string | null>(activeConversation(user.account_id));
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true); const [listError, setListError] = useState(''); const [error, setError] = useState('');
+  const [topic, setTopic] = useState('全部');
   const [draft, setDraft] = useState(''); const [busy, setBusy] = useState(false); const [creating, setCreating] = useState(false);
   const [pending, setPending] = useState<Pending | null>(readPending(user.account_id));
   const [streamText, setStreamText] = useState(''); const [sidebar, setSidebar] = useState(false); const [citation, setCitation] = useState<Citation | null>(null);
@@ -119,12 +122,15 @@ export function StudentWorkspace({ user, onLogout }: { user: User; onLogout: () 
   const currentPending = pending?.conversationId === active ? pending : null;
   const pendingAlreadySaved = currentPending?.runId && messages.some(message => message.role === 'user' && message.run_id === currentPending.runId);
   const streamingAlreadySaved = currentPending?.runId && messages.some(message => message.role === 'assistant' && message.run_id === currentPending.runId);
+  const sources = loading ? [] : Array.from(new Map(messages.flatMap(message => message.citations || []).map(source => [source.source_id, source])).values());
+  const topics = ['全部', '校园事务', '情绪与计划', '人工支持'];
+  const visibleStarters = starters.filter((_, index) => topic === '全部' || (topic === '校园事务' ? index === 0 : topic === '人工支持' ? index === 3 : index === 1 || index === 2));
   return <div className="student-shell">
     {sidebar && <button className="sidebar-backdrop" aria-label="关闭侧边栏" onClick={() => setSidebar(false)}/>}
     <aside id="student-sidebar" className={'student-sidebar ' + (sidebar ? 'is-open' : '')}>
       <Brand/><div className="space-label"><span className="accent-dot"/>学生支持空间</div>
       <button className="primary new-chat" onClick={newConversation} disabled={busy || creating || !!pending}><Icon name="plus"/>新建对话</button>
-      <div className="sidebar-section">最近的对话<button className="icon-button" aria-label="刷新会话列表" onClick={() => refreshList().catch(e => setListError(errorText(e)))}><Icon name="refresh" size={15}/></button></div>
+      <div className="sidebar-section">最近的对话 <span className="count-pill">{conversations.length}</span><button className="icon-button" aria-label="刷新会话列表" onClick={() => refreshList().catch(e => setListError(errorText(e)))}><Icon name="refresh" size={15}/></button></div>
       <nav className="conversation-list" aria-label="历史会话">{conversations.map(item => <button key={item.conversation_id} className={'conversation-link ' + (active === item.conversation_id ? 'active' : '')} disabled={busy} onClick={() => { setActive(item.conversation_id); setSidebar(false); }}><Icon name="chat" size={17}/><span>{item.title}<small>{new Date(item.updated_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} · {item.message_count ? '已保存' : '新对话'}</small></span></button>)}{!conversations.length && !loading && <p className="sidebar-empty">你的对话会保存在这里。</p>}</nav>
       {listError && <Notice retry={() => refreshList().catch(e => setListError(errorText(e)))}>{listError}</Notice>}
       <div className="sidebar-support"><Icon name="leaf"/><strong>慢慢说，我们一起梳理。</strong><p>从一件小事开始，也是一种前进。</p></div>
@@ -132,8 +138,8 @@ export function StudentWorkspace({ user, onLogout }: { user: User; onLogout: () 
     </aside>
     <main className="student-main">
       <header className="workspace-header"><div><button className="icon-button mobile-menu" aria-label="打开会话列表" aria-expanded={sidebar} aria-controls="student-sidebar" onClick={() => setSidebar(true)}><Icon name="menu"/></button><span className="breadcrumb">CampusBridge <span>/</span> 学生支持</span></div><span className="private-label"><Icon name="shield" size={16}/>你的专属对话空间</span></header>
-      <div className="chat-scroll">
-        {loading ? <Loading text="正在恢复对话…"/> : !messages.length && !currentPending ? <section className="welcome"><div className="welcome-emblem"><Icon name="leaf" size={34}/></div><span className="eyebrow">A LITTLE SUPPORT, A NEW START</span><h1>今天，想从哪里开始？</h1><p>校园里的事务、学习中的压力，或是一个还没想清楚的念头。<br/>在这里，给自己一点整理的时间。</p><div className="starter-grid">{starters.map(item => <button className="starter-card" key={item.title} onClick={() => send(item.question)} disabled={busy || !!pending}><span className="starter-icon"><Icon name={item.icon} size={23}/></span><strong>{item.title}</strong><span>{item.text}</span><Icon name="arrow" size={18}/></button>)}</div><div className="welcome-foot"><Icon name="book" size={16}/>校园资料有来源，支持建议有温度。</div></section> : <section className="message-list" aria-label="对话内容">
+      <div className="student-body"><div className="conversation-column"><div className="chat-scroll">
+        {loading ? <Loading text="正在恢复对话…"/> : !messages.length && !currentPending ? <section className="welcome"><div className="welcome-intro"><span className="welcome-emblem"><Icon name="spark" size={29}/></span><span>你好，{user.display_name}<small>这里是你的校园支持空间</small></span><span className="welcome-edition">CAMPUS / LIFE</span></div><span className="eyebrow">A LITTLE SUPPORT, A NEW START</span><h1>今天，想从哪里开始？</h1><p>校园里的事务、学习中的压力，或是一个还没想清楚的念头。<br/>在这里，给自己一点整理的时间。</p><div className="topic-tabs" aria-label="话题分类">{topics.map(value => <button key={value} aria-pressed={topic === value} onClick={() => setTopic(value)}>{value}</button>)}</div><div className="starter-grid">{visibleStarters.map(item => <button className="starter-card" key={item.title} onClick={() => send(item.question)} disabled={busy || !!pending}><span className="starter-icon"><Icon name={item.icon} size={23}/></span><strong>{item.title}</strong><span>{item.text}</span><Icon name="arrow" size={18}/></button>)}</div><SupportGuide/></section> : <section className="message-list" aria-label="对话内容"><div className="conversation-heading"><span><Icon name="chat" size={17}/>正在继续的对话</span><small>{messages.filter(message => message.role === 'user').length} 条已保存提问</small></div>
           {messages.map(message => <article key={message.message_id} className={'message-row ' + message.role}><span className={'message-avatar ' + message.role}>{message.role === 'assistant' ? <Brand compact/> : <Avatar name={user.display_name}/>}</span><div className="message-content"><div className="message-author">{message.role === 'assistant' ? 'CampusBridge' : '你'}<small>{message.role === 'assistant' ? '校园支持' : ''}</small></div><MessageText text={message.text} citations={message.citations} onSource={setCitation}/></div></article>)}
           {currentPending && !pendingAlreadySaved && <article className="message-row user"><span className="message-avatar user"><Avatar name={user.display_name}/></span><div className="message-content"><div className="message-author">你</div><div className="message-text">{currentPending.message}</div></div></article>}
           {currentPending && !streamingAlreadySaved && <article className="message-row assistant"><span className="message-avatar assistant"><Brand compact/></span><div className="message-content"><div className="message-author">CampusBridge</div>{streamText ? <div className="message-text streaming">{streamText.replace(/\[source:[^\]]*(?:\]|$)/g, '')}</div> : busy ? <Loading text="正在准备回复…"/> : <span className="muted">等待继续接收回复</span>}</div></article>}
@@ -141,9 +147,15 @@ export function StudentWorkspace({ user, onLogout }: { user: User; onLogout: () 
         </section>}
       </div>
       <div className="composer-wrap">{error && <Notice retry={() => { if (currentPending) void receive(currentPending); else if (active) void savedHistory(); }}>{error}{currentPending && !busy && <button className="text-button" onClick={() => receive(currentPending)}>继续接收</button>}</Notice>}{currentPending && !busy && <button className="text-button saved-link" onClick={savedHistory}>查看已保存的对话</button>}
-        <form className="composer" onSubmit={event => { event.preventDefault(); void send(); }}><textarea aria-label="输入消息" placeholder={pending ? '先继续接收上一次回复，或查看已保存的对话' : '说说你想了解的，或此刻的感受…'} rows={2} value={draft} maxLength={3000} disabled={busy || !!pending || loading} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); void send(); } }}/><div className="composer-bottom"><span><Icon name="leaf" size={15}/>{busy ? '正在回复，可以慢慢等一会儿' : 'Enter 发送 · Shift + Enter 换行'}</span><button className="send-button" aria-label="发送消息" type="submit" disabled={busy || !!pending || loading || !draft.trim()}><Icon name="send" size={18}/></button></div></form>
+        <form className="composer" onSubmit={event => { event.preventDefault(); void send(); }}><textarea aria-label="输入消息" placeholder={pending ? '先继续接收上一次回复，或查看已保存的对话' : '说说你想了解的，或此刻的感受…'} rows={2} value={draft} maxLength={3000} disabled={busy || !!pending || loading} onChange={event => setDraft(event.target.value)} onKeyDown={event => { if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) { event.preventDefault(); void send(); } }}/><div className="composer-bottom"><span><Icon name="shield" size={15}/>{busy ? '正在回复，可以慢慢等一会儿' : 'Enter 发送 · Shift + Enter 换行'}</span><small className="draft-count">{draft.length} / 3000</small><button className="send-button" aria-label="发送消息" type="submit" disabled={busy || !!pending || loading || !draft.trim()}><Icon name="send" size={18}/></button></div></form>
         <p className="support-footnote">这里提供校园支持与信息参考。如有即时危险，请尽快联系身边可信任的人或当地紧急服务。</p>
       </div>
+      </div><aside className="student-context-panel" aria-label="对话支持信息">
+        <section className="context-note"><span className="eyebrow">YOUR SUPPORT SPACE</span><h2>不用一次想清楚，<br/>我们一步一步来。</h2><p>可以先说一件具体的小事，也可以从一个还没有答案的问题开始。</p><div className="note-orbit" aria-hidden="true"><Icon name="spark" size={30}/><span/><i/></div></section>
+        <section className="reference-panel"><header><span className="rail-icon"><Icon name="book" size={18}/></span><h2>对话参考资料</h2><span className="count-pill">{sources.length}</span></header>{sources.length ? <div className="reference-list">{sources.map(source => <button key={source.source_id} onClick={() => setCitation(source)}><span><strong>{source.title}</strong><small>版本 {source.revision} · 查看原文</small></span><Icon name="chevron" size={15}/></button>)}</div> : <div className="reference-empty"><Icon name="layers" size={28}/><p>有资料支持时，会在这里汇集。</p><small>点击回复中的引用，也能查看原文与版本。</small></div>}</section>
+        <section className="support-tip"><Icon name="users" size={19}/><div><strong>想和真实的人聊聊？</strong><p>在对话中直接告诉我们你希望获得人工帮助。</p></div></section>
+        <span className="rail-footer">一点支持，让下一步更清楚。</span>
+      </aside></div>
     </main>{citation && <SourceDialog citation={citation} onClose={closeSource}/>}
   </div>;
 }

@@ -8,5 +8,15 @@ if (new URLSearchParams(location.search).get('size') === 'desktop') {
   frame.style.width = '1360px'; frame.style.height = '900px';
   frame.style.border = '0'; frame.style.borderRadius = '0'; frame.style.boxShadow = 'none';
   document.body.style.padding = '0'; document.querySelector('header').style.display = 'none';
+  // Optional fit previews the same 1360x900 app viewport on a smaller display.
+  if (new URLSearchParams(location.search).get('fit') === '1') {
+    const fit = () => {
+      const scale = Math.min(1, (innerWidth - 32) / 1360, (innerHeight - 32) / 900);
+      frame.style.transformOrigin = 'top left'; frame.style.transform = `scale(${scale})`;
+      frame.style.position = 'absolute'; frame.style.left = '16px'; frame.style.top = '16px';
+      document.body.style.overflow = 'hidden';
+    };
+    addEventListener('resize', fit); fit();
+  }
 }
 </script></body></html>

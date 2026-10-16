@@ -1,4 +1,4 @@
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StudentWorkspace } from '../StudentWorkspace';
 import { CounselorWorkspace } from '../CounselorWorkspace';
@@ -26,7 +26,7 @@ test('student displays partial SSE then committed citations and restores history
   await userEvent.type(input, '图书馆预约'); await userEvent.click(screen.getByRole('button', { name: '发送消息' }));
   expect(await screen.findByText('你好')).toBeInTheDocument(); expect(screen.getByRole('button', { name: '发送消息' })).toBeDisabled();
   await act(async () => { completed = true; stream!.enqueue(new TextEncoder().encode('event: token\ndata: {"text":"同学"}\n\nevent: done\ndata: {"run_id":"run"}\n\n')); stream!.close(); });
-  expect(await screen.findByRole('button', { name: /图书馆资料/ })).toBeInTheDocument();
+  expect(await within(screen.getByRole('region', { name: '对话内容' })).findByRole('button', { name: /图书馆资料/ })).toBeInTheDocument();
   expect(screen.getByText('你好同学')).toBeInTheDocument();
   rendered.unmount(); render(<StudentWorkspace user={user} onLogout={() => {}}/>);
   expect(await screen.findByText('你好同学')).toBeInTheDocument(); expect(screen.queryByText(/风险等级|MODEL_CONCERN/)).not.toBeInTheDocument();
@@ -123,4 +123,67 @@ test('uncertain operation retries with the same idempotency key', async () => {
   const operations = counselorFixture({ uncertain: true }); await openCase(); await userEvent.click(await screen.findByRole('button', { name: '认领工单' }));
   await screen.findByText(/服务暂时不可用/); await userEvent.click(screen.getByRole('button', { name: '认领工单' }));
   expect(await screen.findByText(/已恢复原来的处理结果/)).toBeInTheDocument(); expect(operations[0].key).toBe(operations[1].key);
+});
+
+
+test('topic filters expose the chosen starters without submitting a request', async () => {
+  const fetcher = vi.fn(async () => json({ conversations: [] }));
+  vi.stubGlobal('fetch', fetcher); render(<StudentWorkspace user={user} onLogout={() => {}}/>);
+  await screen.findByRole('heading', { name: '今天，想从哪里开始？' });
+  await userEvent.click(screen.getByRole('button', { name: '人工支持' }));
+  expect(screen.getByRole('button', { name: /寻找人工支持/ })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /了解校园事务/ })).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: '人工支持' })).toHaveAttribute('aria-pressed', 'true');
+  await userEvent.click(screen.getByRole('button', { name: '全部' }));
+  expect(screen.getByRole('button', { name: /了解校园事务/ })).toBeInTheDocument();
+  expect(fetcher.mock.calls).toHaveLength(1);
+});
+
+test('reference rail deduplicates committed sources and opens authorized source details', async () => {
+  const source = { source_id: 'grounded-id', title: '校园借阅指南', revision: 'v2', source_hash: 'hash', quote: '预约' };
+  vi.stubGlobal('fetch', vi.fn(async (url: string) => {
+    if (url.endsWith('/conversations')) return json({ conversations: [{ conversation_id: 'conv', title: '借阅', updated_at: '2026-10-16', message_count: 2 }] });
+    if (url.endsWith('/conversations/conv')) return json({ messages: [{ message_id: 'a1', role: 'assistant', run_id: 'r1', text: '预约[source:grounded-id]' }, { message_id: 'a2', role: 'assistant', run_id: 'r2', text: '请查看资料[source:grounded-id]' }] });
+    if (url.includes('/runs/')) return json({ citations: [source], state: 'ACCEPTED' });
+    if (url.endsWith('/knowledge/sources/grounded-id')) return json({ text: '已授权的校园借阅原文', author: 'CampusBridge', license: 'MIT', active_revision: true });
+    throw new Error('Unexpected source request');
+  }));
+  render(<StudentWorkspace user={user} onLogout={() => {}}/>);
+  const rail = screen.getByRole('complementary', { name: '对话支持信息' });
+  const button = await within(rail).findByRole('button', { name: /校园借阅指南/ });
+  expect(within(rail).getAllByRole('button', { name: /校园借阅指南/ })).toHaveLength(1);
+  await userEvent.click(button);
+  expect(await screen.findByText('已授权的校园借阅原文')).toBeInTheDocument();
+});
+
+test('case search and ownership filters combine with server-derived queue counts', async () => {
+  const items = [
+    { case_id: 'alpha-1', student_id: 'student-one', state: 'CLAIMED', owner_id: counselor.account_id },
+    { case_id: 'bravo-2', student_id: 'student-two', state: 'OPEN', owner_id: null },
+    { case_id: 'charlie-3', student_id: 'student-three', state: 'CLOSED', owner_id: counselor.account_id },
+  ];
+  vi.stubGlobal('fetch', vi.fn(async () => json({ cases: items })));
+  render(<CounselorWorkspace user={counselor} onLogout={() => {}}/>);
+  await screen.findByRole('button', { name: /CB-ALPHA/ });
+  await userEvent.click(screen.getByRole('button', { name: '由我跟进' }));
+  expect(screen.queryByRole('button', { name: /CB-BRAVO/ })).not.toBeInTheDocument();
+  expect(screen.getByText('当前显示 2 / 3 条')).toBeInTheDocument();
+  await userEvent.type(screen.getByRole('textbox', { name: '搜索工单' }), 'student-three');
+  expect(screen.getByRole('button', { name: /CB-CHARLI/ })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /CB-ALPHA/ })).not.toBeInTheDocument();
+  expect(screen.getByText('当前显示 1 / 3 条')).toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: '清空搜索' }));
+  expect(screen.getByText('当前显示 2 / 3 条')).toBeInTheDocument();
+});
+
+test('empty queue search can reset all filters without a business mutation', async () => {
+  const fetcher = vi.fn(async () => json({ cases: [] }));
+  vi.stubGlobal('fetch', fetcher); render(<CounselorWorkspace user={counselor} onLogout={() => {}}/>);
+  await screen.findByText('暂时没有待跟进的事项');
+  await userEvent.type(screen.getByRole('textbox', { name: '搜索工单' }), 'not-found');
+  expect(screen.getByText('没有匹配的工单')).toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: '重置筛选' }));
+  expect(screen.getByRole('textbox', { name: '搜索工单' })).toHaveValue('');
+  expect(screen.getByText('暂时没有待跟进的事项')).toBeInTheDocument();
+  expect(fetcher.mock.calls).toHaveLength(1);
 });
