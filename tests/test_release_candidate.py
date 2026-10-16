@@ -22,6 +22,9 @@ def test_runtime_and_unrelated_source_paths_rejected():
 def test_only_exact_public_fixture_values_are_exempt():
     assert not scan_bytes(b"https://user:pass@example.test/v1")
     assert scan_bytes(b"https://user:pass@real-host.invalid/v1")
+    value = b"https://user:" + b"pass@real-host.invalid/v1"
+    assert not scan_bytes(value, source_path="tests/test_release_candidate.py")
+    assert scan_bytes(value, source_path="src/campusbridge/settings.py")
     assert not scan_bytes(b'api_key="offline-demonstration-not-a-real-key"')
     assert scan_bytes(('api_key="' + 'y' * 32 + '"').encode())
 
@@ -55,3 +58,11 @@ def test_history_accepts_clean_fixture(tmp_path):
     subprocess.run(["git", "-C", str(tmp_path), "-c", "user.name=Fixture", "-c",
                     "user.email=fixture@example.invalid", "commit", "-m", "fixture"], check=True, capture_output=True)
     assert history(tmp_path)["passed"]
+    secret = "sk-" + "z" * 32
+    subprocess.run(["git", "-C", str(tmp_path), "-c", "user.name=Fixture", "-c",
+                    "user.email=fixture@example.invalid", "commit", "--allow-empty", "-m", secret],
+                   check=True, capture_output=True)
+    result = history(tmp_path)
+    assert not result["passed"]
+    assert result["findings"][0]["path"] == "<git-commit>"
+    assert secret not in str(result)

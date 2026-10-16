@@ -17,6 +17,9 @@ def test_release_detects_credentials_and_host_paths():
     assert not content_findings('CAMPUSBRIDGE_API_KEY=\nhttps://api.deepseek.com')
 
 def test_release_audit_and_refuse_overwrite(tmp_path):
+    for name in ['frontend/tmp/npm-cache/index', 'frontend/models/config.json',
+                 'src/volumes/mysql/rows', 'src/.modelscope/token', 'docs/client.pfx']:
+        assert not eligible(Path(name))
     for name in ['LICENSE','README.md','requirements.lock','pyproject.toml','frontend/package-lock.json']:
         p=tmp_path/name;p.parent.mkdir(parents=True,exist_ok=True);p.write_text('synthetic release fixture')
     assert audit(tmp_path)['passed']

@@ -70,3 +70,7 @@ Stage D4 uses [Locust](https://github.com/locustio/locust) 2.43.3 (MIT) as optio
 GitHub Actions checkout/setup-python/setup-node are referenced by official commit SHA. They execute in CI and are not bundled into this repository.
 
 The editable architecture was authored using draw.io primitives and exported by the local draw.io tool. draw.io itself is not redistributed. UI screenshots depict the original CampusBridge application with fictional demonstration accounts. See [asset provenance](docs/ASSETS.md).
+
+## Release Candidate dependency reconciliation
+
+[RC installed inventory](docs/release-candidate/20261016-v1/dependency-inventory.json) matches all current pins: 33 base/MySQL/Redis distributions, 21 optional RAG entries, 41 load-tool entries and 212 npm records. Sets overlap and are not summed as unique packages. License metadata is present for each entry; each upstream distribution retains its notices. The initial dependency table and phase-specific metadata remain available above.

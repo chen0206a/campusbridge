@@ -111,3 +111,9 @@ python scripts/compose_redis_probe.py --root /clean/source --project cb-d3-accep
 Runtime 仍单 worker，jobs/conversation_locks 在进程内；D1 Runtime lock 继续生效。D4 前需要固定镜像 digest、机器资源、Mock 工作负载、限流阈值与预热方式，记录 MySQL/Redis 观测，并继续单实例测试。多实例任务认领与恢复属于独立改造，本阶段不配置 scale backend=2。
 
 官方依据：[Compose 启动依赖](https://docs.docker.com/compose/how-tos/startup-order/)、[MySQL Official Image](https://hub.docker.com/_/mysql)、[Redis Official Image](https://hub.docker.com/_/redis)、[Nginx unprivileged image](https://github.com/nginx/docker-nginx-unprivileged)。
+
+## RC 宿主环境排错补充
+
+Windows npm 若共享缓存不可写，使用本次安装的独立目录：`npm ci --cache ./tmp/npm-cache`（在 frontend 下执行；tmp 已忽略），不需要改锁文件或升级依赖。Windows MySQL 8.0 私有测试二进制若截断中文 scratch 路径，给 `scripts/test_mysql_d1.py --scratch` 指定新的 ASCII 临时路径；应用及 Compose 支持原中文工程路径，Docker volume 无此宿主二进制路径限制。
+
+Linux 对已安装包执行测试时，若测试需要 eval 或源文件 Hash，应把完整克隆目录只读挂载，而非仅挂载 tests；用 `pytest -o pythonpath=` 确认导入镜像内安装包。RC 实际命令和失败首记录保存在验收资料中。

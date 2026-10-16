@@ -1,11 +1,5 @@
 # CampusBridge
 
-Stage D1 adds optional MySQL 8 business persistence, Alembic migrations, row-level concurrency controls and a separate SQLite knowledge index. SQLite + MockModel remains available locally. [Database migration and operational boundaries](docs/STAGE_D1_DATABASE.md).
-
-Stage D3 provides `docker compose up --build -d`: MySQL 8, Redis, one backend worker and a production frontend at `http://127.0.0.1:8080`. MockModel needs no API key; dedicated bootstrap/migration jobs and named volumes manage credentials, schema and knowledge persistence. [Deployment guide](docs/STAGE_D3_COMPOSE.md) · [Actual acceptance](experiments/stage-d3/20261015-v1/HANDOFF.md).
-
-Optional CPU Dense and RRF Hybrid retrieval are available through the existing KnowledgePort. On 72 frozen queries, BM25 / Dense / Hybrid chunk Recall@3 is 76.79% / 91.07% / 89.29%; on 32 held-out queries it is 83.33% / 85.42% / 89.58%. BM25 remains the dependency-free default. [Implementation and reproduction](docs/RAG_STAGE_B.md) · [Complete retrieval results](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md).
-
 [![CampusBridge CI](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml)
 
 **Original student-support agents with dynamic planning, evidence arbitration, reviewed delivery, and human follow-up.** [中文](README.md)
@@ -93,7 +87,7 @@ python scripts/verify_archive.py
 (cd frontend && npm test && npm run build)
 ```
 
-D5 passed **349 backend tests**, with 21 opt-in cases covered separately by a 39-test real MySQL/Redis suite; Linux container tests passed 55 and frontend tests passed 27. Type checking and production builds passed. [Current RC clean-clone results](RELEASE_CANDIDATE_HANDOFF.md). CI covers Ubuntu/Windows on Python 3.12/3.13 and Node 22 frontend tests/builds, using MockModel without a model key.
+RC clean-clone acceptance passed **355 backend tests**; all 21 opt-in cases were covered by a separate **39-test real MySQL/Redis suite** (18 overlapping cases; 376 unique backend cases passed). Linux installed-package tests passed **116** and frontend tests passed **27**. Type checking, production builds, Mock HTTP and Compose persistence passed. [Full RC evidence](RELEASE_CANDIDATE_HANDOFF.md). CI covers Ubuntu/Windows on Python 3.12/3.13 and Node 22 without a model key; current-commit hosted CI follows the eventual authorized push.
 
 ## Single-backend performance evidence
 
@@ -104,6 +98,14 @@ Optional real providers use server-side `CAMPUSBRIDGE_ENDPOINT`, `CAMPUSBRIDGE_M
 ## Offline retrieval baseline (Stage A)
 
 [RAG evaluation](docs/RAG_STAGE_A.md) adds 72 fixed synthetic development queries and an isolated 16-document corpus. Current BM25 chunk Recall@1/3/5 is 60.71%/76.79%/76.79%; MRR is 0.7143. Raw results, source bindings and configuration hashes are retained with zero model calls. Production retrieval is unchanged; 228 backend tests pass in this local branch.
+
+## Storage, retrieval and deployment
+
+Stage D1 adds optional MySQL 8 business persistence, Alembic migrations, row-level concurrency controls and a separate SQLite knowledge index. SQLite + MockModel remains available locally. [Database migration and operational boundaries](docs/STAGE_D1_DATABASE.md).
+
+Stage D3 provides `docker compose up --build -d`: MySQL 8, Redis, one backend worker and a production frontend at `http://127.0.0.1:8080`. MockModel needs no API key; dedicated bootstrap/migration jobs and named volumes manage credentials, schema and knowledge persistence. [Deployment guide](docs/STAGE_D3_COMPOSE.md) · [Actual acceptance](experiments/stage-d3/20261015-v1/HANDOFF.md).
+
+Optional CPU Dense and RRF Hybrid retrieval are available through the existing KnowledgePort. On 72 frozen queries, BM25 / Dense / Hybrid chunk Recall@3 is 76.79% / 91.07% / 89.29%; on 32 held-out queries it is 83.33% / 85.42% / 89.58%. BM25 remains the dependency-free default. [Implementation and reproduction](docs/RAG_STAGE_B.md) · [Complete retrieval results](experiments/rag/stage-b/20261015-v1/analysis/COMPARISON.md).
 
 ## License and scope
 

@@ -1,0 +1,74 @@
+{
+  "status": "PASSED",
+  "date": "2026-10-16",
+  "d5_merge_commit": "d81cc0aa7216e2704669bfbf0cc9d9f532e18f62",
+  "tested_source_commit": "974bd0898324893e5469f3bb60ee1de40adc03ed",
+  "backend": {
+    "passed": 355,
+    "skipped": 21,
+    "failures": 0,
+    "errors": 0
+  },
+  "mysql_redis": {
+    "passed": 39,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "unique_backend_passed": 376,
+  "linux_container": {
+    "passed": 116,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 48.84
+  },
+  "frontend": {
+    "passed": 27,
+    "typescript": "PASSED",
+    "production_build": "PASSED",
+    "npm_audit_vulnerabilities": 0
+  },
+  "compose_status": "PASSED",
+  "compose_timings_seconds": {
+    "clean_build_to_healthy": 44.293175999991945,
+    "backend_redis_restart": 7.243320199995651,
+    "down_up_preserving_volumes": 24.49367870000424
+  },
+  "compose_checks": {
+    "schema_redis_rag": true,
+    "http_auth_rag_sse": true,
+    "permissions": true,
+    "idempotency": true,
+    "case_states": [
+      "OPEN",
+      "CLAIMED",
+      "IN_PROGRESS",
+      "CLOSED"
+    ],
+    "trace": true,
+    "revision_and_cache_invalidation": true
+  },
+  "installed_source_files": 45,
+  "protected_historical_files": 1021,
+  "external_llm_calls": 0,
+  "remote_publish_performed": false,
+  "existing_volumes_removed": false,
+  "scope": "Single backend, MockModel, BM25 default. No new performance/model experiment.",
+  "environment_failures_and_resolution": [
+    {
+      "initial_log": "frontend-install.txt",
+      "cause": "Host shared npm cache EPERM",
+      "resolution": "Private cache with unchanged lock"
+    },
+    {
+      "initial_log": "mysql-console-diagnosis.txt",
+      "cause": "Windows MySQL 8.0 truncates non-ASCII datadir",
+      "resolution": "New ASCII scratch directory; same tests pass"
+    },
+    {
+      "initial_log": "linux-container.txt",
+      "cause": "Test-only mount omitted fixed eval input",
+      "resolution": "Full read-only clone mount, installed-package import; same tests pass"
+    }
+  ]
+}

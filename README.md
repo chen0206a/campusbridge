@@ -156,7 +156,7 @@ python scripts/verify_archive.py
 
 `showcase_demo` 保存四种动态路径和完整工单状态；`http_smoke` 启动独立临时服务，检查 Swagger、SSE 和工单闭环后停止自己的服务。测试和演示使用隔离数据库与合成数据。
 
-D5 验收：后端 **349 passed + 21 项独立数据库专项**，真实 MySQL/Redis 套件共 39 passed（与默认套件有重叠）；Linux 容器 55 passed、前端 27 passed，类型检查和生产构建通过。RC 新克隆复现另行记录在 [验收报告](RELEASE_CANDIDATE_HANDOFF.md)。
+RC 新克隆验收：后端 **355 passed / 21 opt-in skipped**；独立真实 MySQL/Redis 套件 **39 passed**，覆盖上述 21 项（另 18 项重叠），合计 **376 个独立后端测试通过**。Linux 安装包测试 **116 passed**；前端 **27 passed**，TypeScript 和生产构建通过。全新 venv、Mock HTTP、Compose 与重启持久化见 [验收报告](RELEASE_CANDIDATE_HANDOFF.md)。
 
 GitHub Actions 配置覆盖 Ubuntu/Windows、Python 3.12/3.13 后端，以及 Node 22 前端测试与构建。CI 不配置真实模型密钥。[干净目录复现报告](docs/CLEAN_REPRODUCTION.md)
 
