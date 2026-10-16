@@ -1,6 +1,6 @@
 # CampusBridge
 
-[![CampusBridge CI](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml)
+[![CampusBridge CI](https://github.com/chen0206a/campusbridge/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/campusbridge/actions/workflows/ci.yml)
 
 **原创校园学生支持多 Agent Web 应用：动态任务规划、证据仲裁、审核后交付与人工跟进闭环。**
 
@@ -10,7 +10,7 @@ Python · FastAPI · Pydantic · SQLAlchemy · MySQL · Redis · SQLite FTS5/BM2
 
 [快速运行](#快速运行无需-api-key) · [架构](#动态协作架构) · [真实实验](#真实-deepseek-实验) · [演示脚本](docs/DEMO_SCRIPT.md) · [复现记录](docs/CLEAN_REPRODUCTION.md)
 
-Release Candidate 整合 Stage B、D1–D5；默认 MockModel + BM25，无 API Key 也能运行完整产品。[RC 验收](RELEASE_CANDIDATE_HANDOFF.md) · [Release Notes](docs/RELEASE_NOTES_RC.md)
+v1.0.0 整合 Stage B、D1–D5；默认 MockModel + BM25，无 API Key 也能运行完整产品。[RC 验收](RELEASE_CANDIDATE_HANDOFF.md) · [Release Notes](docs/RELEASE_NOTES_v1.0.0.md)
 
 ## 产品与技术特点
 
@@ -64,8 +64,8 @@ TaskPlanner、TaskScheduler 与 Arbitrator 使用确定性代码策略，已有 
 先克隆仓库，再在工程根目录执行：
 
 ```bash
-git clone https://github.com/chen0206a/CampusBridge-Agent.git
-cd CampusBridge-Agent
+git clone https://github.com/chen0206a/campusbridge.git
+cd campusbridge
 ```
 
 **推荐 Docker Desktop / Docker Compose**（无需本机安装 Python、Node、MySQL 或 Redis）：

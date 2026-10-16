@@ -1,6 +1,6 @@
-# GitHub 发布元信息（待用户确认）
+# GitHub v1.0.0 发布元信息
 
-仓库名：`CampusBridge-Agent`。现有远程地址保持原样，本轮只在本地准备。
+仓库：`chen0206a/campusbridge`，发布远程名 `campusbridge`。原 `origin` 保留，独立仓库不改写其他项目。
 
 英文 Description（144 字符以内）：
 
@@ -17,9 +17,9 @@ multi-agent fastapi react typescript rag hybrid-search llm-safety
 mysql redis docker-compose observability locust student-support
 ```
 
-Release 标题：`CampusBridge v0.6.0-rc.1 — Reviewed agents & reliable delivery`
+Release 标题：`CampusBridge v1.0.0 — Reviewed agents & reliable delivery`
 
-正文使用 [RELEASE_NOTES_RC.md](RELEASE_NOTES_RC.md)。确认后从通过验收的最终 main 提交创建 tag；待远程 CI 实际完成后再标注该提交 CI 状态。已有历史 CI 链接只代表当时提交。
+正文使用 [RELEASE_NOTES_v1.0.0.md](RELEASE_NOTES_v1.0.0.md)。私有阶段完成远程 CI 后切换公开，再从通过验收的 main 创建 v1.0.0；原 RC 和历史 CI 记录保留。
 
 ## 推荐仓库结构
 

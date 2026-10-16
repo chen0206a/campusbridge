@@ -1,10 +1,10 @@
 # CampusBridge
 
-[![CampusBridge CI](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/CampusBridge-Agent/actions/workflows/ci.yml)
+[![CampusBridge CI](https://github.com/chen0206a/campusbridge/actions/workflows/ci.yml/badge.svg)](https://github.com/chen0206a/campusbridge/actions/workflows/ci.yml)
 
 **Original student-support agents with dynamic planning, evidence arbitration, reviewed delivery, and human follow-up.** [中文](README.md)
 
-CampusBridge connects student conversations, cited campus knowledge, and a counselor case workspace. The backend uses Python/FastAPI/Pydantic/SQLAlchemy, MySQL business persistence, an independent SQLite knowledge index and Redis; the web client uses React/Vite/TypeScript. SQLite-only development remains available. Original code and assets are MIT licensed. [Release Candidate acceptance](RELEASE_CANDIDATE_HANDOFF.md) · [Release Notes](docs/RELEASE_NOTES_RC.md)
+CampusBridge connects student conversations, cited campus knowledge, and a counselor case workspace. The backend uses Python/FastAPI/Pydantic/SQLAlchemy, MySQL business persistence, an independent SQLite knowledge index and Redis; the web client uses React/Vite/TypeScript. SQLite-only development remains available. Original code and assets are MIT licensed. [Release Candidate acceptance](RELEASE_CANDIDATE_HANDOFF.md) · [Release Notes](docs/RELEASE_NOTES_v1.0.0.md)
 
 ## Architecture
 
@@ -28,8 +28,8 @@ CampusBridge connects student conversations, cited campus knowledge, and a couns
 Clone first:
 
 ```bash
-git clone https://github.com/chen0206a/CampusBridge-Agent.git
-cd CampusBridge-Agent
+git clone https://github.com/chen0206a/campusbridge.git
+cd campusbridge
 ```
 
 Recommended: `docker compose up --build -d`, then visit http://127.0.0.1:8080/. No local Python, Node, database or API key is required. Compose runs one backend, MySQL, Redis and the frontend with private named volumes and a dedicated migration job. `docker compose down` preserves data. [Deployment guide](docs/STAGE_D3_COMPOSE.md).
@@ -87,7 +87,7 @@ python scripts/verify_archive.py
 (cd frontend && npm test && npm run build)
 ```
 
-RC clean-clone acceptance passed **355 backend tests**; all 21 opt-in cases were covered by a separate **39-test real MySQL/Redis suite** (18 overlapping cases; 376 unique backend cases passed). Linux installed-package tests passed **116** and frontend tests passed **27**. Type checking, production builds, Mock HTTP and Compose persistence passed. [Full RC evidence](RELEASE_CANDIDATE_HANDOFF.md). CI covers Ubuntu/Windows on Python 3.12/3.13 and Node 22 without a model key; current-commit hosted CI follows the eventual authorized push.
+RC clean-clone acceptance passed **355 backend tests**; all 21 opt-in cases were covered by a separate **39-test real MySQL/Redis suite** (18 overlapping cases; 376 unique backend cases passed). Linux installed-package tests passed **116** and frontend tests passed **27**. Type checking, production builds, Mock HTTP and Compose persistence passed. [Full RC evidence](RELEASE_CANDIDATE_HANDOFF.md). CI covers Ubuntu/Windows on Python 3.12/3.13 and Node 22 without a model key; the current repository workflow reports each published commit.
 
 ## Single-backend performance evidence
 
