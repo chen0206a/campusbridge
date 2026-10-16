@@ -82,8 +82,9 @@ def install_profile(app, export_path='/tmp/campusbridge-performance.json'):
     instrument_database(app.state.database,profile,'business')
     if app.state.knowledge_database is not None:
         instrument_database(app.state.knowledge_database,profile,'knowledge')
-    for name in ('run_snapshot','audit','record','begin','start_model_call','finish_model_call',
+    for name in ('run_snapshot','audit','audit_many','record','begin','start_model_call','finish_model_call',
                  'model_output_validity','persist_attention','commit_reply','deliverable','enqueue'):
+        if not hasattr(app.state.store,name): continue
         original=getattr(app.state.store,name)
         def wrap(original=original,name=name):
             @functools.wraps(original)

@@ -5,6 +5,7 @@ import time
 import json
 from contextvars import ContextVar
 from dataclasses import dataclass
+from contextlib import contextmanager
 
 from campusbridge.agents import ContextAgent, IntentAgent, OutputReviewer, ResponseAgent, RiskAgent
 from campusbridge.contracts import (
@@ -109,15 +110,34 @@ class RunExecution:
         self.token_reservation = 0
         self.scheduler = None
         self.audit_events = []
+        self.audit_buffer = None
         self.planner, self.arbitrator = TaskPlanner(), Arbitrator()
         self.analysis_failures = []
 
     def audit(self, event):
-        event=event.model_copy(update={"state":self.store.run_snapshot(self.run_id)["state"]})
         if self.runtime.settings.orchestration == "sequential":
+            event=event.model_copy(update={"state":self.store.run_snapshot(self.run_id)["state"]})
             self.audit_events.append(event)  # Preserve the existing sequential Agent trace order.
+        elif self.audit_buffer is not None:
+            self.audit_buffer.append(event)
         else:
-            self.store.audit(self.run_id, event)
+            self.store.audit(self.run_id, event, bind_current_state=True)
+
+    @contextmanager
+    def audit_group(self):
+        if self.runtime.settings.orchestration == "sequential":
+            yield
+            return
+        previous = self.audit_buffer
+        self.audit_buffer = []
+        try:
+            yield
+        finally:
+            events, self.audit_buffer = self.audit_buffer, previous
+            if previous is not None:
+                previous.extend(events)
+            else:
+                self.store.audit_many(self.run_id, events)
 
     def initialize_plan(self, message, history):
         self.independent = independent_analysis(message, history)
@@ -247,10 +267,11 @@ class RunExecution:
         return output
 
     def arbitrate(self, data, task_id):
-        self.scheduler.start(task_id)
-        decision = self.arbitrator.decide(data,dynamic=self.runtime.settings.orchestration=="dynamic")
-        self.audit(Event(state=RunState.ANALYZING,code="ARBITRATION_DECIDED",arbitration=decision))
-        self.scheduler.finish(task_id,TaskStatus.SUCCEEDED)
+        with self.audit_group():
+            self.scheduler.start(task_id)
+            decision = self.arbitrator.decide(data,dynamic=self.runtime.settings.orchestration=="dynamic")
+            self.audit(Event(state=RunState.ANALYZING,code="ARBITRATION_DECIDED",arbitration=decision))
+            self.scheduler.finish(task_id,TaskStatus.SUCCEEDED)
         return decision
 
     async def analyze(self, message, history):
@@ -272,8 +293,9 @@ class RunExecution:
     async def prepare(self, message, history):
         self.initialize_plan(message,history)
         intent,risk = await self.analyze(message,history)
-        decision = self.arbitrate(ArbitrationInput(message=message,history=history,intent=intent,risk=risk,failure_codes=tuple(self.analysis_failures)),"arbitrate")
-        self.scheduler.update_plan(self.planner.expand(self.scheduler.plan,decision))
+        with self.audit_group():
+            decision = self.arbitrate(ArbitrationInput(message=message,history=history,intent=intent,risk=risk,failure_codes=tuple(self.analysis_failures)),"arbitrate")
+            self.scheduler.update_plan(self.planner.expand(self.scheduler.plan,decision))
         if decision.risk != risk:
             resolved=AgentResult(agent=AgentName.RISK,status=ResultStatus.DEGRADED,input_summary={"server_arbitration":True},artifact=Artifact(producer=AgentName.RISK,payload=decision.risk),elapsed_ms=0)
             self.store.record(self.run_id,Event(state=RunState.ANALYZING,code="RISK_RESOLVED",result=resolved))

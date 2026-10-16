@@ -160,13 +160,30 @@ class Store:
                 run.candidate = artifact.payload.model_dump(mode="json")
             self._event(session, run, event)
 
-    def audit(self, run_id, event):
+    def audit(self, run_id, event, *, bind_current_state=False):
         """Coordinator metadata; never changes business RunState, including terminal-state auditing."""
         with self.db.write() as session:
             run = self._locked_run(session, run_id)
             if run is None:
                 raise NotFound("RUN_NOT_FOUND")
+            if bind_current_state:
+                event = event.model_copy(update={"state":RunState(run.state)})
             self._event(session, run, event)
+
+    def audit_many(self, run_id, events):
+        """Atomic CPU-only coordinator emissions, never across checkpoints/awaits."""
+        if not isinstance(events, (list, tuple)):
+            raise TypeError("AUDIT_BATCH_REQUIRES_REPLAYABLE_SEQUENCE")
+        if not events:
+            return
+        with self.db.write() as session:
+            run = self._locked_run(session, run_id)
+            sequence = session.scalar(select(func.coalesce(func.max(RunEvent.sequence), 0))
+                                      .where(RunEvent.run_id == run.id))
+            for index, event in enumerate(events, 1):
+                bound = event.model_copy(update={"state":RunState(run.state)})
+                session.add(RunEvent(id=bound.event_id, run_id=run.id, sequence=sequence+index,
+                                     event=bound.model_dump(mode="json")))
 
     def count_call(self, run_id, limit):
         with self.db.write() as session:
@@ -404,7 +421,7 @@ class Store:
 
 
 # Each method contains one short database transaction and no model/network side effect.
-for _operation in ("create_conversation", "enqueue", "begin", "record", "audit", "count_call", "usage",
+for _operation in ("create_conversation", "enqueue", "begin", "record", "audit", "audit_many", "count_call", "usage",
                    "start_model_call", "finish_model_call", "model_output_validity", "persist_attention",
                    "commit_reply", "recover_interrupted", "case_action"):
     setattr(Store, _operation, mysql_conflict_retry(getattr(Store, _operation)))
