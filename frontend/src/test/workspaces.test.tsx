@@ -129,13 +129,13 @@ test('uncertain operation retries with the same idempotency key', async () => {
 test('topic filters expose the chosen starters without submitting a request', async () => {
   const fetcher = vi.fn(async () => json({ conversations: [] }));
   vi.stubGlobal('fetch', fetcher); render(<StudentWorkspace user={user} onLogout={() => {}}/>);
-  await screen.findByRole('heading', { name: '今天，想从哪里开始？' });
+  await screen.findByRole('heading', { name: '新对话' });
   await userEvent.click(screen.getByRole('button', { name: '人工支持' }));
-  expect(screen.getByRole('button', { name: /寻找人工支持/ })).toBeInTheDocument();
-  expect(screen.queryByRole('button', { name: /了解校园事务/ })).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /联系辅导员/ })).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: /^校园事务\s*图书馆/ })).not.toBeInTheDocument();
   expect(screen.getByRole('button', { name: '人工支持' })).toHaveAttribute('aria-pressed', 'true');
   await userEvent.click(screen.getByRole('button', { name: '全部' }));
-  expect(screen.getByRole('button', { name: /了解校园事务/ })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /^校园事务\s*图书馆/ })).toBeInTheDocument();
   expect(fetcher.mock.calls).toHaveLength(1);
 });
 
