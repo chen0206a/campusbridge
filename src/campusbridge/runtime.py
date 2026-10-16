@@ -62,11 +62,18 @@ class CampusRuntime:
 
     async def _serialized(self, run_id, conversation_id):
         lock = self.conversation_locks.setdefault(conversation_id, asyncio.Lock())
+        profile = getattr(self, 'performance', None)
+        requested = time.perf_counter()
         async with lock:
-            if self.store.run_snapshot(run_id)["state"] in FINAL_STATES:
-                return
-            execution = DynamicRunExecution if self.settings.orchestration == "dynamic" else RunExecution
-            await execution(self, run_id).execute()
+            acquired = time.perf_counter()
+            if profile: profile.observe('conversation_lock_wait', acquired-requested)
+            try:
+                if self.store.run_snapshot(run_id)["state"] in FINAL_STATES:
+                    return
+                execution = DynamicRunExecution if self.settings.orchestration == "dynamic" else RunExecution
+                await execution(self, run_id).execute()
+            finally:
+                if profile: profile.observe('conversation_lock_hold', time.perf_counter()-acquired)
 
     async def shutdown(self):
         jobs = list(self.jobs.values())
@@ -202,6 +209,8 @@ class RunExecution:
         artifact = Artifact(producer=agent, payload=output) if output is not None else None
         result = AgentResult(agent=agent, status=status, input_summary=summary, artifact=artifact,
                              elapsed_ms=(time.monotonic() - started) * 1000, failure_code=failure)
+        profile = getattr(self.runtime, 'performance', None)
+        if profile: profile.observe('agent.'+agent.value, result.elapsed_ms/1000)
         call_id = self.call_context.get()
         self.call_context.reset(scope)
         return CompletedStep(result, output, call_id, cancelled)

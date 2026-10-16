@@ -25,6 +25,7 @@ def main():
     parser.add_argument('--load-python',required=True)
     parser.add_argument('--port',type=int,default=8081)
     parser.add_argument('--duration',type=int,default=45)
+    parser.add_argument('--profile',action='store_true',help='D5 optional profiling; original D4 tasks remain unchanged')
     args=parser.parse_args()
     if not args.project.startswith('cb-d4-') or args.output.exists() or not 10<=args.duration<=120:
         parser.error('Use a new cb-d4-* project/output and 10..120 second load windows')
@@ -36,6 +37,7 @@ def main():
     if Path(docker).is_file():env['PATH']=str(Path(docker).parent)+os.pathsep+env.get('PATH','')
     env.update(CAMPUSBRIDGE_MODEL_PROVIDER='mock',CAMPUSBRIDGE_API_KEY='',CAMPUSBRIDGE_IMAGE_TAG=args.project,
                CAMPUSBRIDGE_WEB_PORT=str(args.port))
+    if args.profile: env['CAMPUSBRIDGE_PERFORMANCE_ENABLED']='true'
     prefix=[docker,'compose','--project-name',args.project,'-f','compose.yaml','-f','deploy/compose.load.yaml']
     host=local_target('http://127.0.0.1:'+str(args.port))
     result={'status':'RUNNING','project':args.project,'external_llm_calls':0,'model':'mock','phases':[],
@@ -54,7 +56,9 @@ def main():
         return json.loads(compose('exec','-T','backend','python','-c',code).strip().splitlines()[-1])
     def fixture(action):
         return json.loads(compose('exec','-T','backend','python','/checks/scripts/d4_fixture.py',action).strip().splitlines()[-1])
-    def metrics():
+    def metrics(fresh=True):
+        if args.profile and not fresh:
+            return execute("import json,time; from pathlib import Path; d=json.loads(Path('/tmp/campusbridge-performance.json').read_text()); d['export_age_seconds']=time.monotonic()-d['exported_monotonic']; print(json.dumps(d))")
         return execute("import urllib.request,json; print(urllib.request.urlopen('http://127.0.0.1:8000/ops/metrics',timeout=5).read().decode())")
     def wait():
         deadline=time.monotonic()+180
@@ -118,6 +122,7 @@ def main():
                   'login_limit':1000,'login_peer_limit':10000,'message_limit':1000,
                   'includes_ramp_and_graceful_drain':True,'workload':'login/create then cyclic list,RAG,replay,detail,source,SSE',
                   'frozen_before_build_and_requests':True}
+        protocol.update(profile=args.profile,workload_sha256=hashlib.sha256((args.root/'scripts/locustfile_d4.py').read_bytes()).hexdigest())
         save('protocol.json',protocol)
         started=time.perf_counter()
         (args.output/'build.txt').write_text(compose('up','--build','-d',timeout=1800),encoding='utf8')
@@ -181,16 +186,22 @@ def main():
             def monitor():
                 while not stop.is_set():
                     started=time.perf_counter()
+                    sample={'monotonic_seconds':time.monotonic(),'component_errors':{}}
                     try:
                         stats=run([docker,'stats','--no-stream','--format','{{json .}}',*[
                             args.project+'-'+service+'-1' for service in ('backend','mysql','redis','frontend')]],timeout=30)
-                        sample={'monotonic_seconds':time.monotonic(),'docker_stats':[json.loads(line) for line in stats.splitlines() if line],
-                                'app':metrics(),'mysql':mysql_metrics()}
-                        sample['collection_seconds']=time.perf_counter()-started;samples.append(sample)
-                    except Exception as exc:samples.append({'monitor_error':type(exc).__name__})
+                        sample['docker_stats']=[json.loads(line) for line in stats.splitlines() if line]
+                    except Exception as exc:sample['component_errors']['docker']=type(exc).__name__
+                    for component,operation in [('app',lambda:metrics(fresh=False)),('mysql',mysql_metrics)]:
+                        try:sample[component]=operation()
+                        except Exception as exc:sample['component_errors'][component]=type(exc).__name__
+                    sample['collection_seconds']=time.perf_counter()-started;samples.append(sample)
+                    # Preserve every partial sample immediately, even if interrupted.
+                    with (phase/'resources.jsonl').open('a',encoding='utf8') as journal:
+                        journal.write(json.dumps(sample)+'\n');journal.flush()
                     stop.wait(2)
             monitor_thread=threading.Thread(target=monitor);monitor_thread.start()
-            command=[args.load_python,'-m','locust','-f','scripts/locustfile_d4.py','--headless','--host',host,
+            command=[args.load_python,'-m','locust','-f','scripts/locustfile_d5.py' if args.profile else 'scripts/locustfile_d4.py','--headless','--host',host,
                      '--users',str(users),'--spawn-rate','10','--run-time',str(args.duration)+'s','--stop-timeout','30',
                      '--csv',str(phase/'locust'),'--csv-full-history','--only-summary','--loglevel','WARNING']
             load_env={**env,'CB_D4_PROFILES':str(args.output/'profiles.json'),'CB_D4_OUTPUT':str(phase)}
