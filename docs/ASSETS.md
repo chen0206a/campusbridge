@@ -12,3 +12,5 @@
 No model weights or downloaded datasets are distributed. DeepSeek results contain synthetic inputs and publicly inspectable development traces; archive checksums preserve the recorded results.
 
 `docs/assets/showcase/manifest.json` records each captured/copied image, its SHA-256, source and use. Captures are published as JPEG or losslessly encoded PNG, as recorded in the manifest. There is no photo editing or generated image substitution.
+
+The Release Candidate adds `campusbridge-release.drawio/png/svg`: an updated version of the project's Stage 6 diagram, authored with draw.io primitives. It shows MySQL business storage, optional SQLite development, the independent knowledge index and Redis. Original Stage 6 assets and existing screenshot bytes are retained. RC asset hashes are recorded with the acceptance evidence.

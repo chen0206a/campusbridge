@@ -10,12 +10,14 @@ Python · FastAPI · Pydantic · SQLAlchemy · MySQL · Redis · SQLite FTS5/BM2
 
 [快速运行](#快速运行无需-api-key) · [架构](#动态协作架构) · [真实实验](#真实-deepseek-实验) · [演示脚本](docs/DEMO_SCRIPT.md) · [复现记录](docs/CLEAN_REPRODUCTION.md)
 
+Release Candidate 整合 Stage B、D1–D5；默认 MockModel + BM25，无 API Key 也能运行完整产品。[RC 验收](RELEASE_CANDIDATE_HANDOFF.md) · [Release Notes](docs/RELEASE_NOTES_RC.md)
+
 ## 产品与技术特点
 
 - **动态协作**：TaskPlanner 构建类型化依赖图；输入独立时 Intent/Risk 并行，历史指代保留串行依赖；按最终路由运行或跳过 ContextAgent。
 - **结果仲裁**：Arbitrator 综合结构化输出、服务端风险规则与检索证据，记录冲突、采用的证据 Hash、最终路由和决策原因。
 - **生成后审核**：ResponseAgent 生成完整候选；OutputReviewer 审核实际文本并绑定候选 ID、正文与引用 Hash。通过后才进入 SSE；最多一次重生成，随后固定安全兜底。
-- **可信引用**：原创校园资料版本化导入、FTS5/BM25 检索；只允许本轮有效来源，引用可查看原文、版本和许可。
+- **可信引用**：校园资料版本化导入，可切换 BM25 / 本地 Dense / RRF Hybrid；只允许本轮有效来源，引用可查看原文、版本和许可。
 - **人工闭环**：需要人工关注时先持久化 RiskEvent/SupportCase，生成失败仍保留事项；OPEN → CLAIMED → IN_PROGRESS → CLOSED，操作有权限、版本、幂等与审计约束。
 - **完整产品**：学生端登录、历史、多轮、POST/fetch SSE、刷新与断连恢复；辅导员工单筛选、认领、处理、关闭和操作历史。
 - **可复现评测**：冻结数据/Prompt/源码绑定、原始模型输出与 Trace、逐条计分及 SHA-256；Mock 回归与自然/受控故障分别统计。
@@ -42,7 +44,7 @@ Python · FastAPI · Pydantic · SQLAlchemy · MySQL · Redis · SQLite FTS5/BM2
 
 ## 动态协作架构
 
-![CampusBridge architecture](docs/assets/campusbridge-stage6.png)
+![CampusBridge architecture](docs/assets/campusbridge-release.png)
 
 TaskPlanner、TaskScheduler 与 Arbitrator 使用确定性代码策略，已有 Agent 通过统一 ModelPort 返回独立类型化结果，协调器串行合并业务状态。每次数据库操作使用短 Session，模型 await 期间不共享 SQLAlchemy Session。
 
@@ -55,16 +57,27 @@ TaskPlanner、TaskScheduler 与 Arbitrator 使用确定性代码策略，已有 
 
 任务配额、模型调用、保守 token 预留、超时与取消分别受控。Trace 记录开始/结束区间、依赖、跳过原因、仲裁证据、候选与审批绑定；学生视图隐藏内部风险和候选调试信息。
 
-[Sequence / ExecutionPlan / Trace 示例](docs/EXECUTION_EXAMPLES.md) · [详细编排协议](docs/STAGE6_ORCHESTRATION.md) · [可编辑架构图](docs/assets/campusbridge-stage6.drawio)
+[Sequence / ExecutionPlan / Trace 示例](docs/EXECUTION_EXAMPLES.md) · [详细编排协议](docs/STAGE6_ORCHESTRATION.md) · [可编辑架构图](docs/assets/campusbridge-release.drawio) · [SVG](docs/assets/campusbridge-release.svg)
 
 ## 快速运行（无需 API key）
 
-需要 Python 3.12+、Node.js 22.12+。先克隆仓库，再在工程根目录执行：
+先克隆仓库，再在工程根目录执行：
 
 ```bash
 git clone https://github.com/chen0206a/CampusBridge-Agent.git
 cd CampusBridge-Agent
 ```
+
+**推荐 Docker Desktop / Docker Compose**（无需本机安装 Python、Node、MySQL 或 Redis）：
+
+```bash
+docker compose up --build -d
+docker compose ps --all
+```
+
+打开 http://127.0.0.1:8080/，Swagger 为 `/docs`。默认单 Backend；四种服务与独立初始化/迁移任务一起启动，密码自动保存在私有卷。端口被占用时设置 `CAMPUSBRIDGE_WEB_PORT`。停止使用 `docker compose down`，数据卷保留。[部署和持久化说明](docs/STAGE_D3_COMPOSE.md)
+
+以下为 **SQLite 轻量开发方式**，需要 Python 3.12+、Node.js 22.12+：
 
 ### Windows PowerShell
 
@@ -143,7 +156,7 @@ python scripts/verify_archive.py
 
 `showcase_demo` 保存四种动态路径和完整工单状态；`http_smoke` 启动独立临时服务，检查 Swagger、SSE 和工单闭环后停止自己的服务。测试和演示使用隔离数据库与合成数据。
 
-发布准备已从干净目录验证 **后端203项、前端27项通过**，前端生产构建与HTTP演示通过。
+D5 验收：后端 **349 passed + 21 项独立数据库专项**，真实 MySQL/Redis 套件共 39 passed（与默认套件有重叠）；Linux 容器 55 passed、前端 27 passed，类型检查和生产构建通过。RC 新克隆复现另行记录在 [验收报告](RELEASE_CANDIDATE_HANDOFF.md)。
 
 GitHub Actions 配置覆盖 Ubuntu/Windows、Python 3.12/3.13 后端，以及 Node 22 前端测试与构建。CI 不配置真实模型密钥。[干净目录复现报告](docs/CLEAN_REPRODUCTION.md)
 

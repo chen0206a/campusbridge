@@ -10,11 +10,11 @@ Optional CPU Dense and RRF Hybrid retrieval are available through the existing K
 
 **Original student-support agents with dynamic planning, evidence arbitration, reviewed delivery, and human follow-up.** [中文](README.md)
 
-CampusBridge connects student conversations, cited campus knowledge, and a counselor case workspace in one working application. The backend uses Python/FastAPI/Pydantic/SQLAlchemy/SQLite; the web client uses React/Vite/TypeScript. Original code and assets are MIT licensed.
+CampusBridge connects student conversations, cited campus knowledge, and a counselor case workspace. The backend uses Python/FastAPI/Pydantic/SQLAlchemy, MySQL business persistence, an independent SQLite knowledge index and Redis; the web client uses React/Vite/TypeScript. SQLite-only development remains available. Original code and assets are MIT licensed. [Release Candidate acceptance](RELEASE_CANDIDATE_HANDOFF.md) · [Release Notes](docs/RELEASE_NOTES_RC.md)
 
 ## Architecture
 
-![Architecture](docs/assets/campusbridge-stage6.png)
+![Architecture](docs/assets/campusbridge-release.png)
 
 - **Typed task DAG:** TaskPlanner selects an execution path using the request, history and structured Intent/Risk outputs. The scheduler enforces dependencies, finite budgets and cancellation.
 - **Bounded concurrency:** independent Intent/Risk tasks run concurrently with separate request contexts; a coordinator merges their results. History-dependent requests retain a dependency. Database Sessions are short and are never shared across concurrent agents.
@@ -31,12 +31,16 @@ CampusBridge connects student conversations, cited campus knowledge, and a couns
 
 ## Run without an API key
 
-Python 3.12+ and Node 22.12+. Clone first:
+Clone first:
 
 ```bash
 git clone https://github.com/chen0206a/CampusBridge-Agent.git
 cd CampusBridge-Agent
 ```
+
+Recommended: `docker compose up --build -d`, then visit http://127.0.0.1:8080/. No local Python, Node, database or API key is required. Compose runs one backend, MySQL, Redis and the frontend with private named volumes and a dedicated migration job. `docker compose down` preserves data. [Deployment guide](docs/STAGE_D3_COMPOSE.md).
+
+For lightweight SQLite development, use Python 3.12+ and Node 22.12+:
 
 From the repository root, on Linux/macOS:
 
@@ -89,7 +93,11 @@ python scripts/verify_archive.py
 (cd frontend && npm test && npm run build)
 ```
 
-Clean Windows installation passed **203 backend tests and 27 frontend tests**, the frontend build and the HTTP demonstration. CI covers Ubuntu/Windows on Python 3.12/3.13 and Node 22 frontend tests/builds. It uses MockModel and no external API key. [Clean reproduction report](docs/CLEAN_REPRODUCTION.md)
+D5 passed **349 backend tests**, with 21 opt-in cases covered separately by a 39-test real MySQL/Redis suite; Linux container tests passed 55 and frontend tests passed 27. Type checking and production builds passed. [Current RC clean-clone results](RELEASE_CANDIDATE_HANDOFF.md). CI covers Ubuntu/Windows on Python 3.12/3.13 and Node 22 frontend tests/builds, using MockModel without a model key.
+
+## Single-backend performance evidence
+
+Unchanged Mock Locust workloads covered 10/30/50/100 virtual users. At 100 VU, the same-day unoptimized/optimized pair improved 15.08→18.14 RPS, P95 15.29→12.99s and P99 16.62→13.79s. The optimized run completed 3,143 HTTP requests without failures or timeouts. D5 removed redundant coordinator state reads and batched synchronous arbitration audit metadata; review and risk checkpoints retain their transaction boundaries. Historical D4 results, resource curves and all paired raw measurements remain separate. [Profiling and reproduction](docs/STAGE_D5_PERFORMANCE.md) · [Full results](experiments/stage-d5/20261016-v1/HANDOFF.md).
 
 Optional real providers use server-side `CAMPUSBRIDGE_ENDPOINT`, `CAMPUSBRIDGE_MODEL`, `CAMPUSBRIDGE_API_KEY` and `CAMPUSBRIDGE_MODEL_PROVIDER=openai-compatible`. The frontend receives no model credential. New evaluations freeze a new packet for the current checkout and enforce an explicit cost budget.
 

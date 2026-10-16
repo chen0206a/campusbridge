@@ -33,6 +33,8 @@ CampusBridge original code, Prompts, synthetic datasets, UI icons and diagrams a
 
 certifi uses MPL-2.0; greenlet uses MIT AND PSF-2.0; packaging uses Apache-2.0 OR BSD-2-Clause. Their installed distributions include upstream notices. The project MIT license applies to CampusBridge code.
 
+The current base lock additionally includes PyYAML 6.0.3 (MIT), used by deployment configuration tests. The initial table above is retained as the first release dependency snapshot; RC installed metadata lists the complete current base/MySQL/Redis set.
+
 ## Optional local RAG dependencies and model
 
 BGE-small-zh-v1.5 is published by BAAI under MIT: [official model card](https://huggingface.co/BAAI/bge-small-zh-v1.5). Stage B pins revision `7999e1d3359715c523056ef9478215996d62a620`. Weights and upstream model files are downloaded separately and are excluded from the repository. Their upstream notices remain in the external snapshot.
@@ -41,7 +43,7 @@ Optional runtime packages are pinned in `requirements-rag.lock`; [installed meta
 
 ## Business database dependencies
 
-Stage D1 adds Alembic 1.20.0 (MIT), Mako 1.4.3 (MIT) and MarkupSafe 3.0.3 (BSD-3-Clause) to the base lock. Optional MySQL dependencies are in requirements-mysql.lock: PyMySQL (MIT), cryptography (Apache-2.0 OR BSD-3-Clause), cffi (MIT) and pycparser (BSD-3-Clause). [Installed metadata](docs/DATABASE_DEPENDENCIES.json) records upstream links and versions. The locally installed MySQL Community Server 8.0.42 used for acceptance retains its GPL license and is not bundled in the source repository.
+Stage D1 adds Alembic 1.20.0 (MIT), Mako 1.4.3 (MIT) and MarkupSafe 3.0.3 (BSD-3-Clause) to the base lock. Optional MySQL dependencies are in requirements-mysql.lock: PyMySQL (MIT), cryptography (Apache-2.0 OR BSD-3-Clause), cffi (MIT-0) and pycparser (BSD-3-Clause). [Installed metadata](docs/DATABASE_DEPENDENCIES.json) records upstream links and versions. The locally installed MySQL Community Server 8.0.42 used for acceptance retains its GPL license and is not bundled in the source repository.
 
 ## Optional Redis infrastructure
 

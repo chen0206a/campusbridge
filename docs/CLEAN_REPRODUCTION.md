@@ -1,5 +1,7 @@
 # 干净目录复现
 
+当前 Release Candidate 的新克隆、全新 venv、Docker Compose 验收见 [RC HANDOFF](../RELEASE_CANDIDATE_HANDOFF.md)。下方保留首次发布时的历史安装记录，测试数量以对应日期为准。
+
 发布准备使用独立公开源代码导出和新建Python 3.12环境，不复用工程虚拟环境或开发数据库。依赖从锁文件通过包管理器安装，前端使用npm ci。
 
 ## 实际结果（2026-10-13）

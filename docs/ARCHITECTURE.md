@@ -1,6 +1,6 @@
 # CampusBridge 架构
 
-Stage 6 在以下业务链上增加轻量 TaskPlanner、TaskScheduler 和 Arbitrator，支持 `sequential` / `dynamic`。动态流程、任务依赖、并发一致性与预算详见 [动态编排说明](STAGE6_ORCHESTRATION.md)；[可编辑架构图](assets/campusbridge-stage6.drawio) 展示当前实现。下方顺序流程作为保留的基线，数据库和最终审核交付继续复用。
+当前运行时使用 TaskPlanner、TaskScheduler 和 Arbitrator，支持 `sequential` / `dynamic`。动态流程、任务依赖、并发一致性与预算详见 [动态编排说明](STAGE6_ORCHESTRATION.md)。[发布版可编辑架构图](assets/campusbridge-release.drawio) 与 [清晰 PNG](assets/campusbridge-release.png) 展示 MySQL / 知识 SQLite / Redis 的当前部署；Stage 6 原图保留为历史记录。下方顺序流程作为保留的基线，数据库和最终审核交付继续复用。
 
 ## 分层
 
