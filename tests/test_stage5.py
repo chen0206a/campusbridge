@@ -23,6 +23,16 @@ from tests.test_runtime import execute
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def citation_semantics_settings(settings):
+    """Citation-policy checks have no latency assertion.
+
+    Slow Windows hosted-runner SQLite writes must not consume the demonstration
+    deadline before the expected citation retry. Production defaults and the
+    explicit timeout-injection tests below keep their original budgets.
+    """
+    return settings.model_copy(update={"model_timeout": 10, "context_timeout": 10, "run_timeout": 120})
+
+
 @pytest.mark.parametrize("message", ["我想找辅导员讨论最近适应校园生活的困难。", "我需要有人帮我整理接下来可以获得的支持。",
     "请帮我联系值班老师聊一聊。", "我希望有位工作人员陪我把下周的支持安排梳理清楚。"])
 def test_explicit_support_request_is_independent_of_severity(foundation, message):
@@ -152,15 +162,18 @@ def test_other_conversation_source_exists_but_is_not_current_whitelist(foundatio
                 return ModelReply(content="核实信息[source:" + sid + "]")
             return await super().complete(request)
     store, student = foundation[3], foundation[-2]
-    runtime = CampusRuntime(store, Leaking(), Cards(), foundation[1])
+    runtime = CampusRuntime(store, Leaking(), Cards(), citation_semantics_settings(foundation[1]))
     async def scenario():
         conv = store.create_conversation(student)["conversation_id"]
         run = store.enqueue(conv, student, "图书馆预约", "cross-first"); await runtime.complete(run)
-        assert store.deliverable(run, student)["citations"][0]["source_id"] == first.source_id
+        first_reply = store.deliverable(run, student)
+        assert first_reply["state"] == "ACCEPTED", store.trace(run, foundation[-1])
+        assert first_reply["citations"][0]["source_id"] == first.source_id
         conv2 = store.create_conversation(student)["conversation_id"]
         run2 = store.enqueue(conv2, student, "宿舍报修", "cross-second"); await runtime.complete(run2)
         reply = store.deliverable(run2, student)
-        assert reply["state"] == "ACCEPTED" and reply["citations"][0]["source_id"] == second.source_id
+        assert reply["state"] == "ACCEPTED", store.trace(run2, foundation[-1])
+        assert reply["citations"][0]["source_id"] == second.source_id
         assert first.source_id not in reply["reply"]
         assert runtime.model.responses == 3
     asyncio.run(scenario())
@@ -177,17 +190,19 @@ def test_citation_retry_preserves_sse_review_gate(tmp_path, always_wrong):
                     return ModelReply(content="未经批准的引用内容[source:foreign-source]")
             return await super().complete(request)
     model = CitationModel()
-    app = create_app(Settings(environment="test", database_path=tmp_path / "citations.sqlite"), model)
+    settings = citation_semantics_settings(Settings(environment="test", database_path=tmp_path / "citations.sqlite"))
+    app = create_app(settings, model)
     with TestClient(app) as client:
         headers = login(client); conv = begin(client, headers)
         stream = post(client, conv, headers, "宿舍设施报修需要哪些信息？", stream=True)
-        assert stream.status_code == 200 and model.responses == 2
-        assert "未经批准的引用内容" not in stream.text
+        assert stream.status_code == 200
         run = stream.headers["x-run-id"]
+        trace = client.get(f"/api/runs/{run}/trace", headers=login(client, "counselor_yu")).json()
+        assert model.responses == 2, trace
+        assert "未经批准的引用内容" not in stream.text
         final = client.get(f"/api/runs/{run}", headers=headers).json()
         assert final["state"] == ("SAFE_FALLBACK" if always_wrong else "ACCEPTED")
         assert decoded(stream.text)[-1]["event"] == "done"
-        trace = client.get(f"/api/runs/{run}/trace", headers=login(client, "counselor_yu")).json()
         assert sum(e["code"] == "ONE_REGENERATION_ALLOWED" for e in trace["events"]) == 1
 
 
