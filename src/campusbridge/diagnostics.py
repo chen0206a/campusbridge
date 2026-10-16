@@ -17,13 +17,16 @@ def process_metrics(app):
             memory = redis.client.info("memory")["used_memory"]
         except Exception:
             pass  # Metrics collection does not alter cache/limiter failure policy.
-    return {
+    result = {
         "scope": "single_backend_process", "database_pool": gauges,
         "runtime": {"active_jobs": len(runtime.jobs),
                     "conversation_locks": len(runtime.conversation_locks),
                     "locked_conversations": sum(lock.locked() for lock in runtime.conversation_locks.values())},
         "redis": redis.metrics.snapshot(), "redis_memory_bytes": memory,
     }
+    profile = getattr(app.state, 'performance', None)
+    if profile is not None: result['performance'] = profile.snapshot()
+    return result
 
 
 def register_metrics(app):

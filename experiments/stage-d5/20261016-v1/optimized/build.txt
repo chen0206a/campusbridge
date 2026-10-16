@@ -1,0 +1,219 @@
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.91kB 0.0s done
+#1 DONE 0.0s
+
+#2 [mysql internal] load build definition from mysql.Dockerfile
+#2 transferring dockerfile: 307B done
+#2 DONE 0.0s
+
+#3 [frontend internal] load build definition from frontend.Dockerfile
+#3 transferring dockerfile: 487B done
+#3 DONE 0.0s
+
+#4 [bootstrap internal] load build definition from Dockerfile
+#4 transferring dockerfile: 1.03kB done
+#4 DONE 0.0s
+
+#5 [mysql internal] load metadata for docker.io/library/mysql:8.4
+#5 DONE 0.0s
+
+#6 [frontend internal] load metadata for docker.io/library/node:22-alpine
+#6 DONE 0.0s
+
+#7 [frontend internal] load metadata for docker.io/nginxinc/nginx-unprivileged:stable-alpine
+#7 DONE 0.0s
+
+#8 [mysql internal] load .dockerignore
+#8 transferring context: 483B done
+#8 DONE 0.0s
+
+#9 [mysql internal] load build context
+#9 transferring context: 786B done
+#9 DONE 0.0s
+
+#10 [mysql 1/2] FROM docker.io/library/mysql:8.4@sha256:24989179f58856db763f418010c1169fecc944e3ec1ea7e921572d83eb070f70
+#10 resolve docker.io/library/mysql:8.4@sha256:24989179f58856db763f418010c1169fecc944e3ec1ea7e921572d83eb070f70 0.0s done
+#10 DONE 0.0s
+
+#11 [mysql 2/2] COPY --chmod=0644 deploy/mysql-init.sh /docker-entrypoint-initdb.d/10-campusbridge.sh
+#11 CACHED
+
+#12 [frontend build 1/6] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402
+#12 resolve docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402 0.0s done
+#12 DONE 0.0s
+
+#13 [mysql] exporting to image
+#13 exporting layers
+#13 exporting layers done
+#13 exporting manifest sha256:df7ef43641b5cc72c04dd32e3a066a9b5d55b336cfa30b7935d212b3301f81f1 0.0s done
+#13 exporting config sha256:3f19dc98064f992ca44320b8af1c540dd750b2745de8a3c0054481e2bcbb7beb done
+#13 exporting attestation manifest sha256:bc5d808739a92105e9e998e65bebff64a65511128bae115a20639a27f4d3dc74 0.0s done
+#13 exporting manifest list sha256:b032a2c493af5e4dc76fbcea030336282ebe9ede31dc38dadebf77d041108373 0.0s done
+#13 naming to docker.io/library/campusbridge-mysql:cb-d4-d5-optimized-v1 done
+#13 unpacking to docker.io/library/campusbridge-mysql:cb-d4-d5-optimized-v1 done
+#13 DONE 0.1s
+
+#14 [frontend stage-1 1/3] FROM docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:782bb89768cc87b7f95c18b95baa1af250e5d451f26794f59363540161147c01
+#14 resolve docker.io/nginxinc/nginx-unprivileged:stable-alpine@sha256:782bb89768cc87b7f95c18b95baa1af250e5d451f26794f59363540161147c01 0.0s done
+#14 DONE 0.0s
+
+#15 [auth] docker/dockerfile:pull token for registry-1.docker.io
+#15 DONE 0.0s
+
+#16 [frontend internal] load build context
+#16 ...
+
+#17 [mysql] resolving provenance for metadata file
+#17 DONE 0.0s
+
+#16 [frontend internal] load build context
+#16 transferring context: 550.20kB 0.4s done
+#16 DONE 0.4s
+
+#18 [frontend build 6/6] RUN npm run build
+#18 CACHED
+
+#19 [frontend build 2/6] WORKDIR /web
+#19 CACHED
+
+#20 [frontend build 4/6] RUN npm ci
+#20 CACHED
+
+#21 [frontend build 5/6] COPY frontend ./
+#21 CACHED
+
+#22 [frontend stage-1 2/3] COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+#22 CACHED
+
+#23 [frontend build 3/6] COPY frontend/package.json frontend/package-lock.json ./
+#23 CACHED
+
+#24 [frontend stage-1 3/3] COPY --from=build /web/dist /usr/share/nginx/html
+#24 CACHED
+
+#25 [frontend] exporting to image
+#25 exporting layers done
+#25 exporting manifest sha256:471c1b36551cec00a753f9a65f17fa8e369cf296e443e94347cd2a9510cb7a45 done
+#25 exporting config sha256:21e018fe29e5aae56366fda72f9ce5ff61b7d419a1b284bef84fff1778ee1926 0.0s done
+#25 exporting attestation manifest sha256:05a083ba2cea6dcbb452950d6f3109d72f55244eeaa773a297147a85650973aa 0.0s done
+#25 exporting manifest list sha256:b6325e1382486078295a50d05d92c6c59e1bf4758e16580ad257ed934bbfd429 0.0s done
+#25 naming to docker.io/library/campusbridge-frontend:cb-d4-d5-optimized-v1 done
+#25 unpacking to docker.io/library/campusbridge-frontend:cb-d4-d5-optimized-v1 done
+#25 DONE 0.1s
+
+#26 [bootstrap] resolve image config for docker-image://docker.io/docker/dockerfile:1
+#26 ...
+
+#27 [frontend] resolving provenance for metadata file
+#27 DONE 0.0s
+
+#26 [bootstrap] resolve image config for docker-image://docker.io/docker/dockerfile:1
+#26 DONE 2.5s
+
+#28 [backend] docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#28 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.0s done
+#28 CACHED
+
+#29 [backend internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#29 ...
+
+#30 [auth] library/python:pull token for registry-1.docker.io
+#30 DONE 0.0s
+
+#29 [bootstrap internal] load metadata for docker.io/library/python:3.12-slim-bookworm
+#29 DONE 2.4s
+
+#8 [migrate internal] load .dockerignore
+#8 CACHED
+
+#31 [backend base 1/7] FROM docker.io/library/python:3.12-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258
+#31 resolve docker.io/library/python:3.12-slim-bookworm@sha256:34386ef0cb081344d7ec1c103ba398e6e9f64e9ab3a1509accc92a4e24a07258 0.0s done
+#31 DONE 0.0s
+
+#32 [bootstrap internal] load build context
+#32 transferring context: 306.13kB 0.0s done
+#32 DONE 0.0s
+
+#33 [backend base 3/7] COPY requirements.lock requirements-mysql.lock requirements-redis.lock ./
+#33 CACHED
+
+#34 [backend base 4/7] RUN python -m pip install --no-cache-dir -r requirements.lock -r requirements-mysql.lock -r requirements-redis.lock
+#34 CACHED
+
+#35 [backend base 2/7] WORKDIR /app
+#35 CACHED
+
+#36 [bootstrap base 5/7] COPY pyproject.toml README.md LICENSE ./
+#36 CACHED
+
+#37 [backend base 6/7] COPY src ./src
+#37 DONE 0.0s
+
+#37 [migrate base 6/7] COPY src ./src
+#37 DONE 0.0s
+
+#38 [migrate base 7/7] RUN python -m pip install --no-deps . && groupadd --gid 10001 campusbridge && useradd --uid 10001 --gid 10001 --no-create-home campusbridge  && mkdir -p /var/lib/campusbridge/knowledge /run/cb-root /run/cb-app /run/cb-migrator /run/cb-redis  && chown -R 10001:10001 /var/lib/campusbridge /run/cb-root /run/cb-app /run/cb-migrator /run/cb-redis
+#38 1.068 Processing /app
+#38 1.069   Installing build dependencies: started
+#38 37.72   Installing build dependencies: finished with status 'done'
+#38 37.72   Getting requirements to build wheel: started
+#38 38.12   Getting requirements to build wheel: finished with status 'done'
+#38 38.12   Preparing metadata (pyproject.toml): started
+#38 38.52   Preparing metadata (pyproject.toml): finished with status 'done'
+#38 38.53 Building wheels for collected packages: campusbridge
+#38 38.53   Building wheel for campusbridge (pyproject.toml): started
+#38 38.97   Building wheel for campusbridge (pyproject.toml): finished with status 'done'
+#38 38.98   Created wheel for campusbridge: filename=campusbridge-0.6.0-py3-none-any.whl size=105030 sha256=1dea9eaf08ee8a66366f256c2a2c89c435c433102793bc7f3038be29effdf91a
+#38 38.98   Stored in directory: /tmp/pip-ephem-wheel-cache-v1jcyu1v/wheels/54/1b/b7/aa63e25c8f14f4f2ae7b04e6097bdecb770e455c5c1ee0a600
+#38 38.98 Successfully built campusbridge
+#38 38.98 Installing collected packages: campusbridge
+#38 39.04 Successfully installed campusbridge-0.6.0
+#38 39.04 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#38 39.59
+#38 39.59 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#38 39.59 [notice] To update, run: pip install --upgrade pip
+#38 DONE 39.7s
+
+#38 [migrate base 7/7] RUN python -m pip install --no-deps . && groupadd --gid 10001 campusbridge && useradd --uid 10001 --gid 10001 --no-create-home campusbridge  && mkdir -p /var/lib/campusbridge/knowledge /run/cb-root /run/cb-app /run/cb-migrator /run/cb-redis  && chown -R 10001:10001 /var/lib/campusbridge /run/cb-root /run/cb-app /run/cb-migrator /run/cb-redis
+#38 DONE 39.7s
+
+#39 [bootstrap] exporting to image
+#39 exporting layers 0.1s done
+#39 exporting manifest sha256:8019fff6b44654a73312604af6dfc40638c7f78d0fec8e909591dd71b39d77f9
+#39 exporting manifest sha256:8019fff6b44654a73312604af6dfc40638c7f78d0fec8e909591dd71b39d77f9 0.0s done
+#39 exporting config sha256:1999f64ca9b3ed943c7dc702870e0007f477db95048edb6ae969f293a1b51164 0.0s done
+#39 exporting attestation manifest sha256:d81114d152e2eb7d5969339abe34f0ce030cc51f01ed650751d5c21e40a1ffe3 0.0s done
+#39 exporting manifest list sha256:8a145b7810a9a7dd4a307ff1cdb49ce3fa3b886f2e5bcdda0e4e3d67ce43aed9 0.0s done
+#39 naming to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1
+#39 naming to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1 done
+#39 unpacking to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1 0.0s done
+#39 DONE 0.3s
+
+#40 [backend] exporting to image
+#40 exporting layers 0.1s done
+#40 exporting manifest sha256:e68cc37fa655405a4fabf109af3c7e4b1d8f62e1e22a35fa11e0535ca52e6a92 0.0s done
+#40 exporting config sha256:25fac99b6fabfed33c2029545086544949ce4cf121b931edeeb7fa8f3fac99ec 0.0s done
+#40 exporting attestation manifest sha256:b29ddc5a5a542ef33a6cdf1858def4671f6cd45a3aeb25d9c237ccf90a5a9551 0.0s done
+#40 exporting manifest list sha256:e3d3eb60a24df411287325841d394620762762cc91ce6850276815ebb036934b 0.0s done
+#40 naming to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1 done
+#40 unpacking to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1 0.1s done
+#40 DONE 0.3s
+
+#41 [migrate] exporting to image
+#41 exporting layers 0.1s done
+#41 exporting manifest sha256:7eddf552c0c9cda1a72c4f4b68af4ff62445c7fcf5d7e88402cc3968d59948c6 0.0s done
+#41 exporting config sha256:7dbfcc367969309d1576f5d69f7f15017c4865687dacb1d9bfb5c9e0e855cd30 0.0s done
+#41 exporting attestation manifest sha256:b33c85b1ba7a66dde731edd359f2ecc07faa159bd526f56644dac6ffc3361157 0.0s done
+#41 exporting manifest list sha256:e94a377e1e07a18b420f8e5b346aa01fac17453c2c605bf9efa2bb5c4c73872c 0.0s done
+#41 naming to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1 done
+#41 unpacking to docker.io/library/campusbridge-backend:cb-d4-d5-optimized-v1 0.1s done
+#41 DONE 0.3s
+
+#42 [backend] resolving provenance for metadata file
+#42 DONE 0.1s
+
+#43 [migrate] resolving provenance for metadata file
+#43 DONE 0.0s
+
+#44 [bootstrap] resolving provenance for metadata file
+#44 DONE 0.0s

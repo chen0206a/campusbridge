@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 class Settings(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, hide_input_in_errors=True)
     environment: Literal["development", "test"] = "development"
+    performance_enabled: bool = False
     trusted_proxy_host: str | None = Field(default=None, pattern=r"^[a-zA-Z][a-zA-Z0-9.-]{0,62}$")
     database_path: Path | None = None
     database_url: SecretStr | None = Field(default=None, repr=False, exclude=True)
@@ -126,6 +127,7 @@ class Settings(BaseModel):
             "embedding_model_path": "CAMPUSBRIDGE_EMBEDDING_MODEL_PATH",
             "embedding_threads": "CAMPUSBRIDGE_EMBEDDING_THREADS"})
         fields.update({"database_url": "CAMPUSBRIDGE_DATABASE_URL", "knowledge_database_path": "CAMPUSBRIDGE_KNOWLEDGE_DATABASE_PATH",
+            "performance_enabled": "CAMPUSBRIDGE_PERFORMANCE_ENABLED",
             "db_pool_size": "CAMPUSBRIDGE_DB_POOL_SIZE", "db_max_overflow": "CAMPUSBRIDGE_DB_MAX_OVERFLOW",
             "db_pool_timeout": "CAMPUSBRIDGE_DB_POOL_TIMEOUT", "db_pool_recycle": "CAMPUSBRIDGE_DB_POOL_RECYCLE",
             "db_connect_timeout": "CAMPUSBRIDGE_DB_CONNECT_TIMEOUT", "db_io_timeout": "CAMPUSBRIDGE_DB_IO_TIMEOUT"})
