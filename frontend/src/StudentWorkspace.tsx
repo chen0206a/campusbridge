@@ -128,7 +128,7 @@ export function StudentWorkspace({ user, onLogout }: { user: User; onLogout: () 
   return <div className="student-shell">
     {sidebar && <button className="sidebar-backdrop" aria-label="关闭侧边栏" onClick={() => setSidebar(false)}/>}
     <aside id="student-sidebar" className={'student-sidebar ' + (sidebar ? 'is-open' : '')}>
-      <Brand/><div className="space-label"><span className="accent-dot"/>学生端</div>
+      <Brand/><div className="space-label"><Icon name="chat" size={18}/><span>学生工作区<small>对话与校园资料</small></span></div>
       <button className="primary new-chat" onClick={newConversation} disabled={busy || creating || !!pending}><Icon name="plus"/>新建对话</button>
       <div className="sidebar-section">最近的对话 <span className="count-pill">{conversations.length}</span><button className="icon-button" aria-label="刷新会话列表" onClick={() => refreshList().catch(e => setListError(errorText(e)))}><Icon name="refresh" size={15}/></button></div>
       <nav className="conversation-list" aria-label="历史会话">{conversations.map(item => <button key={item.conversation_id} className={'conversation-link ' + (active === item.conversation_id ? 'active' : '')} disabled={busy} onClick={() => { setActive(item.conversation_id); setSidebar(false); }}><Icon name="chat" size={17}/><span>{item.title}<small>{new Date(item.updated_at).toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })} · {item.message_count ? '已保存' : '新对话'}</small></span></button>)}{!conversations.length && !loading && <p className="sidebar-empty">你的对话会保存在这里。</p>}</nav>
