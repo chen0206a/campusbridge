@@ -9,7 +9,7 @@ from pathlib import Path
 
 DIRECTORIES = {'src', 'scripts', 'tests', 'docs', 'eval', 'experiments', '.github', 'frontend', 'deploy'}
 ROOT_FILES = {'README.md', 'README.en.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'pyproject.toml',
-              'requirements.lock', 'requirements-rag.lock', 'requirements-mysql.lock', 'requirements-redis.lock', '.env.example', '.gitignore', '.gitattributes', '.dockerignore', 'Dockerfile', 'compose.yaml', 'SECURITY.md', 'CONTRIBUTING.md'}
+              'requirements.lock', 'requirements-rag.lock', 'requirements-mysql.lock', 'requirements-redis.lock', 'requirements-load.lock', '.env.example', '.gitignore', '.gitattributes', '.dockerignore', 'Dockerfile', 'compose.yaml', 'SECURITY.md', 'CONTRIBUTING.md'}
 EXCLUDED_PARTS = {'.git', '.venv', 'venv', '__pycache__', '.pytest_cache', 'node_modules',
                   'build', 'dist', 'coverage', '.cache', '.redis'}
 EXCLUDED_SUFFIXES = {'.db', '.sqlite', '.sqlite3', '.pyc', '.log', '.pem', '.key', '.gguf',

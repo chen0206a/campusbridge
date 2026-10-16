@@ -61,6 +61,8 @@ Stage D3 references upstream MySQL, Redis, Python and Node Docker Official Image
 
 ## Tooling used for project assets
 
+Stage D4 uses [Locust](https://github.com/locustio/locust) 2.43.3 (MIT) as optional, separately installed load-test tooling. `requirements-load.lock` records its environment; Locust and its dependencies are not included in the application Docker image. Windows-specific pywin32 is guarded by a platform marker. Their package licenses remain with the respective upstream distributions.
+
 `caniuse-lite` packages Can I Use compatibility data under CC-BY-4.0. Attribution: Can I Use contributors; caniuse-lite package metadata credits Ben Briggs; [data source](https://github.com/Fyrd/caniuse), [package source](https://github.com/browserslist/caniuse-lite), [license](https://creativecommons.org/licenses/by/4.0/). It is a build dependency installed through npm and is not vendored in this source export. `mdn-data` uses CC0-1.0; some `lru-cache` entries use BlueOak-1.0.0. Their precise locked versions and registry locations are recorded in the dependency JSON.
 
 GitHub Actions checkout/setup-python/setup-node are referenced by official commit SHA. They execute in CI and are not bundled into this repository.

@@ -1,0 +1,994 @@
+........................................................................ [ 20%]
+.................................sssssssssssssssssss.................... [ 40%]
+...........................................EEEEEEEEEEEEEEEEEEEEE..EEEEEE [ 60%]
+EEEE.................................................................... [ 80%]
+.......................................................................  [100%]
+=================================== ERRORS ====================================
+_________ ERROR at setup of test_real_cache_modes_hit_miss_ttl[bm25] __________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_________ ERROR at setup of test_real_cache_modes_hit_miss_ttl[dense] _________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+________ ERROR at setup of test_real_cache_modes_hit_miss_ttl[hybrid] _________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+________ ERROR at setup of test_campus_isolation_and_historical_source ________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+__ ERROR at setup of test_global_bm25_corpus_invalidates_other_campus_import __
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+____ ERROR at setup of test_read_update_race_never_delivers_retired_cache _____
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+______________ ERROR at setup of test_origin_update_race_retries ______________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+____________ ERROR at setup of test_poisoned_cache_rejected[text] _____________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_________ ERROR at setup of test_poisoned_cache_rejected[source_hash] _________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+__________ ERROR at setup of test_poisoned_cache_rejected[revision] ___________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+__________ ERROR at setup of test_poisoned_cache_rejected[source_id] __________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+___________ ERROR at setup of test_poisoned_cache_rejected[binding] ___________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+__________ ERROR at setup of test_poisoned_cache_rejected[duplicate] __________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+____________ ERROR at setup of test_poisoned_cache_rejected[json] _____________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+___ ERROR at setup of test_metadata_tampering_and_deactivation_invalidates ____
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_________ ERROR at setup of test_config_model_and_topk_key_separation _________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_____ ERROR at setup of test_missing_model_keeps_explicit_fallback_policy _____
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_ ERROR at setup of test_redis_failure_bypass_and_rate_fail_closed_then_restart _
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+________ ERROR at setup of test_timeout_bypass_and_limiter_fail_closed ________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_____ ERROR at setup of test_atomic_concurrent_limit_expiry_and_accounts ______
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_ ERROR at setup of test_api_login_message_and_stream_share_server_identity_budget _
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_ ERROR at setup of test_no_result_cache_empty_query_and_revision_reactivation _
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_ ERROR at setup of test_update_after_fill_before_return_is_rejected_on_next_read _
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+______ ERROR at setup of test_repeated_catalog_churn_returns_no_evidence ______
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+________ ERROR at setup of test_peer_login_limit_and_configured_status ________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+______ ERROR at setup of test_api_outage_blocks_before_business_mutation ______
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_______ ERROR at setup of test_warm_cache_preserves_citation_rejection ________
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+____ ERROR at setup of test_actual_redis_pause_causes_timeout_and_recovers ____
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_ ERROR at setup of test_cache_does_not_store_query_identity_or_unreviewed_reply _
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+_____ ERROR at setup of test_forged_cross_campus_cached_sources_rejected ______
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92A4E3C0>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+____ ERROR at setup of test_mysql_redis_rag_and_risk_business_persistence _____
+
+    @pytest.fixture(scope="module")
+    def server():
+        pytest.importorskip("redis", reason="Install .[redis] for real Redis D2 tests")
+        spec = importlib.util.spec_from_file_location("private_redis_d2", Path(__file__).parents[1] / "scripts/redis_test_server.py")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+>       instance = module.PrivateRedis().start()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_redis_d2.py:32:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <private_redis_d2.PrivateRedis object at 0x0000018D92AB3B30>
+
+    def start(self):
+        config = f'bind 127.0.0.1\nport {self.port}\nsave ""\nappendonly no\nprotected-mode yes\nrequirepass {self.password}\nmaxmemory 64mb\nmaxmemory-policy noeviction\n'
+        self.process = subprocess.Popen([*self.command, "-"], stdin=subprocess.PIPE,
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+        self.process.stdin.write(config.encode())
+        self.process.stdin.close()
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if self.process.poll() is not None:
+>               raise RuntimeError("PRIVATE_REDIS_START_FAILED")
+E               RuntimeError: PRIVATE_REDIS_START_FAILED
+
+scripts\redis_test_server.py:41: RuntimeError
+============================== warnings summary ===============================
+..\..\output\stage-d2\20261015\venv\Lib\site-packages\fastapi\testclient.py:1
+  <workspace>\output\stage-d2\20261015\venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+SKIPPED [1] tests\test_mysql_d1.py:64: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:79: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:92: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:101: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:119: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:132: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:150: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:163: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:178: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:187: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:196: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:216: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:234: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:250: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:284: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:304: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:314: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:333: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+SKIPPED [1] tests\test_mysql_d1.py:350: Opt-in isolated MySQL acceptance; use scripts/test_mysql_d1.py
+ERROR tests/test_redis_d2.py::test_real_cache_modes_hit_miss_ttl[bm25] - Runt...
+ERROR tests/test_redis_d2.py::test_real_cache_modes_hit_miss_ttl[dense] - Run...
+ERROR tests/test_redis_d2.py::test_real_cache_modes_hit_miss_ttl[hybrid] - Ru...
+ERROR tests/test_redis_d2.py::test_campus_isolation_and_historical_source - R...
+ERROR tests/test_redis_d2.py::test_global_bm25_corpus_invalidates_other_campus_import
+ERROR tests/test_redis_d2.py::test_read_update_race_never_delivers_retired_cache
+ERROR tests/test_redis_d2.py::test_origin_update_race_retries - RuntimeError:...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[text] - RuntimeErr...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[source_hash] - Run...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[revision] - Runtim...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[source_id] - Runti...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[binding] - Runtime...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[duplicate] - Runti...
+ERROR tests/test_redis_d2.py::test_poisoned_cache_rejected[json] - RuntimeErr...
+ERROR tests/test_redis_d2.py::test_metadata_tampering_and_deactivation_invalidates
+ERROR tests/test_redis_d2.py::test_config_model_and_topk_key_separation - Run...
+ERROR tests/test_redis_d2.py::test_missing_model_keeps_explicit_fallback_policy
+ERROR tests/test_redis_d2.py::test_redis_failure_bypass_and_rate_fail_closed_then_restart
+ERROR tests/test_redis_d2.py::test_timeout_bypass_and_limiter_fail_closed - R...
+ERROR tests/test_redis_d2.py::test_atomic_concurrent_limit_expiry_and_accounts
+ERROR tests/test_redis_d2.py::test_api_login_message_and_stream_share_server_identity_budget
+ERROR tests/test_redis_d2.py::test_no_result_cache_empty_query_and_revision_reactivation
+ERROR tests/test_redis_d2.py::test_update_after_fill_before_return_is_rejected_on_next_read
+ERROR tests/test_redis_d2.py::test_repeated_catalog_churn_returns_no_evidence
+ERROR tests/test_redis_d2.py::test_peer_login_limit_and_configured_status - R...
+ERROR tests/test_redis_d2.py::test_api_outage_blocks_before_business_mutation
+ERROR tests/test_redis_d2.py::test_warm_cache_preserves_citation_rejection - ...
+ERROR tests/test_redis_d2.py::test_actual_redis_pause_causes_timeout_and_recovers
+ERROR tests/test_redis_d2.py::test_cache_does_not_store_query_identity_or_unreviewed_reply
+ERROR tests/test_redis_d2.py::test_forged_cross_campus_cached_sources_rejected
+ERROR tests/test_redis_mysql_d2.py::test_mysql_redis_rag_and_risk_business_persistence
+309 passed, 19 skipped, 1 warning, 31 errors in 158.20s (0:02:38)

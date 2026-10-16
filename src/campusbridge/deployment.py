@@ -163,6 +163,8 @@ def create_deployment_app():
     def readiness():
         ok = ready(app)
         return JSONResponse({"ready": ok}, status_code=200 if ok else 503)
+    from campusbridge.diagnostics import register_metrics
+    register_metrics(app)
     return app
 
 
