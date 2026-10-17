@@ -34,11 +34,11 @@ v1.0.0 整合 Stage B、D1–D5；默认 MockModel + BM25，无 API Key 也能�
 
 学生对话与可追溯知识引用：
 
-![Student workspace](docs/assets/showcase/student-chat.jpg)
+![Student workspace](docs/assets/showcase-20261017/student-chat.jpg)
 
 辅导员工作台与完整处理记录：
 
-![Counselor workspace](docs/assets/showcase/counselor-workbench.png)
+![Counselor workspace](docs/assets/showcase-20261017/counselor-case.jpg)
 
 [来源详情、移动端与 OPEN/CLAIMED/IN_PROGRESS/CLOSED 全流程截图](docs/PROJECT_SHOWCASE.md)。全部演示账号、表达和工单为虚构数据。
 

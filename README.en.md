@@ -17,9 +17,9 @@ CampusBridge connects student conversations, cited campus knowledge, and a couns
 - **Grounded RAG:** original campus documents, versioned imports, SQLite FTS5/BM25, deterministic citation allowlists and inspectable source details.
 - **Human workflow:** persist attention events/cases before generation; enforce OPEN → CLAIMED → IN_PROGRESS → CLOSED with authorization, optimistic versions, idempotency and audit history.
 
-![Student chat](docs/assets/showcase/student-chat.jpg)
+![Student chat](docs/assets/showcase-20261017/student-chat.jpg)
 
-![Counselor workspace](docs/assets/showcase/counselor-workbench.png)
+![Counselor workspace](docs/assets/showcase-20261017/counselor-case.jpg)
 
 [More screenshots](docs/PROJECT_SHOWCASE.md) · [Sequence and execution examples](docs/EXECUTION_EXAMPLES.md) · [Demo script](docs/DEMO_SCRIPT.md)
 
